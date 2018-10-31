@@ -22,8 +22,13 @@ class ComplexTest {
 
 
     @Test
-    fun testZero() {
+    fun testConstZero() {
         assertEquals(Complex(0.0, 0.0), Complex.ZERO)
+    }
+
+    @Test
+    fun testConstOne() {
+        assertEquals(Complex(1.0, 0.0), Complex.ONE)
     }
 
     @Test
