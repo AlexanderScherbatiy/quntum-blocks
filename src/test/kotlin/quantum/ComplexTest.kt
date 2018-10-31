@@ -32,10 +32,29 @@ class ComplexTest {
     }
 
     @Test
+    fun testDivNumber() {
+        val div = Complex(1.0, 2.0) / 2
+        assertEquals(Complex(0.5, 1.0), div)
+    }
+
+    @Test
     fun testPlusComplex() {
         val sum = Complex(1.0, 2.0) + Complex(3.0, 4.0)
         assertEquals(Complex(4.0, 6.0), sum)
     }
 
+    @Test
+    fun testSqr() {
+        assertEquals(0.0, Complex.ZERO.sqr())
+        assertEquals(1.0, Complex.ONE.sqr())
+        assertEquals(5.0, Complex(1, 2).sqr())
+    }
+
+    @Test
+    fun testNorm() {
+        assertEquals(0.0, Complex.ZERO.sqr())
+        assertEquals(1.0, Complex.ONE.sqr())
+        assertEquals(5.0, Complex(3, 4).norm())
+    }
 }
 
