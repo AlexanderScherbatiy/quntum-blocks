@@ -11,14 +11,19 @@ class ComplexTest {
     fun testComplexDefaultConstructor() {
         val complex = Complex(2.0, 3.0)
         assertEquals(2.0, complex.real)
-        assertEquals(3.0, complex.image)
+        assertEquals(3.0, complex.imaginary)
     }
 
 
     @Test
     fun testZero() {
-        assertEquals(0.0, Complex.zero.real)
-        assertEquals(0.0, Complex.zero.image)
+        assertEquals(Complex(0.0, 0.0), Complex.ZERO)
+    }
+
+    @Test
+    fun testPlusComplex() {
+        val sum = Complex(1.0, 2.0) + Complex(3.0, 4.0)
+        assertEquals(Complex(4.0, 6.0), sum)
     }
 
 }

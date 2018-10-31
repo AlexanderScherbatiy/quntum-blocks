@@ -1,7 +1,9 @@
 package quantum.blocks
 
-data class Complex(val real: Double, val image: Double) {
+data class Complex(val real: Double, val imaginary: Double) {
     companion object {
-        val zero = Complex(0.0, 0.0)
+        val ZERO = Complex(0.0, 0.0)
     }
+
+    operator fun plus(other:Complex):Complex = Complex(real + other.real, imaginary + other.imaginary)
 }
