@@ -8,10 +8,16 @@ import org.junit.Test
 class ComplexTest {
 
     @Test
-    fun testComplexDefaultConstructor() {
-        val complex = Complex(2.0, 3.0)
-        assertEquals(2.0, complex.real)
-        assertEquals(3.0, complex.imaginary)
+    fun testComplexConstructor() {
+
+        assertEquals(2.0, Complex(2.0, 3.0).real)
+        assertEquals(3.0, Complex(2.0, 3.0).imaginary)
+
+
+        assertEquals(Complex(4.0, 0.0), Complex(4))
+        assertEquals(Complex(4.0, 5.0), Complex(4, 5))
+
+        assertEquals(Complex(2.0, 0.0), Complex(2))
     }
 
 
