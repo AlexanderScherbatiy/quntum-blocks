@@ -11,6 +11,7 @@ data class Complex(val real: Double, val imaginary: Double) {
     companion object {
         val ZERO = Complex(0)
         val ONE = Complex(1)
+        val I = Complex(0, 1)
     }
 
     operator fun div(other: Int): Complex = div(other.toDouble())
