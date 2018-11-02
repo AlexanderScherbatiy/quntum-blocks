@@ -18,6 +18,9 @@ data class Complex(val real: Double, val imaginary: Double) {
     operator fun div(other: Double): Complex = Complex(real / other, imaginary / other)
 
     operator fun plus(other: Complex): Complex = Complex(real + other.real, imaginary + other.imaginary)
+    operator fun times(other: Complex): Complex = Complex(
+            real * other.real - imaginary * other.imaginary,
+            real * other.imaginary + imaginary * other.real)
 
 
     fun sqr(): Double = real * real + imaginary * imaginary

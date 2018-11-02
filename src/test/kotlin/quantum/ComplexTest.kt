@@ -44,6 +44,13 @@ class ComplexTest {
     }
 
     @Test
+    fun testMulComplex() {
+        assertEquals(Complex(6, 0), Complex(2, 0) * Complex(3, 0))
+        assertEquals(Complex(-6, 0), Complex(0, 2) * Complex(0, 3))
+        assertEquals(Complex(-5, 10), Complex(1, 2) * Complex(3, 4))
+    }
+
+    @Test
     fun testSqr() {
         assertEquals(0.0, Complex.ZERO.sqr())
         assertEquals(1.0, Complex.ONE.sqr())

@@ -7,6 +7,47 @@ interface QuantumState {
 
 fun quantumState(coefficients: List<Complex>): QuantumState = QuantumStateImp(normalize(coefficients))
 
+fun tensorProduct(states: List<QuantumState>): QuantumState {
+
+    val bounds = states.map { it.size }.toIntArray()
+    val counter = IntArray(bounds.size)
+    counter[0] = -1
+
+    val coefficients = arrayListOf<Complex>()
+
+    var hasNext = increment(counter, bounds)
+
+    while (hasNext) {
+        val indices = counter
+
+        var c = Complex.ONE
+
+        for ((stateIndex, coefficientIndex) in indices.withIndex()) {
+            c *= states.get(stateIndex).get(coefficientIndex)
+        }
+        coefficients.add(c)
+
+        hasNext = increment(counter, bounds)
+    }
+
+    return quantumState(coefficients)
+}
+
+
+private fun increment(counter: IntArray, bounds: IntArray): Boolean {
+
+    for (i in 0 until bounds.size) {
+        counter[i]++
+        if (counter[i] == bounds[i]) {
+            counter[i] = 0
+        } else {
+            return true
+        }
+    }
+
+    return false
+}
+
 private fun normalize(elems: List<Complex>): List<Complex> {
     val sqr = elems.map { it.sqr() }.sum()
 
