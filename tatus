@@ -1,0 +1,63 @@
+[1mdiff --git a/src/main/kotlin/quantum/blocks/QuantumOperator.kt b/src/main/kotlin/quantum/blocks/QuantumOperator.kt[m
+[1mindex b5f7820..bbca28d 100644[m
+[1m--- a/src/main/kotlin/quantum/blocks/QuantumOperator.kt[m
+[1m+++ b/src/main/kotlin/quantum/blocks/QuantumOperator.kt[m
+[36m@@ -8,21 +8,35 @@[m [minterface QuantumOperator {[m
+     fun get(row: Int, column: Int): Double[m
+ }[m
+ [m
+[32m+[m[32mfun identity() = IdentityQuantumOperator[m
+ fun hadamar() = HadamarQuantumOperator[m
+ [m
+[32m+[m[32mobject IdentityQuantumOperator : QuantumOperator {[m
+[32m+[m
+[32m+[m[32m    override val rows = 2[m
+[32m+[m[32m    override val columns = 2[m
+[32m+[m
+[32m+[m[32m    override fun get(row: Int, column: Int) = when {[m
+[32m+[m[32m        row == 0 && column == 0 -> 1.0[m
+[32m+[m[32m        row == 0 && column == 1 -> 0.0[m
+[32m+[m[32m        row == 1 && column == 0 -> 0.0[m
+[32m+[m[32m        row == 1 && column == 1 -> 1.0[m
+[32m+[m[32m        else -> throw IndexOutOfBoundsException([m
+[32m+[m[32m                "indices ($row, $column), dimensions: ($rows, $columns)")[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[32m+[m
+ object HadamarQuantumOperator : QuantumOperator {[m
+ [m
+     override val rows = 2[m
+     override val columns = 2[m
+ [m
+[31m-    override fun get(row: Int, column: Int): Double {[m
+[31m-        when {[m
+[31m-            row == 0 && column == 0 -> return inverseSqrt2[m
+[31m-            row == 0 && column == 1 -> return inverseSqrt2[m
+[31m-            row == 1 && column == 0 -> return inverseSqrt2[m
+[31m-            row == 1 && column == 1 -> return -inverseSqrt2[m
+[31m-            else -> throw IndexOutOfBoundsException([m
+[31m-                    "indices ($row, $column), dimensions: ($rows, $columns)")[m
+[31m-        }[m
+[32m+[m[32m    override fun get(row: Int, column: Int) = when {[m
+[32m+[m[32m        row == 0 && column == 0 -> inverseSqrt2[m
+[32m+[m[32m        row == 0 && column == 1 -> inverseSqrt2[m
+[32m+[m[32m        row == 1 && column == 0 -> inverseSqrt2[m
+[32m+[m[32m        row == 1 && column == 1 -> -inverseSqrt2[m
+[32m+[m[32m        else -> throw IndexOutOfBoundsException([m
+[32m+[m[32m                "indices ($row, $column), dimensions: ($rows, $columns)")[m
+     }[m
+ }[m
+\ No newline at end of file[m
+[1mdiff --git a/src/test/kotlin/quantum/operator/HadamarOperatorTest.kt b/src/test/kotlin/quantum/operator/HadamarOperatorTest.kt[m
+[1mindex 879e33e..35d2303 100644[m
+[1m--- a/src/test/kotlin/quantum/operator/HadamarOperatorTest.kt[m
+[1m+++ b/src/test/kotlin/quantum/operator/HadamarOperatorTest.kt[m
+[36m@@ -5,7 +5,7 @@[m [mimport quantum.blocks.hadamar[m
+ import kotlin.test.assertEquals[m
+ [m
+ [m
+[31m-class HadamarTest {[m
+[32m+[m[32mclass HadamarOperatorTest {[m
+ [m
+     val inverseSqrt2: Double = 1.0 / kotlin.math.sqrt(2.0)[m
+ [m

@@ -5,7 +5,7 @@ import quantum.blocks.hadamar
 import kotlin.test.assertEquals
 
 
-class HadamarTest {
+class HadamarOperatorTest {
 
     val inverseSqrt2: Double = 1.0 / kotlin.math.sqrt(2.0)
 
