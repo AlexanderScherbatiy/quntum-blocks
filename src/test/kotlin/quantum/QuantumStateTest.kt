@@ -13,11 +13,11 @@ class QuantumStateTest {
         assertEquals(1, quantumState1.size)
         assertEquals(ComplexOne, quantumState1.get(0))
 
-        val quantumState2 = quantumState(arrayListOf(Complex(3, 0)))
+        val quantumState2 = quantumState(arrayListOf(Complex(3.0)))
         assertEquals(1, quantumState2.size)
         assertEquals(ComplexOne, quantumState2.get(0))
 
-        val quantumState3 = quantumState(arrayListOf(Complex(0, 5)))
+        val quantumState3 = quantumState(arrayListOf(Complex(0.0, 5.0)))
         assertEquals(1, quantumState3.size)
         assertEquals(ComplexI, quantumState3.get(0))
     }

@@ -8,7 +8,7 @@ class ComplexOperationTest {
 
     @Test
     fun testDivNumber() {
-        val div = Complex(1.0, 2.0) / 2
+        val div = Complex(1.0, 2.0) / 2.0
         assertEquals(Complex(0.5, 1.0), div)
     }
 
@@ -20,9 +20,8 @@ class ComplexOperationTest {
 
     @Test
     fun testMulComplex() {
-        assertEquals(Complex(6, 0), Complex(2, 0) * Complex(3, 0))
-        assertEquals(Complex(-6, 0), Complex(0, 2) * Complex(0, 3))
-        assertEquals(Complex(-5, 10), Complex(1, 2) * Complex(3, 4))
+        assertEquals(Complex(6.0), Complex(2.0) * Complex(3.0))
+        assertEquals(Complex(-6.0), Complex(0.0, 2.0) * Complex(0.0, 3.0))
+        assertEquals(Complex(-5.0, 10.0), Complex(1.0, 2.0) * Complex(3.0, 4.0))
     }
-
 }

@@ -15,10 +15,9 @@ class ComplexConstructorTest {
         assertEquals(2.0, Complex(2.0, 3.0).real)
         assertEquals(3.0, Complex(2.0, 3.0).imaginary)
 
-        assertEquals(Complex(4.0, 0.0), Complex(4))
-        assertEquals(Complex(4.0, 5.0), Complex(4, 5))
-
-        assertEquals(Complex(2.0, 0.0), Complex(2))
+        assertEquals(Complex(4.0, 0.0), Complex(4.0))
+        assertEquals(Complex(4.0, 5.0), Complex(4.0, 5.0))
+        assertEquals(Complex(2.0, 0.0), Complex(2.0))
     }
 }
 

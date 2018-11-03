@@ -32,7 +32,7 @@ class ComplexArithmeticTest {
     @Test
     fun testExpression() {
 
-        assertEquals(Complex(6, 8), 2.0 * (3.0 + 4.0 * i))
-        assertEquals(Complex(6, 8), (3.0 + 4.0 * i) * 2.0)
+        assertEquals(Complex(6.0, 8.0), 2.0 * (3.0 + 4.0 * i))
+        assertEquals(Complex(6.0, 8.0), (3.0 + 4.0 * i) * 2.0)
     }
 }
