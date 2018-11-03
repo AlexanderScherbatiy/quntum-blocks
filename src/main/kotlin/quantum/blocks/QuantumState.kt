@@ -20,7 +20,7 @@ fun tensorProduct(states: List<QuantumState>): QuantumState {
     while (hasNext) {
         val indices = counter
 
-        var c = Complex.ONE
+        var c = ComplexOne
 
         for ((stateIndex, coefficientIndex) in indices.withIndex()) {
             c *= states.get(stateIndex).get(coefficientIndex)

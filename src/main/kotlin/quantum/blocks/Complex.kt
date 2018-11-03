@@ -1,5 +1,8 @@
 package quantum.blocks
 
+val ComplexZero = Complex(0, 0)
+val ComplexOne = Complex(1, 0)
+val ComplexI = Complex(0, 1)
 
 data class Complex(val real: Double, val imaginary: Double) {
 
@@ -7,12 +10,6 @@ data class Complex(val real: Double, val imaginary: Double) {
     constructor(real: Int, imaginary: Int) : this(real.toDouble(), imaginary.toDouble())
 
     constructor(real: Double) : this(real, 0.0)
-
-    companion object {
-        val ZERO = Complex(0)
-        val ONE = Complex(1)
-        val I = Complex(0, 1)
-    }
 
     operator fun div(other: Int): Complex = div(other.toDouble())
     operator fun div(other: Double): Complex = Complex(real / other, imaginary / other)
