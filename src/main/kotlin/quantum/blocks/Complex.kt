@@ -11,6 +11,9 @@ data class Complex(val real: Double, val imaginary: Double) {
 
     constructor(real: Double) : this(real, 0.0)
 
+    operator fun plus(other: Double): Complex = Complex( real + other, imaginary)
+    operator fun minus(other: Double): Complex = Complex( real - other, imaginary)
+    operator fun times(other: Double): Complex = Complex(real * other, imaginary * other )
     operator fun div(other: Int): Complex = div(other.toDouble())
     operator fun div(other: Double): Complex = Complex(real / other, imaginary / other)
 
@@ -23,3 +26,7 @@ data class Complex(val real: Double, val imaginary: Double) {
     fun sqr(): Double = real * real + imaginary * imaginary
     fun norm(): Double = kotlin.math.sqrt(sqr())
 }
+
+operator fun Double.plus(c: Complex) = Complex(this + c.real, c.imaginary)
+operator fun Double.minus(c: Complex) = Complex(this - c.real, -c.imaginary)
+operator fun Double.times(c: Complex) = Complex(this * c.real, this * c.imaginary)
