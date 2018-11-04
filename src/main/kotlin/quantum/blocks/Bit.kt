@@ -4,6 +4,9 @@ enum class Bit {
     Zero,
     One;
 
+    fun isZero() = this == Zero
+    fun inverse() = !this
+
     operator fun not() = when (this) {
         Zero -> One
         One -> Zero
@@ -18,4 +21,11 @@ enum class Bit {
         Zero -> Zero
         One -> other
     }
+
+    companion object {
+        fun toBits(i: Int) = Integer
+                .toBinaryString(i)
+                .map { if (it == '0') Zero else One }
+    }
 }
+

@@ -39,6 +39,43 @@ interface QuantumOperator {
 fun identity() = IdentityQuantumOperator
 fun hadamar() = HadamarQuantumOperator
 
+fun controlledFun(size: Int, f: (List<Bit>) -> Bit): QuantumOperator {
+
+    val opSize = 1 shl size
+
+    val cache: Array<Bit> = (0 until (opSize shr 1))
+            .map { f(Bit.toBits(it)) }
+            .toTypedArray()
+
+    return object : QuantumOperator {
+        override val rows = opSize
+        override val columns = opSize
+
+        override fun get(row: Int, column: Int): Complex {
+
+            if (row >= rows || column >= columns)
+                throwDimensionException(row, column)
+
+            fun Bit.toComplex() = when (this) {
+                Bit.Zero -> Complex.Zero
+                Bit.One -> Complex.One
+            }
+
+            val delta = row - column
+
+            fun isEven(i: Int) = (i and 0x1) == 0
+            fun div2(i: Int) = i shr 1
+
+            return when (delta) {
+                0 -> cache[row shr 1].inverse().toComplex()
+                +1 -> if (isEven(column)) cache[div2(row)].toComplex() else Zero
+                -1 -> if (isEven(row)) cache[div2(column)].toComplex() else Zero
+                else -> Zero
+            }
+        }
+    }
+}
+
 object IdentityQuantumOperator : QuantumOperator {
 
     override val rows = 2
@@ -74,7 +111,7 @@ private fun QuantumOperator.throwDimensionException(row: Int, column: Int): Noth
 private data class ArrayQuantumOperator(val elems: Array<Array<Complex>>) : QuantumOperator {
 
     override val rows = elems.size
-    override val columns = if (elems.size == 0) 0 else elems[0].size
+    override val columns = if (elems.isEmpty()) 0 else elems[0].size
 
     override fun get(row: Int, column: Int) = elems[row][column]
 

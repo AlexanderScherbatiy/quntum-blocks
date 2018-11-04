@@ -3,6 +3,7 @@ package quantum.operator
 import org.junit.Test
 import quantum.blocks.Complex.Companion.complex
 import quantum.blocks.hadamar
+import quantum.junit.assertComplexEquals
 import kotlin.math.sqrt
 import kotlin.test.assertEquals
 
@@ -18,10 +19,10 @@ class HadamarOperatorTest {
 
         assertEquals(2, hadamar.rows)
         assertEquals(2, hadamar.columns)
-        assertEquals(inverseSqrt2, hadamar.get(0, 0))
-        assertEquals(inverseSqrt2, hadamar.get(0, 1))
-        assertEquals(inverseSqrt2, hadamar.get(1, 0))
-        assertEquals(-inverseSqrt2, hadamar.get(1, 1))
+        assertComplexEquals(inverseSqrt2, hadamar.get(0, 0))
+        assertComplexEquals(inverseSqrt2, hadamar.get(0, 1))
+        assertComplexEquals(inverseSqrt2, hadamar.get(1, 0))
+        assertComplexEquals(-inverseSqrt2, hadamar.get(1, 1))
     }
 
     @Test(expected = IndexOutOfBoundsException::class)
