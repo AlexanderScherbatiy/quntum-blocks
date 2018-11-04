@@ -2,11 +2,12 @@ package quantum.complex
 
 import org.junit.Test
 import quantum.blocks.*
+import quantum.blocks.Complex.Companion.I
 import kotlin.test.assertEquals
 
 class ComplexArithmeticTest {
 
-    val i = ComplexI
+    val i = I
 
     @Test
     fun testSum() {

@@ -2,8 +2,8 @@ package quantum.complex
 
 import org.junit.Test
 import quantum.blocks.Complex
-import quantum.blocks.ComplexOne
-import quantum.blocks.ComplexZero
+import quantum.blocks.Complex.Companion.One
+import quantum.blocks.Complex.Companion.Zero
 import kotlin.test.assertEquals
 
 class ComplexMethodTest {
@@ -25,15 +25,15 @@ class ComplexMethodTest {
 
     @Test
     fun testSqr() {
-        assertEquals(0.0, ComplexZero.sqr())
-        assertEquals(1.0, ComplexOne.sqr())
+        assertEquals(0.0, Zero.sqr())
+        assertEquals(1.0, One.sqr())
         assertEquals(5.0, Complex(1.0, 2.0).sqr())
     }
 
     @Test
     fun testNorm() {
-        assertEquals(0.0, ComplexZero.sqr())
-        assertEquals(1.0, ComplexOne.sqr())
+        assertEquals(0.0, Zero.sqr())
+        assertEquals(1.0, One.sqr())
         assertEquals(5.0, Complex(3.0, 4.0).norm())
     }
 }

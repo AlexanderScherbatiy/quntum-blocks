@@ -1,15 +1,14 @@
 package quantum.blocks
 
-import java.util.*
-
-val ComplexZero = Complex(0.0)
-val ComplexOne = Complex(1.0)
-val ComplexI = Complex(0.0, 1.0)
-
 data class Complex(val real: Double, val imaginary: Double) {
 
     constructor(real: Double) : this(real, 0.0)
 
+    companion object {
+        val Zero = Complex(0.0)
+        val One = Complex(1.0)
+        val I = Complex(0.0, 1.0)
+    }
 
     operator fun plus(other: Double): Complex = Complex(real + other, imaginary)
     operator fun minus(other: Double): Complex = Complex(real - other, imaginary)
@@ -21,7 +20,6 @@ data class Complex(val real: Double, val imaginary: Double) {
     operator fun times(other: Complex): Complex = Complex(
             real * other.real - imaginary * other.imaginary,
             real * other.imaginary + imaginary * other.real)
-
 
     fun sqr(): Double = real * real + imaginary * imaginary
     fun norm(): Double = kotlin.math.sqrt(sqr())

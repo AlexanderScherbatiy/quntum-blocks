@@ -1,5 +1,7 @@
 package quantum.blocks
 
+import quantum.blocks.Complex.Companion.One
+
 interface QuantumState {
     val size: Int
     fun get(index: Int): Complex
@@ -20,7 +22,7 @@ fun tensorProduct(states: List<QuantumState>): QuantumState {
     while (hasNext) {
         val indices = counter
 
-        var c = ComplexOne
+        var c = One
 
         for ((stateIndex, coefficientIndex) in indices.withIndex()) {
             c *= states.get(stateIndex).get(coefficientIndex)

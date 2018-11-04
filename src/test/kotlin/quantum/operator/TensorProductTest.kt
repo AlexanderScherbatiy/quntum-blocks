@@ -1,7 +1,7 @@
 package quantum.operator
 
 import org.junit.Test
-import quantum.blocks.ComplexZero
+import quantum.blocks.Complex.Companion.Zero
 import quantum.blocks.InverseSqrt2
 import quantum.blocks.hadamar
 import quantum.blocks.identity
@@ -27,15 +27,15 @@ class TensorProductTest {
         assertEquals(InverseSqrt2, result.get(1, 0))
         assertEquals(-InverseSqrt2, result.get(1, 1))
 
-        assertEquals(ComplexZero, result.get(0, 2))
-        assertEquals(ComplexZero, result.get(0, 3))
-        assertEquals(ComplexZero, result.get(1, 2))
-        assertEquals(ComplexZero, result.get(1, 3))
+        assertEquals(Zero, result.get(0, 2))
+        assertEquals(Zero, result.get(0, 3))
+        assertEquals(Zero, result.get(1, 2))
+        assertEquals(Zero, result.get(1, 3))
 
-        assertEquals(ComplexZero, result.get(2, 0))
-        assertEquals(ComplexZero, result.get(2, 1))
-        assertEquals(ComplexZero, result.get(3, 0))
-        assertEquals(ComplexZero, result.get(3, 1))
+        assertEquals(Zero, result.get(2, 0))
+        assertEquals(Zero, result.get(2, 1))
+        assertEquals(Zero, result.get(3, 0))
+        assertEquals(Zero, result.get(3, 1))
 
         assertEquals(InverseSqrt2, result.get(2, 2))
         assertEquals(InverseSqrt2, result.get(2, 3))

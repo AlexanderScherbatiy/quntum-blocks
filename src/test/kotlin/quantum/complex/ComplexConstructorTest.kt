@@ -1,11 +1,8 @@
 package quantum.complex
 
-import quantum.blocks.Complex
-
-import kotlin.test.assertEquals
 import org.junit.Test
-import quantum.blocks.ComplexOne
-import quantum.blocks.ComplexZero
+import quantum.blocks.Complex
+import kotlin.test.assertEquals
 
 class ComplexConstructorTest {
 

@@ -1,5 +1,8 @@
 package quantum.blocks
 
+import quantum.blocks.Complex.Companion.One
+import quantum.blocks.Complex.Companion.Zero
+
 interface QuantumOperator {
 
     val rows: Int
@@ -10,7 +13,7 @@ interface QuantumOperator {
     fun tensorProduct(other: QuantumOperator): QuantumOperator {
 
         val elems = Array(rows * other.rows) {
-            Array(columns * other.columns) { ComplexZero }
+            Array(columns * other.columns) { Zero }
         }
 
         var baseRow = 0
@@ -42,10 +45,10 @@ object IdentityQuantumOperator : QuantumOperator {
     override val columns = 2
 
     override fun get(row: Int, column: Int) = when {
-        row == 0 && column == 0 -> ComplexOne
-        row == 0 && column == 1 -> ComplexZero
-        row == 1 && column == 0 -> ComplexZero
-        row == 1 && column == 1 -> ComplexOne
+        row == 0 && column == 0 -> One
+        row == 0 && column == 1 -> Zero
+        row == 1 && column == 0 -> Zero
+        row == 1 && column == 1 -> One
         else -> throwDimensionException(row, column)
     }
 }
