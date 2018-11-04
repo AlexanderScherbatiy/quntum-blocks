@@ -2,6 +2,7 @@ package quantum.operator
 
 import org.junit.Test
 import quantum.blocks.Complex.Companion.Zero
+import quantum.blocks.Complex.Companion.complex
 import quantum.blocks.InverseSqrt2
 import quantum.blocks.hadamar
 import quantum.blocks.identity
@@ -9,13 +10,13 @@ import kotlin.test.assertEquals
 
 class TensorProductTest {
 
-
     /**
      * ( 1  0 )  tensor   ( 1  1 )
      * ( 0  1 )  product  ( 1 -1 ) / sqrt(2)
      */
     @Test
     fun tensorProductIdentityHadamarTest() {
+
 
         val result = identity().tensorProduct(hadamar())
 

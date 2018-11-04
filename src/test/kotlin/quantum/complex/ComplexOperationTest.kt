@@ -1,27 +1,27 @@
 package quantum.complex
 
 import org.junit.Test
-import quantum.blocks.Complex
+import quantum.blocks.Complex.Companion.complex
 import kotlin.test.assertEquals
 
 class ComplexOperationTest {
 
     @Test
     fun testDivNumber() {
-        val div = Complex(1.0, 2.0) / 2.0
-        assertEquals(Complex(0.5, 1.0), div)
+        val div = complex(1.0, 2.0) / 2.0
+        assertEquals(complex(0.5, 1.0), div)
     }
 
     @Test
-    fun testPlusComplex() {
-        val sum = Complex(1.0, 2.0) + Complex(3.0, 4.0)
-        assertEquals(Complex(4.0, 6.0), sum)
+    fun testPluscomplex() {
+        val sum = complex(1.0, 2.0) + complex(3.0, 4.0)
+        assertEquals(complex(4.0, 6.0), sum)
     }
 
     @Test
-    fun testMulComplex() {
-        assertEquals(Complex(6.0), Complex(2.0) * Complex(3.0))
-        assertEquals(Complex(-6.0), Complex(0.0, 2.0) * Complex(0.0, 3.0))
-        assertEquals(Complex(-5.0, 10.0), Complex(1.0, 2.0) * Complex(3.0, 4.0))
+    fun testMulcomplex() {
+        assertEquals(complex(6.0), complex(2.0) * complex(3.0))
+        assertEquals(complex(-6.0), complex(0.0, 2.0) * complex(0.0, 3.0))
+        assertEquals(complex(-5.0, 10.0), complex(1.0, 2.0) * complex(3.0, 4.0))
     }
 }

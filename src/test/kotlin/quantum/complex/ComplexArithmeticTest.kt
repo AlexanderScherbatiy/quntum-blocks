@@ -1,8 +1,12 @@
 package quantum.complex
 
 import org.junit.Test
-import quantum.blocks.*
+import quantum.blocks.plus
+import quantum.blocks.times
+import quantum.blocks.minus
+import quantum.blocks.toComplex
 import quantum.blocks.Complex.Companion.I
+import quantum.blocks.Complex.Companion.complex
 import kotlin.test.assertEquals
 
 class ComplexArithmeticTest {
@@ -12,36 +16,36 @@ class ComplexArithmeticTest {
     @Test
     fun testSum() {
 
-        assertEquals(Complex(1.0, 1.0), 1.0 + i)
-        assertEquals(Complex(1.0, 1.0), i + 1.0 )
+        assertEquals(complex(1.0, 1.0), 1.0 + i)
+        assertEquals(complex(1.0, 1.0), i + 1.0 )
     }
 
     @Test
     fun testMinus() {
 
-        assertEquals(Complex(3.0, -1.0), 3.0 - i)
-        assertEquals(Complex(-3.0, 1.0), i - 3.0)
+        assertEquals(complex(3.0, -1.0), 3.0 - i)
+        assertEquals(complex(-3.0, 1.0), i - 3.0)
     }
 
     @Test
     fun testTimes() {
 
-        assertEquals(Complex(0.0, 3.0), 3.0 * i)
-        assertEquals(Complex(0.0, 3.0), i * 3.0)
+        assertEquals(complex(0.0, 3.0), 3.0 * i)
+        assertEquals(complex(0.0, 3.0), i * 3.0)
     }
 
     @Test
     fun testExpression() {
 
-        assertEquals(Complex(6.0, 8.0), 2.0 * (3.0 + 4.0 * i))
-        assertEquals(Complex(6.0, 8.0), (3.0 + 4.0 * i) * 2.0)
+        assertEquals(complex(6.0, 8.0), 2.0 * (3.0 + 4.0 * i))
+        assertEquals(complex(6.0, 8.0), (3.0 + 4.0 * i) * 2.0)
     }
 
     @Test
-    fun testToComplex() {
+    fun testTocomplex() {
 
-        assertEquals(Complex(1.0, 0.0), 1.0.toComplex())
-        assertEquals(Complex(2.5, 0.0), 2.5.toComplex())
-        assertEquals(Complex(-3.5, 0.0), (-3.5).toComplex())
+        assertEquals(complex(1.0, 0.0), 1.0.toComplex())
+        assertEquals(complex(2.5, 0.0), 2.5.toComplex())
+        assertEquals(complex(-3.5, 0.0), (-3.5).toComplex())
     }
 }
