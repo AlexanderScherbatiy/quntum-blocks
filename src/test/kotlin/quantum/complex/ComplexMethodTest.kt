@@ -7,6 +7,22 @@ import quantum.blocks.ComplexZero
 import kotlin.test.assertEquals
 
 class ComplexMethodTest {
+
+    @Test
+    fun testEquals() {
+        assertEquals(Complex(0.0, 0.0), Complex(0.0, -0.0))
+        assertEquals(Complex(0.0, 0.0), Complex(-0.0, 0.0))
+        assertEquals(Complex(0.0, 0.0), Complex(-0.0, -0.0))
+    }
+
+    @Test
+    fun testHashcode() {
+
+        assertEquals(Complex(0.0, 0.0).hashCode(), Complex(0.0, -0.0).hashCode())
+        assertEquals(Complex(0.0, 0.0).hashCode(), Complex(-0.0, 0.0).hashCode())
+        assertEquals(Complex(0.0, 0.0).hashCode(), Complex(-0.0, -0.0).hashCode())
+    }
+
     @Test
     fun testSqr() {
         assertEquals(0.0, ComplexZero.sqr())

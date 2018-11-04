@@ -35,4 +35,12 @@ class ComplexArithmeticTest {
         assertEquals(Complex(6.0, 8.0), 2.0 * (3.0 + 4.0 * i))
         assertEquals(Complex(6.0, 8.0), (3.0 + 4.0 * i) * 2.0)
     }
+
+    @Test
+    fun testToComplex() {
+
+        assertEquals(Complex(1.0, 0.0), 1.0.toComplex())
+        assertEquals(Complex(2.5, 0.0), 2.5.toComplex())
+        assertEquals(Complex(-3.5, 0.0), (-3.5).toComplex())
+    }
 }

@@ -1,13 +1,15 @@
 package quantum.operator
 
 import org.junit.Test
+import quantum.blocks.Complex
 import quantum.blocks.hadamar
+import kotlin.math.sqrt
 import kotlin.test.assertEquals
 
 
 class HadamarOperatorTest {
 
-    val inverseSqrt2: Double = 1.0 / kotlin.math.sqrt(2.0)
+    val inverseSqrt2 = Complex( 1.0 / sqrt(2.0), 0.0)
 
     @Test
     fun testElements() {

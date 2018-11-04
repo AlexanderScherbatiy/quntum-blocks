@@ -3,6 +3,7 @@ package quantum.operator
 import org.junit.Test
 import quantum.blocks.IdentityQuantumOperator
 import quantum.blocks.identity
+import quantum.blocks.toComplex
 import kotlin.test.assertEquals
 
 class IdentityOperatorTest {
@@ -13,10 +14,10 @@ class IdentityOperatorTest {
 
         assertEquals(2, identity.rows)
         assertEquals(2, identity.columns)
-        assertEquals(1.0, identity.get(0, 0))
-        assertEquals(0.0, identity.get(0, 1))
-        assertEquals(0.0, identity.get(1, 0))
-        assertEquals(1.0, identity.get(1, 1))
+        assertEquals(1.0.toComplex(), identity.get(0, 0))
+        assertEquals(0.0.toComplex(), identity.get(0, 1))
+        assertEquals(0.0.toComplex(), identity.get(1, 0))
+        assertEquals(1.0.toComplex(), identity.get(1, 1))
     }
 
     @Test(expected = IndexOutOfBoundsException::class)
