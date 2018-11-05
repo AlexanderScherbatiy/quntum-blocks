@@ -10,6 +10,20 @@ interface QuantumOperator {
 
     operator fun get(row: Int, column: Int): Complex
 
+    operator fun times(other: QuantumState): QuantumState {
+
+        val result = arrayListOf<Complex>()
+        for (i in 0 until rows) {
+            var value = Complex.Zero
+            for (j in 0 until columns) {
+                value += this[i, j] * other[j]
+            }
+            result += value
+        }
+
+        return quantumState(result)
+    }
+
     fun tensorProduct(other: QuantumOperator): QuantumOperator {
 
         val elems = Array(rows * other.rows) {

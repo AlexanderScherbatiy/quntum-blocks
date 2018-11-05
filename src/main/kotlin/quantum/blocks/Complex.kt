@@ -2,9 +2,7 @@ package quantum.blocks
 
 import quantum.blocks.Complex.Companion.complex
 
-data class Complex private constructor(val real: Double, val imaginary: Double) {
-
-    constructor(real: Double) : this(real, 0.0)
+data class Complex private constructor(val real: Double, val imaginary: Double = 0.0) {
 
     companion object {
         val Zero = Complex(0.0)
@@ -25,6 +23,8 @@ data class Complex private constructor(val real: Double, val imaginary: Double) 
             }
         }
     }
+
+    fun conjugate() = complex(real, -imaginary)
 
     operator fun plus(other: Double): Complex = complex(real + other, imaginary)
     operator fun minus(other: Double): Complex = complex(real - other, imaginary)
@@ -49,7 +49,7 @@ data class Complex private constructor(val real: Double, val imaginary: Double) 
     }"
 }
 
-fun Double.toComplex() = Complex(this)
+fun Double.toComplex() = complex(this)
 
 operator fun Double.plus(c: Complex) = complex(this + c.real, c.imaginary)
 operator fun Double.minus(c: Complex) = complex(this - c.real, -c.imaginary)

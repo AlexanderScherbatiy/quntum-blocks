@@ -1,18 +1,20 @@
 package quantum.complex
 
 import org.junit.Test
+import quantum.blocks.Complex.Companion.I
 import quantum.blocks.Complex.Companion.One
 import quantum.blocks.Complex.Companion.Zero
 import quantum.blocks.Complex.Companion.complex
+import quantum.junit.assertComplexEquals
 import kotlin.test.assertEquals
 
 class ComplexMethodTest {
 
     @Test
     fun testEquals() {
-        assertEquals(complex(0.0, 0.0), complex(0.0, -0.0))
-        assertEquals(complex(0.0, 0.0), complex(-0.0, 0.0))
-        assertEquals(complex(0.0, 0.0), complex(-0.0, -0.0))
+        assertComplexEquals(complex(0.0, 0.0), complex(0.0, -0.0))
+        assertComplexEquals(complex(0.0, 0.0), complex(-0.0, 0.0))
+        assertComplexEquals(complex(0.0, 0.0), complex(-0.0, -0.0))
     }
 
     @Test
@@ -28,6 +30,14 @@ class ComplexMethodTest {
         assertEquals("2.7", complex(2.7).toString())
         assertEquals("1.2+3.4i", complex(1.2, 3.4).toString())
         assertEquals("2.3-5.6i", complex(2.3, -5.6).toString())
+    }
+
+    @Test
+    fun testConjugate() {
+        assertComplexEquals(Zero, Zero.conjugate())
+        assertComplexEquals(One, One.conjugate())
+        assertComplexEquals(-I, I.conjugate())
+        assertComplexEquals(complex(1.2, -2.3), complex(1.2, 2.3).conjugate())
     }
 
     @Test
