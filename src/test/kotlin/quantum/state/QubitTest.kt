@@ -1,4 +1,4 @@
-package quantum
+package quantum.state
 
 import org.junit.Test
 import quantum.blocks.Complex.Companion.One
@@ -10,8 +10,25 @@ import kotlin.test.assertEquals
 
 class QubitTest {
 
+    val sqrt2 = kotlin.math.sqrt(2.0)
+
     @Test
-    fun testFromcomplex() {
+    fun testConstant() {
+        assertEquals(One, Qubit.Zero.zero)
+        assertEquals(Zero, Qubit.Zero.one)
+
+        assertEquals(Zero, Qubit.One.zero)
+        assertEquals(One, Qubit.One.one)
+
+        assertEquals(complex(1.0 / sqrt2), Qubit.Plus.zero)
+        assertEquals(complex(1.0 / sqrt2), Qubit.Plus.one)
+
+        assertEquals(complex(1.0 / sqrt2), Qubit.Minus.zero)
+        assertEquals(complex(-1.0 / sqrt2), Qubit.Minus.one)
+    }
+
+    @Test
+    fun testFromComplex() {
 
         val qubit1 = Qubit.from(One, Zero)
         assertEquals(One, qubit1.zero)

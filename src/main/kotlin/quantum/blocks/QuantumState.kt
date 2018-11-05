@@ -1,10 +1,26 @@
 package quantum.blocks
 
 import quantum.blocks.Complex.Companion.One
+import quantum.blocks.Complex.Companion.Zero
 
 interface QuantumState {
     val size: Int
-    fun get(index: Int): Complex
+    operator fun get(index: Int): Complex
+
+    fun tensorProduct(other: QuantumState): QuantumState {
+
+        val elems = Array(size * other.size) { Complex.Zero }
+        var base = 0
+
+        for (i in 0 until size) {
+            for (j in 0 until other.size) {
+                elems[base + j] = get(i) * other.get(j)
+            }
+            base += other.size
+        }
+
+        return quantumState(elems.toList())
+    }
 }
 
 fun quantumState(coefficients: List<Complex>): QuantumState = QuantumStateImp(normalize(coefficients))
@@ -73,6 +89,12 @@ data class Qubit private constructor(val zero: Complex, val one: Complex) : Quan
     }
 
     companion object {
+
+        val Zero = Qubit(Complex.One, Complex.Zero)
+        val One = Qubit(Complex.Zero, Complex.One)
+        val Plus = from(Complex.One, Complex.One)
+        val Minus = from(Complex.One, -Complex.One)
+
         fun from(zero: Complex, one: Complex): Qubit {
             val coefficients = normalize(arrayListOf(zero, one))
             return Qubit(coefficients.get(0), coefficients.get(1))
@@ -85,4 +107,7 @@ private class QuantumStateImp(val coefficients: List<Complex>) : QuantumState {
     override val size = coefficients.size
 
     override fun get(index: Int) = coefficients.get(index)
+
+    override fun toString() = "QuantumState(${coefficients.joinToString()})"
+
 }
