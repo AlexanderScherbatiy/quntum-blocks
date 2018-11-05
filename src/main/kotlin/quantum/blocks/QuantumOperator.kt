@@ -8,7 +8,7 @@ interface QuantumOperator {
     val rows: Int
     val columns: Int
 
-    fun get(row: Int, column: Int): Complex
+    operator fun get(row: Int, column: Int): Complex
 
     fun tensorProduct(other: QuantumOperator): QuantumOperator {
 
@@ -23,7 +23,7 @@ interface QuantumOperator {
             for (j1 in 0 until columns) {
                 for (i2 in 0 until rows) {
                     for (j2 in 0 until columns) {
-                        elems[baseRow + i2][baseColumn + j2] = get(i1, j1) * other.get(i2, j2)
+                        elems[baseRow + i2][baseColumn + j2] = this[i1, j1] * other[i2, j2]
                     }
                 }
                 baseRow += other.rows
@@ -48,8 +48,8 @@ fun controlledFun(size: Int, f: (List<Bit>) -> Bit): QuantumOperator {
             .toTypedArray()
 
     return object : QuantumOperator {
-        override val rows = opSize
-        override val columns = opSize
+        override val rows get() = opSize
+        override val columns get() = opSize
 
         override fun get(row: Int, column: Int): Complex {
 
@@ -73,6 +73,8 @@ fun controlledFun(size: Int, f: (List<Bit>) -> Bit): QuantumOperator {
                 else -> Zero
             }
         }
+
+        override fun toString() = contentToString(this)
     }
 }
 
@@ -104,6 +106,21 @@ object HadamarQuantumOperator : QuantumOperator {
     }
 }
 
+private fun contentToString(op: QuantumOperator) = with(StringBuilder()) {
+    append("QuantumOperator{")
+    for (i in 0 until op.rows) {
+        append("{")
+        for (j in 0 until op.columns) {
+            append(op[i, j])
+            append("")
+        }
+        append("}")
+    }
+    append("}")
+    toString()
+}
+
+
 private fun QuantumOperator.throwDimensionException(row: Int, column: Int): Nothing =
         throw IndexOutOfBoundsException(
                 "indices ($row, $column), dimensions: ($rows, $columns)")
@@ -114,5 +131,4 @@ private data class ArrayQuantumOperator(val elems: Array<Array<Complex>>) : Quan
     override val columns = if (elems.isEmpty()) 0 else elems[0].size
 
     override fun get(row: Int, column: Int) = elems[row][column]
-
 }
