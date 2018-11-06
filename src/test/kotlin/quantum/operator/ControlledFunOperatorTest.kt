@@ -15,7 +15,7 @@ class ControlledFunOperatorTest {
      *  |x> -> |x>
      *  |y> -> |y + f(x)>
      *
-     *   f(x) = 0
+     *  f(x) = 0
      *  |x> -> |x>
      *  |y> -> |y>
      *
@@ -32,15 +32,15 @@ class ControlledFunOperatorTest {
     @Test
     fun testControlledFun00() {
 
-        val cf00 = controlledFun(2) { bits -> Bit.Zero }
+        val cf00 = controlledFun(2) { _ -> Bit.Zero }
 
         assertEquals(4, cf00.rows)
         assertEquals(4, cf00.columns)
 
-        assertComplexEquals(One, cf00.get(0, 0))
-        assertComplexEquals(Zero, cf00.get(0, 1))
-        assertComplexEquals(Zero, cf00.get(1, 0))
-        assertComplexEquals(One, cf00.get(1, 1))
+        assertComplexEquals(One, cf00[0, 0])
+        assertComplexEquals(Zero, cf00[0, 1])
+        assertComplexEquals(Zero, cf00[1, 0])
+        assertComplexEquals(One, cf00[1, 1])
     }
 
     /**
@@ -48,7 +48,7 @@ class ControlledFunOperatorTest {
      *  |x> -> |x>
      *  |y> -> |y + f(x)>
      *
-     *   f(x) = x
+     *  f(x) = x
      *  |x> -> |x>
      *  |y> -> |y + x>
      *
@@ -65,19 +65,19 @@ class ControlledFunOperatorTest {
     @Test
     fun testControlledFun01() {
 
-        val cf01 = controlledFun(2) { bits -> bits.get(0) }
+        val cf01 = controlledFun(2) { bits -> bits.first() }
 
         assertEquals(4, cf01.rows)
         assertEquals(4, cf01.columns)
 
-        assertComplexEquals(One, cf01.get(0, 0))
-        assertComplexEquals(Zero, cf01.get(0, 1))
-        assertComplexEquals(Zero, cf01.get(1, 0))
-        assertComplexEquals(One, cf01.get(1, 1))
+        assertComplexEquals(One, cf01[0, 0])
+        assertComplexEquals(Zero, cf01[0, 1])
+        assertComplexEquals(Zero, cf01[1, 0])
+        assertComplexEquals(One, cf01[1, 1])
 
-        assertComplexEquals(Zero, cf01.get(2, 2))
-        assertComplexEquals(One, cf01.get(2, 3))
-        assertComplexEquals(One, cf01.get(3, 2))
-        assertComplexEquals(Zero, cf01.get(3, 3))
+        assertComplexEquals(Zero, cf01[2, 2])
+        assertComplexEquals(One, cf01[2, 3])
+        assertComplexEquals(One, cf01[3, 2])
+        assertComplexEquals(Zero, cf01[3, 3])
     }
 }
