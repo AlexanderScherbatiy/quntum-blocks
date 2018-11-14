@@ -114,7 +114,7 @@ private class QuantumStateImp(val coefficients: List<Complex>) : QuantumState {
 
     override val size = coefficients.size
 
-    override fun get(index: Int) = coefficients.get(index)
+    override fun get(index: Int) = coefficients[index]
 
     override fun toString() = "QuantumState(${coefficients.joinToString()})"
 
