@@ -7,16 +7,16 @@ import quantum.blocks.Complex
 @Fork(1)
 @Warmup(iterations = 10)
 @Measurement(iterations = 1)
-open class ListQuantumStateBenchmark {
-    var initialCoefficients: List<Complex>? = null
+open class ArrayQuantumStateBenchmark {
+    var initialCoefficients: Array<Complex>? = null
 
     @Setup
     fun setUp() {
-        initialCoefficients = listOf(Complex.One, Complex.One)
+        initialCoefficients = arrayOf(Complex.One, Complex.One)
     }
 
     @Benchmark
     fun listQuantumStateBenchmark() {
-        listQuantumState(initialCoefficients!!)
+        arrayQuantumState(initialCoefficients!!)
     }
 }
