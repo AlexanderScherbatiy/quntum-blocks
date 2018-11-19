@@ -10,6 +10,10 @@ repositories {
     jcenter()
 }
 
+jmh {
+    jvmArgsAppend = ["-Xmx512m"]
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile 'junit:junit:4.11'
