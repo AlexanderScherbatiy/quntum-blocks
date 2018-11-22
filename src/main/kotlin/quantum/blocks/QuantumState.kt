@@ -1,7 +1,6 @@
 package quantum.blocks
 
 import quantum.blocks.Complex.Companion.One
-import quantum.blocks.Complex.Companion.Zero
 
 interface QuantumState {
     val size: Int
@@ -17,46 +16,42 @@ interface QuantumState {
 
     fun tensorProduct(other: QuantumState): QuantumState {
 
-        val elems = Array(size * other.size) { Complex.Zero }
+        val coefficients = Array(size * other.size) { Complex.Zero }
         var base = 0
 
         for (i in 0 until size) {
             for (j in 0 until other.size) {
-                elems[base + j] = get(i) * other.get(j)
+                coefficients[base + j] = this[i] * other[j]
             }
             base += other.size
         }
 
-        return quantumState(elems.toList())
+        return quantumState(*coefficients)
     }
 }
 
-fun quantumState(coefficients: List<Complex>): QuantumState = QuantumStateImp(normalize(coefficients))
+fun quantumState(vararg coefficients: Complex): QuantumState = QuantumStateImp(normalize(*coefficients))
 
 fun tensorProduct(states: List<QuantumState>): QuantumState {
 
     val bounds = states.map { it.size }.toIntArray()
     val counter = IntArray(bounds.size)
     counter[0] = -1
-
     val coefficients = arrayListOf<Complex>()
-
     var hasNext = increment(counter, bounds)
 
     while (hasNext) {
-        val indices = counter
 
         var c = One
-
-        for ((stateIndex, coefficientIndex) in indices.withIndex()) {
-            c *= states.get(stateIndex).get(coefficientIndex)
+        for ((stateIndex, coefficientIndex) in counter.withIndex()) {
+            c *= states[stateIndex][coefficientIndex]
         }
-        coefficients.add(c)
 
+        coefficients.add(c)
         hasNext = increment(counter, bounds)
     }
 
-    return quantumState(coefficients)
+    return quantumState(*coefficients.toTypedArray())
 }
 
 
@@ -74,16 +69,15 @@ private fun increment(counter: IntArray, bounds: IntArray): Boolean {
     return false
 }
 
-private fun normalize(elems: List<Complex>): List<Complex> {
-    val sqr = elems.map { it.sqr() }.sum()
+private fun normalize(vararg coefficients: Complex): Array<out Complex> {
+    val sqr = coefficients.map { it.sqr() }.sum()
 
     if (sqr == 1.0) {
-        return elems
+        return coefficients
     }
 
     val r = kotlin.math.sqrt(sqr)
-
-    return elems.map { it / r }
+    return Array(coefficients.size) { coefficients[it] / r }
 }
 
 data class Qubit private constructor(val zero: Complex, val one: Complex) : QuantumState {
@@ -104,18 +98,17 @@ data class Qubit private constructor(val zero: Complex, val one: Complex) : Quan
         val Minus = from(Complex.One, -Complex.One)
 
         fun from(zero: Complex, one: Complex): Qubit {
-            val coefficients = normalize(arrayListOf(zero, one))
-            return Qubit(coefficients.get(0), coefficients.get(1))
+            val coefficients = normalize(zero, one)
+            return Qubit(coefficients[0], coefficients[1])
         }
     }
 }
 
-private class QuantumStateImp(val coefficients: List<Complex>) : QuantumState {
+private class QuantumStateImp(val coefficients: Array<out Complex>) : QuantumState {
 
     override val size = coefficients.size
 
     override fun get(index: Int) = coefficients[index]
 
     override fun toString() = "QuantumState(${coefficients.joinToString()})"
-
 }

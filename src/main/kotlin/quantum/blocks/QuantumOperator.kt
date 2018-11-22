@@ -12,21 +12,19 @@ interface QuantumOperator {
 
     operator fun times(other: QuantumState): QuantumState {
 
-        val result = arrayListOf<Complex>()
-        for (i in 0 until rows) {
-            var value = Complex.Zero
-            for (j in 0 until columns) {
-                value += this[i, j] * other[j]
-            }
-            result += value
+        val coefficients = Array(rows) { i ->
+            (0 until columns)
+                    .map { j -> this[i, j] * other[j] }
+                    .reduce { c1, c2 -> c1 + c2 }
+
         }
 
-        return quantumState(result)
+        return quantumState(*coefficients)
     }
 
     fun tensorProduct(other: QuantumOperator): QuantumOperator {
 
-        val elems = Array(rows * other.rows) {
+        val coefficients = Array(rows * other.rows) {
             Array(columns * other.columns) { Zero }
         }
 
@@ -37,7 +35,7 @@ interface QuantumOperator {
             for (j1 in 0 until columns) {
                 for (i2 in 0 until rows) {
                     for (j2 in 0 until columns) {
-                        elems[baseRow + i2][baseColumn + j2] = this[i1, j1] * other[i2, j2]
+                        coefficients[baseRow + i2][baseColumn + j2] = this[i1, j1] * other[i2, j2]
                     }
                 }
                 baseRow += other.rows
@@ -46,7 +44,7 @@ interface QuantumOperator {
             baseColumn += other.columns
         }
 
-        return ArrayQuantumOperator(elems)
+        return ArrayQuantumOperator(coefficients)
     }
 }
 
