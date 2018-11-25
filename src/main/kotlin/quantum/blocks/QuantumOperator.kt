@@ -124,7 +124,7 @@ private fun contentToString(op: QuantumOperator) = with(StringBuilder()) {
         append("{")
         for (j in 0 until op.columns) {
             append(op[i, j])
-            append("")
+            append(" ")
         }
         append("}")
     }

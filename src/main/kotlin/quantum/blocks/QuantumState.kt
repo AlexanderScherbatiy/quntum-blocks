@@ -32,7 +32,7 @@ interface QuantumState {
 
 fun quantumState(vararg coefficients: Complex): QuantumState = QuantumStateImp(normalize(*coefficients))
 
-fun tensorProduct(states: List<QuantumState>): QuantumState {
+fun tensorProduct(states: Array<out QuantumState>): QuantumState {
 
     val bounds = states.map { it.size }.toIntArray()
     val counter = IntArray(bounds.size)
