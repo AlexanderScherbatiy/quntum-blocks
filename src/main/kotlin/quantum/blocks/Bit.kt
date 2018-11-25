@@ -21,11 +21,8 @@ enum class Bit {
         Zero -> Zero
         One -> other
     }
-
-    companion object {
-        fun toBits(i: Int) = Integer
-                .toBinaryString(i)
-                .map { if (it == '0') Zero else One }
-    }
 }
 
+fun Int.toBits() = Integer
+        .toBinaryString(this)
+        .map { if (it == '0') Bit.Zero else Bit.One }

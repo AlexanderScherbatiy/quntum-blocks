@@ -51,12 +51,14 @@ interface QuantumOperator {
 fun identity() = IdentityQuantumOperator
 fun hadamar() = HadamarQuantumOperator
 
-fun controlledFun(size: Int, f: (List<Bit>) -> Bit): QuantumOperator {
+fun controlled(f: (Bit) -> Bit): QuantumOperator = controlled(2) { f(it.first()) }
+
+fun controlled(size: Int, f: (List<Bit>) -> Bit): QuantumOperator {
 
     val opSize = 1 shl size
 
     val cache: Array<Bit> = (0 until (opSize shr 1))
-            .map { f(Bit.toBits(it)) }
+            .map { f(it.toBits()) }
             .toTypedArray()
 
     return object : QuantumOperator {

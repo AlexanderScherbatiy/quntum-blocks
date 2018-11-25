@@ -3,7 +3,7 @@ package quantum.algorithm
 import org.junit.Test
 import quantum.blocks.Bit
 import quantum.blocks.Qubit
-import quantum.blocks.controlledFun
+import quantum.blocks.controlled
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -43,7 +43,7 @@ class DeutschJozsaAlgorithmTest {
         val x = Qubit.Plus
         val y = Qubit.Minus
         val input = x.tensorProduct(y)
-        val u = controlledFun(2) { bits -> f(bits.first()) }
+        val u = controlled(f)
         val output = u * input
         val projection = Qubit.Minus.tensorProduct(Qubit.Minus)
         val probability = (projection * output).norm()

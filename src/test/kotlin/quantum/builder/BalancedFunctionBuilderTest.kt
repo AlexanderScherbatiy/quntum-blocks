@@ -3,7 +3,7 @@ package quantum.builder
 import org.junit.Test
 import quantum.blocks.Bit
 import quantum.blocks.Qubit
-import quantum.blocks.controlledFun
+import quantum.blocks.controlled
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -20,7 +20,7 @@ class BalancedFunctionBuilderTest {
     private fun isBalanced(f: (Bit) -> Bit): Boolean {
         val amplitudes = QuantumAlgorithm()
                 .inputs(Qubit.Plus, Qubit.Minus)
-                .gates(controlledFun(2) { f(it[0]) })
+                .gates(controlled(f))
                 .measure(Qubit.Plus.tensorProduct(Qubit.Plus),
                         Qubit.Plus.tensorProduct(Qubit.Minus),
                         Qubit.Minus.tensorProduct(Qubit.Plus),

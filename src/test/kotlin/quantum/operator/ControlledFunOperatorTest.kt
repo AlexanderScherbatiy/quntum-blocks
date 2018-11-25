@@ -4,7 +4,7 @@ import org.junit.Test
 import quantum.blocks.Bit
 import quantum.blocks.Complex.Companion.One
 import quantum.blocks.Complex.Companion.Zero
-import quantum.blocks.controlledFun
+import quantum.blocks.controlled
 import quantum.junit.assertComplexEquals
 import kotlin.test.assertEquals
 
@@ -32,7 +32,7 @@ class ControlledFunOperatorTest {
     @Test
     fun testControlledFun00() {
 
-        val cf00 = controlledFun(2) { _ -> Bit.Zero }
+        val cf00 = controlled { Bit.Zero }
 
         assertEquals(4, cf00.rows)
         assertEquals(4, cf00.columns)
@@ -65,7 +65,7 @@ class ControlledFunOperatorTest {
     @Test
     fun testControlledFun01() {
 
-        val cf01 = controlledFun(2) { bits -> bits.first() }
+        val cf01 = controlled { it }
 
         assertEquals(4, cf01.rows)
         assertEquals(4, cf01.columns)
