@@ -1,11 +1,11 @@
 package quantum.operator
 
 import org.junit.Test
-import quantum.blocks.Complex.Companion.Zero
-import quantum.blocks.InverseSqrt2
-import quantum.blocks.OneHalf
-import quantum.blocks.hadamar
-import quantum.blocks.identity
+import quantum.core.Complex.Companion.Zero
+import quantum.core.InverseSqrt2
+import quantum.core.OneHalf
+import quantum.gate.hadamar
+import quantum.gate.identity
 import quantum.junit.assertComplexEquals
 import kotlin.test.assertEquals
 

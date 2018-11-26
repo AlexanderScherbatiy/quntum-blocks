@@ -1,9 +1,9 @@
 package quantum.state
 
 import org.junit.Test
-import quantum.blocks.Complex
-import quantum.blocks.Complex.Companion.complex
-import quantum.blocks.Qubit
+import quantum.core.Complex
+import quantum.core.Complex.Companion.complex
+import quantum.core.Qubit
 import quantum.junit.assertComplexEquals
 import kotlin.test.assertEquals
 

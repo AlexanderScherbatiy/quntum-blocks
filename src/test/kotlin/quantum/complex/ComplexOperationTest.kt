@@ -1,7 +1,7 @@
 package quantum.complex
 
 import org.junit.Test
-import quantum.blocks.Complex.Companion.complex
+import quantum.core.Complex.Companion.complex
 import kotlin.test.assertEquals
 
 class ComplexOperationTest {

@@ -1,6 +1,6 @@
-package quantum.blocks
+package quantum.core
 
-import quantum.blocks.Complex.Companion.One
+import quantum.core.Complex.Companion.One
 
 interface QuantumState {
     val size: Int

@@ -1,10 +1,10 @@
 package quantum.state
 
 import org.junit.Test
-import quantum.blocks.Complex.Companion.I
-import quantum.blocks.Complex.Companion.One
-import quantum.blocks.Complex.Companion.complex
-import quantum.blocks.quantumState
+import quantum.core.Complex.Companion.I
+import quantum.core.Complex.Companion.One
+import quantum.core.Complex.Companion.complex
+import quantum.core.quantumState
 import quantum.junit.assertComplexEquals
 import kotlin.test.assertEquals
 

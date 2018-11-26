@@ -1,6 +1,6 @@
 package quantum.jmh
 
-import quantum.blocks.Complex
+import quantum.core.Complex
 
 private class ArrayQuantumState(val coefficients: Array<Complex>) : QuantumState {
 

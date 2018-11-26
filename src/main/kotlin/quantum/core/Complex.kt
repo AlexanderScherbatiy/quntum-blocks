@@ -1,6 +1,6 @@
-package quantum.blocks
+package quantum.core
 
-import quantum.blocks.Complex.Companion.complex
+import quantum.core.Complex.Companion.complex
 
 data class Complex private constructor(val real: Double, val imaginary: Double = 0.0) {
 

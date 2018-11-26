@@ -1,9 +1,9 @@
 package quantum.builder
 
 import org.junit.Test
-import quantum.blocks.Bit
-import quantum.blocks.Qubit
-import quantum.blocks.controlled
+import quantum.core.Bit
+import quantum.core.Qubit
+import quantum.gate.controlled
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 

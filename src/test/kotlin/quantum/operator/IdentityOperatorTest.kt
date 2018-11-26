@@ -1,16 +1,15 @@
 package quantum.operator
 
 import org.junit.Test
-import quantum.blocks.IdentityQuantumOperator
-import quantum.blocks.identity
-import quantum.blocks.toComplex
+import quantum.core.toComplex
+import quantum.gate.identity
 import kotlin.test.assertEquals
 
 class IdentityOperatorTest {
 
     @Test
     fun testElements() {
-        val identity = IdentityQuantumOperator
+        val identity = identity()
 
         assertEquals(2, identity.rows)
         assertEquals(2, identity.columns)

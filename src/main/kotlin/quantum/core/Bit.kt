@@ -1,4 +1,4 @@
-package quantum.blocks
+package quantum.core
 
 enum class Bit {
     Zero,

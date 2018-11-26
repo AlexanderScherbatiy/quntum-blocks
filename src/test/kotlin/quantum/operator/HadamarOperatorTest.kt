@@ -1,8 +1,8 @@
 package quantum.operator
 
 import org.junit.Test
-import quantum.blocks.Complex.Companion.complex
-import quantum.blocks.hadamar
+import quantum.core.Complex.Companion.complex
+import quantum.gate.hadamar
 import quantum.junit.assertComplexEquals
 import kotlin.math.sqrt
 import kotlin.test.assertEquals

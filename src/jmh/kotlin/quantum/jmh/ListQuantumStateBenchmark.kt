@@ -1,7 +1,7 @@
 package quantum.jmh
 
 import org.openjdk.jmh.annotations.*
-import quantum.blocks.Complex
+import quantum.core.Complex
 import java.util.concurrent.TimeUnit
 import org.openjdk.jmh.annotations.Param
 

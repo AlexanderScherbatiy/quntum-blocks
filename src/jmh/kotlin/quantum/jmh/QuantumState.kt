@@ -1,6 +1,6 @@
 package quantum.jmh
 
-import quantum.blocks.Complex
+import quantum.core.Complex
 
 interface QuantumState {
     val size: Int

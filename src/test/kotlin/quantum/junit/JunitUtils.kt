@@ -1,7 +1,7 @@
 package quantum.junit
 
 import org.junit.Assert
-import quantum.blocks.Complex
+import quantum.core.Complex
 
 private const val Delta = 1e-12
 

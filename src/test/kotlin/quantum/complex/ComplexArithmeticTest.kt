@@ -1,12 +1,12 @@
 package quantum.complex
 
 import org.junit.Test
-import quantum.blocks.plus
-import quantum.blocks.times
-import quantum.blocks.minus
-import quantum.blocks.toComplex
-import quantum.blocks.Complex.Companion.I
-import quantum.blocks.Complex.Companion.complex
+import quantum.core.plus
+import quantum.core.times
+import quantum.core.minus
+import quantum.core.toComplex
+import quantum.core.Complex.Companion.I
+import quantum.core.Complex.Companion.complex
 import kotlin.test.assertEquals
 
 class ComplexArithmeticTest {

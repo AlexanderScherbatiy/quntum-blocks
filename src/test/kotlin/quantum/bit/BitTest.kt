@@ -1,7 +1,7 @@
 package quantum.bit
 
 import org.junit.Test
-import quantum.blocks.Bit
+import quantum.core.Bit
 import kotlin.test.assertEquals
 
 class BitTest {

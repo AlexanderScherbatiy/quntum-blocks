@@ -1,14 +1,14 @@
 package quantum.builder
 
-import quantum.blocks.Complex
-import quantum.blocks.QuantumOperator
-import quantum.blocks.QuantumState
-import quantum.blocks.Qubit
+import quantum.core.Complex
+import quantum.core.QuantumGate
+import quantum.core.QuantumState
+import quantum.core.Qubit
 
 class QuantumAlgorithm {
 
     var inputs: Array<out Qubit>? = null
-    var gates: Array<out QuantumOperator>? = null
+    var gates: Array<out QuantumGate>? = null
     var measurementBasis: Array<out QuantumState>? = null
 
 
@@ -18,7 +18,7 @@ class QuantumAlgorithm {
     }
 
     inner class Gates {
-        fun gates(vararg gates: QuantumOperator): Measurement {
+        fun gates(vararg gates: QuantumGate): Measurement {
             this@QuantumAlgorithm.gates = gates
             return Measurement()
         }

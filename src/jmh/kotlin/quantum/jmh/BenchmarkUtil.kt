@@ -1,6 +1,6 @@
 package quantum.jmh
 
-import quantum.blocks.Complex.Companion.complex
+import quantum.core.Complex.Companion.complex
 import kotlin.random.Random
 
 object BenchmarkUtil {
