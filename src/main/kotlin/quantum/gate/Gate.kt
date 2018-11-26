@@ -3,8 +3,21 @@ package quantum.gate
 import quantum.core.*
 
 
+fun identity(size: Int) = object : QuantumGate {
+
+    override val rows = size
+    override val columns = size
+
+
+    override fun get(row: Int, column: Int): Complex {
+        checkDimensions(row, column)
+        return if (row == column) Complex.One else Complex.Zero
+    }
+}
+
 fun identity() = IdentityQuantumGate
 fun hadamar() = HadamarQuantumGate
+fun cnot() = CNotGate
 
 
 object IdentityQuantumGate : QuantumGate {
@@ -31,6 +44,21 @@ object HadamarQuantumGate : QuantumGate {
         row == 0 && column == 1 -> InverseSqrt2
         row == 1 && column == 0 -> InverseSqrt2
         row == 1 && column == 1 -> -InverseSqrt2
+        else -> throwDimensionException(row, column)
+    }
+}
+
+object CNotGate : QuantumGate {
+
+    override val rows = 4
+    override val columns = 4
+
+    override fun get(row: Int, column: Int) = when {
+        row == 0 && column == 0 -> Complex.One
+        row == 1 && column == 1 -> Complex.One
+        row == 2 && column == 3 -> Complex.One
+        row == 3 && column == 2 -> Complex.One
+        row < rows && column < columns -> Complex.Zero
         else -> throwDimensionException(row, column)
     }
 }
@@ -72,6 +100,6 @@ fun controlled(size: Int, f: (List<Bit>) -> Bit): QuantumGate {
             }
         }
 
-        override fun toString() = contentToString(this)
+        override fun toString() = contentToString()
     }
 }

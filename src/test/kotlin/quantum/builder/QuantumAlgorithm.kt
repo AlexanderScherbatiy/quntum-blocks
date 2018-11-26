@@ -1,14 +1,12 @@
 package quantum.builder
 
-import quantum.core.Complex
-import quantum.core.QuantumGate
-import quantum.core.QuantumState
-import quantum.core.Qubit
+import quantum.core.*
+import quantum.gate.identity
 
 class QuantumAlgorithm {
 
     var inputs: Array<out Qubit>? = null
-    var gates: Array<out QuantumGate>? = null
+    val layers: MutableList<Array<out QuantumGate>> = mutableListOf()
     var measurementBasis: Array<out QuantumState>? = null
 
 
@@ -19,7 +17,22 @@ class QuantumAlgorithm {
 
     inner class Gates {
         fun gates(vararg gates: QuantumGate): Measurement {
-            this@QuantumAlgorithm.gates = gates
+            this@QuantumAlgorithm.layers += gates
+            return Measurement()
+        }
+
+        fun gateLayers(): GateLayer {
+            return GateLayer()
+        }
+    }
+
+    inner class GateLayer {
+        fun layer(vararg gates: QuantumGate): GateLayer {
+            this@QuantumAlgorithm.layers += gates
+            return this
+        }
+
+        fun end(): Measurement {
             return Measurement()
         }
     }
@@ -33,12 +46,15 @@ class QuantumAlgorithm {
 
     inner class Result {
         fun result(): List<Complex> {
-            val inputState = inputs!!
-                    .reduce<QuantumState, QuantumState> { q1, q2 -> q1.tensorProduct(q2) }
-            val gate = gates!!
-                    .reduce { gate1, gate2 -> gate1 tensorProduct gate2 }
-            val outputState = gate * inputState
-            return measurementBasis!!.map { it * outputState }
+
+            var state = inputs!!
+                    .reduce<QuantumState, QuantumState> { q1, q2 -> q1 tensorProduct q2 }
+
+            layers.forEach {
+                state = tensorProduct(*it) * state
+            }
+
+            return measurementBasis!!.map { it * state }
         }
     }
 }

@@ -21,6 +21,19 @@ interface QuantumGate {
         return quantumState(*coefficients)
     }
 
+    operator fun times(other: QuantumGate): QuantumGate {
+
+        val coefficients = Array(this.rows) { i ->
+            Array(other.columns) { j ->
+                (0 until this.columns)
+                        .map { k -> this[i, k] * other[k, j] }
+                        .reduce { c1, c2 -> c1 + c2 }
+            }
+        }
+
+        return ArrayQuantumGate(coefficients)
+    }
+
     infix fun tensorProduct(other: QuantumGate): QuantumGate {
 
         val coefficients = Array(rows * other.rows) {
@@ -47,18 +60,31 @@ interface QuantumGate {
     }
 }
 
-fun contentToString(op: QuantumGate) = buildString {
+fun tensorProduct(vararg gates: QuantumGate): QuantumGate = gates.reduce { gate1, gate2 ->
+    gate1 tensorProduct gate2
+}
+
+
+fun QuantumGate.contentToString() = buildString {
     append("QuantumGate{")
-    for (i in 0 until op.rows) {
+    for (i in 0 until rows) {
         append("{")
-        for (j in 0 until op.columns) {
-            append(op[i, j])
+        for (j in 0 until columns) {
+            append(get(i, j))
             append(" ")
         }
         append("}")
     }
     append("}")
     toString()
+}
+
+
+fun QuantumGate.checkDimensions(row: Int, column: Int) {
+    if (row < rows && column < columns) {
+        return
+    }
+    throwDimensionException(row, column)
 }
 
 
@@ -72,4 +98,6 @@ private data class ArrayQuantumGate(val elems: Array<Array<Complex>>) : QuantumG
     override val columns = if (elems.isEmpty()) 0 else elems[0].size
 
     override fun get(row: Int, column: Int) = elems[row][column]
+
+    override fun toString() = contentToString()
 }

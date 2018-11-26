@@ -14,7 +14,7 @@ interface QuantumState {
         return scalar
     }
 
-    fun tensorProduct(other: QuantumState): QuantumState {
+    infix fun tensorProduct(other: QuantumState): QuantumState {
 
         val coefficients = Array(size * other.size) { Complex.Zero }
         var base = 0
