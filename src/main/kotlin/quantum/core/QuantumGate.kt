@@ -31,7 +31,7 @@ interface QuantumGate {
             }
         }
 
-        return ArrayQuantumGate(coefficients)
+        return MatrixQuantumGate(coefficients)
     }
 
     infix fun tensorProduct(other: QuantumGate): QuantumGate {
@@ -56,7 +56,7 @@ interface QuantumGate {
             baseColumn += other.columns
         }
 
-        return ArrayQuantumGate(coefficients)
+        return MatrixQuantumGate(coefficients)
     }
 }
 
@@ -87,12 +87,11 @@ fun QuantumGate.checkDimensions(row: Int, column: Int) {
     throwDimensionException(row, column)
 }
 
-
 fun QuantumGate.throwDimensionException(row: Int, column: Int): Nothing =
         throw IndexOutOfBoundsException(
                 "indices ($row, $column), dimensions: ($rows, $columns)")
 
-private data class ArrayQuantumGate(val elems: Array<Array<Complex>>) : QuantumGate {
+open class MatrixQuantumGate(val elems: Array<Array<Complex>>) : QuantumGate {
 
     override val rows = elems.size
     override val columns = if (elems.isEmpty()) 0 else elems[0].size

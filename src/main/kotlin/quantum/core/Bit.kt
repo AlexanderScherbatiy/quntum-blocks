@@ -23,6 +23,9 @@ enum class Bit {
     }
 }
 
+fun Boolean.toBit() = if (this) Bit.One else Bit.Zero
+
 fun Int.toBits() = Integer
-        .toBinaryString(this)
-        .map { if (it == '0') Bit.Zero else Bit.One }
+        .toBinaryString(this).toBits()
+
+fun String.toBits() = map { if (it == '0') Bit.Zero else Bit.One }

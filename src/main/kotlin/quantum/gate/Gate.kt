@@ -18,6 +18,7 @@ fun identity(size: Int) = object : QuantumGate {
 fun identity() = IdentityQuantumGate
 fun hadamar() = HadamarQuantumGate
 fun cnot() = CNotGate
+fun projection(state: QuantumState) = ProjectionGate(state)
 
 
 object IdentityQuantumGate : QuantumGate {
@@ -62,6 +63,13 @@ object CNotGate : QuantumGate {
         else -> throwDimensionException(row, column)
     }
 }
+
+data class ProjectionGate(val projection: QuantumState) : MatrixQuantumGate(
+        Array(projection.size) { i ->
+            Array(projection.size) { j ->
+                projection[i] scalar projection[j]
+            }
+        })
 
 fun controlled(f: (Bit) -> Bit): QuantumGate = controlled(2) { f(it.first()) }
 

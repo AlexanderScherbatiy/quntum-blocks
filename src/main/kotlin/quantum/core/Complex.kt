@@ -40,6 +40,8 @@ data class Complex private constructor(val real: Double, val imaginary: Double =
     fun sqr(): Double = real * real + imaginary * imaginary
     fun norm(): Double = kotlin.math.sqrt(sqr())
 
+    infix fun scalar(other: Complex) = this.conjugate() * other
+
     override fun toString() = buildString {
 
         fun imageToString() = if (imaginary == 1.0) "i" else "${imaginary}i"
