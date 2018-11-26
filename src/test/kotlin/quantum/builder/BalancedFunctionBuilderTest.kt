@@ -45,12 +45,10 @@ class BalancedFunctionBuilderTest {
                 .gateLayers()
                 .layer(hadamar() tensorProduct hadamar())
                 .layer(controlled(f))
+                .layer(hadamar() tensorProduct hadamar())
                 .end()
-                .measure(Qubit.Plus.tensorProduct(Qubit.Plus),
-                        Qubit.Plus.tensorProduct(Qubit.Minus),
-                        Qubit.Minus.tensorProduct(Qubit.Plus),
-                        Qubit.Minus.tensorProduct(Qubit.Minus))
+                .measure(Qubit.One.tensorProduct(Qubit.One))
                 .result()
-        return amplitudes[3].norm() > 0.5
+        return amplitudes[0].norm() > 0.5
     }
 }
