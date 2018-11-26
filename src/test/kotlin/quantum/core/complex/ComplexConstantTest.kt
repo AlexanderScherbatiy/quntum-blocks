@@ -1,4 +1,4 @@
-package quantum.complex
+package quantum.core.complex
 
 import org.junit.Test
 import quantum.core.Complex.Companion.I

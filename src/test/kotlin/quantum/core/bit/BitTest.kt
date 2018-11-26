@@ -1,4 +1,4 @@
-package quantum.bit
+package quantum.core.bit
 
 import org.junit.Test
 import quantum.core.Bit

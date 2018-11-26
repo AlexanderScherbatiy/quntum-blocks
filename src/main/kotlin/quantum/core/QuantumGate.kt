@@ -21,7 +21,7 @@ interface QuantumGate {
         return quantumState(*coefficients)
     }
 
-    fun tensorProduct(other: QuantumGate): QuantumGate {
+    infix fun tensorProduct(other: QuantumGate): QuantumGate {
 
         val coefficients = Array(rows * other.rows) {
             Array(columns * other.columns) { Zero }

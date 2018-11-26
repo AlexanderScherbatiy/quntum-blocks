@@ -1,4 +1,4 @@
-package quantum.state
+package quantum.core.state
 
 import org.junit.Test
 import quantum.core.Complex.Companion.One
@@ -44,8 +44,8 @@ class QubitTest {
         val qubit3 = Qubit.from(One, One)
         assertEquals(c, qubit3.zero)
         assertEquals(c, qubit3.one)
-        assertEquals(c, qubit3.get(0))
-        assertEquals(c, qubit3.get(1))
+        assertEquals(c, qubit3[0])
+        assertEquals(c, qubit3[1])
     }
 }
 

@@ -36,7 +36,7 @@ class QuantumAlgorithm {
             val inputState = inputs!!
                     .reduce<QuantumState, QuantumState> { q1, q2 -> q1.tensorProduct(q2) }
             val gate = gates!!
-                    .reduce { gate1, gate2 -> gate1.tensorProduct(gate2) }
+                    .reduce { gate1, gate2 -> gate1 tensorProduct gate2 }
             val outputState = gate * inputState
             return measurementBasis!!.map { it * outputState }
         }

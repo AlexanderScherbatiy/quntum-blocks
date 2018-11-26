@@ -1,4 +1,4 @@
-package quantum.state
+package quantum.core.state
 
 import org.junit.Test
 import quantum.core.Complex

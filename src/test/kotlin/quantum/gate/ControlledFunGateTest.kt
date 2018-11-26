@@ -1,14 +1,13 @@
-package quantum.operator
+package quantum.gate
 
 import org.junit.Test
 import quantum.core.Bit
 import quantum.core.Complex.Companion.One
 import quantum.core.Complex.Companion.Zero
-import quantum.gate.controlled
 import quantum.junit.assertComplexEquals
 import kotlin.test.assertEquals
 
-class ControlledFunOperatorTest {
+class ControlledFunGateTest {
 
     /**
      *  controlled function

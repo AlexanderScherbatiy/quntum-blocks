@@ -7,7 +7,10 @@ import quantum.gate.controlled
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class DeutschJozsaAlgorithmTest {
+/**
+ * Deutsch-Jozsa Algorithm test
+ */
+class BalancedFunctionAlgorithmTest {
 
     /**
      * Unbalanced:
@@ -32,10 +35,10 @@ class DeutschJozsaAlgorithmTest {
     @Test
     fun testFunctionBalanced() {
 
-        assertFalse(isBalanced { _ -> Bit.Zero })
-        assertFalse(isBalanced { _ -> Bit.One })
-        assertTrue(isBalanced { bit -> bit })
-        assertTrue(isBalanced { bit -> bit.inverse() })
+        assertFalse(isBalanced { Bit.Zero })
+        assertTrue(isBalanced { it })
+        assertTrue(isBalanced { !it })
+        assertFalse(isBalanced { Bit.One })
     }
 
     private fun isBalanced(f: (bit: Bit) -> Bit): Boolean {

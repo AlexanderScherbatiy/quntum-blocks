@@ -1,11 +1,10 @@
-package quantum.operator
+package quantum.gate
 
 import org.junit.Test
 import quantum.core.toComplex
-import quantum.gate.identity
 import kotlin.test.assertEquals
 
-class IdentityOperatorTest {
+class IdentityGateTest {
 
     @Test
     fun testElements() {
@@ -13,19 +12,19 @@ class IdentityOperatorTest {
 
         assertEquals(2, identity.rows)
         assertEquals(2, identity.columns)
-        assertEquals(1.0.toComplex(), identity.get(0, 0))
-        assertEquals(0.0.toComplex(), identity.get(0, 1))
-        assertEquals(0.0.toComplex(), identity.get(1, 0))
-        assertEquals(1.0.toComplex(), identity.get(1, 1))
+        assertEquals(1.0.toComplex(), identity[0, 0])
+        assertEquals(0.0.toComplex(), identity[0, 1])
+        assertEquals(0.0.toComplex(), identity[1, 0])
+        assertEquals(1.0.toComplex(), identity[1, 1])
     }
 
     @Test(expected = IndexOutOfBoundsException::class)
     fun testRowOutOfBounds() {
-        identity().get(2, 0)
+        identity()[2, 0]
     }
 
     @Test(expected = IndexOutOfBoundsException::class)
     fun testColumnOutOfBounds() {
-        identity().get(0, 2)
+        identity()[0, 2]
     }
 }

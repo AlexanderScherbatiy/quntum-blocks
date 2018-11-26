@@ -1,4 +1,4 @@
-package quantum.state
+package quantum.core.state
 
 import org.junit.Test
 import quantum.core.Complex.Companion.I
@@ -17,15 +17,15 @@ class QuantumStateTest {
 
         val quantumState1 = quantumState(One)
         assertEquals(1, quantumState1.size)
-        assertEquals(One, quantumState1.get(0))
+        assertEquals(One, quantumState1[0])
 
         val quantumState2 = quantumState(complex(3.0))
         assertEquals(1, quantumState2.size)
-        assertEquals(One, quantumState2.get(0))
+        assertEquals(One, quantumState2[0])
 
         val quantumState3 = quantumState(complex(0.0, 5.0))
         assertEquals(1, quantumState3.size)
-        assertEquals(I, quantumState3.get(0))
+        assertEquals(I, quantumState3[0])
     }
 
     @Test

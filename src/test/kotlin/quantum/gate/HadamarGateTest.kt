@@ -1,16 +1,15 @@
-package quantum.operator
+package quantum.gate
 
 import org.junit.Test
 import quantum.core.Complex.Companion.complex
-import quantum.gate.hadamar
 import quantum.junit.assertComplexEquals
 import kotlin.math.sqrt
 import kotlin.test.assertEquals
 
 
-class HadamarOperatorTest {
+class HadamarGateTest {
 
-    val inverseSqrt2 = complex( 1.0 / sqrt(2.0), 0.0)
+    private val inverseSqrt2 = complex(1.0 / sqrt(2.0), 0.0)
 
     @Test
     fun testElements() {
@@ -19,19 +18,19 @@ class HadamarOperatorTest {
 
         assertEquals(2, hadamar.rows)
         assertEquals(2, hadamar.columns)
-        assertComplexEquals(inverseSqrt2, hadamar.get(0, 0))
-        assertComplexEquals(inverseSqrt2, hadamar.get(0, 1))
-        assertComplexEquals(inverseSqrt2, hadamar.get(1, 0))
-        assertComplexEquals(-inverseSqrt2, hadamar.get(1, 1))
+        assertComplexEquals(inverseSqrt2, hadamar[0, 0])
+        assertComplexEquals(inverseSqrt2, hadamar[0, 1])
+        assertComplexEquals(inverseSqrt2, hadamar[1, 0])
+        assertComplexEquals(-inverseSqrt2, hadamar[1, 1])
     }
 
     @Test(expected = IndexOutOfBoundsException::class)
     fun testRowOutOfBounds() {
-        hadamar().get(2, 0)
+        hadamar()[2, 0]
     }
 
     @Test(expected = IndexOutOfBoundsException::class)
     fun testColumnOutOfBounds() {
-        hadamar().get(0, 2)
+        hadamar()[0, 2]
     }
 }
