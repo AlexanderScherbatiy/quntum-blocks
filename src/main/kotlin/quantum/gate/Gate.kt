@@ -18,8 +18,8 @@ fun identity(size: Int) = object : QuantumGate {
 fun identity() = IdentityQuantumGate
 fun hadamar() = HadamarQuantumGate
 fun cnot() = CNotGate
-fun projection(state: QuantumState) = ProjectionGate(state)
-
+fun projection(state: QuantumState) = projection(state, state)
+fun projection(state1: QuantumState, state2: QuantumState) = ProjectionGate(state1, state2)
 
 object IdentityQuantumGate : QuantumGate {
 
@@ -64,10 +64,10 @@ object CNotGate : QuantumGate {
     }
 }
 
-data class ProjectionGate(val projection: QuantumState) : MatrixQuantumGate(
-        Array(projection.size) { i ->
-            Array(projection.size) { j ->
-                projection[i] scalar projection[j]
+data class ProjectionGate(val state1: QuantumState, val state2: QuantumState) : MatrixQuantumGate(
+        Array(state1.size) { i ->
+            Array(state2.size) { j ->
+                state1[i] scalar state2[j]
             }
         })
 
