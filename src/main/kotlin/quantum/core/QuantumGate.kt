@@ -60,10 +60,11 @@ interface QuantumGate {
     }
 }
 
+fun tensorProduct(n: Int, gate: QuantumGate): QuantumGate = tensorProduct(*Array(n) { gate })
+
 fun tensorProduct(vararg gates: QuantumGate): QuantumGate = gates.reduce { gate1, gate2 ->
     gate1 tensorProduct gate2
 }
-
 
 fun QuantumGate.contentToString() = buildString {
     append("QuantumGate{")

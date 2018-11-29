@@ -20,6 +20,7 @@ fun hadamar() = HadamarQuantumGate
 fun cnot() = CNotGate
 fun projection(state: QuantumState) = projection(state, state)
 fun projection(state1: QuantumState, state2: QuantumState) = ProjectionGate(state1, state2)
+fun diffusion(state: QuantumState) = GroverDiffusionGate(state)
 
 object IdentityQuantumGate : QuantumGate {
 
@@ -68,6 +69,14 @@ data class ProjectionGate(val state1: QuantumState, val state2: QuantumState) : 
         Array(state1.size) { i ->
             Array(state2.size) { j ->
                 state1[i] scalar state2[j]
+            }
+        })
+
+data class GroverDiffusionGate(val state: QuantumState) : MatrixQuantumGate(
+        Array(state.size) { i ->
+            Array(state.size) { j ->
+                fun diracDeltaFun() = if (i == j) 1.0 else 0.0
+                2.0 * (state[i] scalar state[j]) - diracDeltaFun()
             }
         })
 

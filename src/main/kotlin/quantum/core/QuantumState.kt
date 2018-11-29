@@ -1,6 +1,7 @@
 package quantum.core
 
 import quantum.core.Complex.Companion.One
+import kotlin.random.Random
 
 interface QuantumState {
     val size: Int
@@ -31,6 +32,33 @@ interface QuantumState {
 }
 
 fun quantumState(vararg coefficients: Complex): QuantumState = QuantumStateImp(normalize(*coefficients))
+
+
+fun tensorProduct(n: Int, state: QuantumState): QuantumState =
+        Array(n) { state }.reduce { s1, s2 -> s1 tensorProduct s2 }
+
+
+/**
+ * Return index of the basis which has been measured
+ */
+fun QuantumState.measureIndex(): Int {
+
+    val array = Array(size) { this[it].sqr() }
+
+    for (i in (1 until size)) {
+        array[i] += array[i - 1]
+    }
+
+    val probability = Random.nextDouble(1.0)
+
+    for (i in 0 until size) {
+        if (probability < array[i]) {
+            return i
+        }
+    }
+
+    return size - 1
+}
 
 fun tensorProduct(states: Array<out QuantumState>): QuantumState {
 
