@@ -41,7 +41,7 @@ fun tensorProduct(n: Int, state: QuantumState): QuantumState =
 /**
  * Return index of the basis which has been measured
  */
-fun QuantumState.measureIndex(): Int {
+fun QuantumState.measureBasisIndex(): Int {
 
     val array = Array(size) { this[it].sqr() }
 
