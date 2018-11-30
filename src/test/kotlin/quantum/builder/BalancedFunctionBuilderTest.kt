@@ -3,9 +3,9 @@ package quantum.builder
 import org.junit.Test
 import quantum.core.Bit
 import quantum.core.Qubit
+import quantum.core.toBits
 import quantum.gate.controlled
 import quantum.gate.hadamar
-import quantum.gate.identity
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -28,27 +28,23 @@ class BalancedFunctionBuilderTest {
     }
 
     private fun isBalanced1(f: (Bit) -> Bit): Boolean {
-        val amplitudes = QuantumAlgorithm()
+        val outputState = QuantumAlgorithm()
                 .inputs(Qubit.Plus, Qubit.Minus)
-                .gates(controlled(f))
-                .measure(Qubit.Plus.tensorProduct(Qubit.Plus),
-                        Qubit.Plus.tensorProduct(Qubit.Minus),
-                        Qubit.Minus.tensorProduct(Qubit.Plus),
-                        Qubit.Minus.tensorProduct(Qubit.Minus))
-                .result()
-        return amplitudes[3].norm() > 0.5
+                .gatesLayer(controlled(f))
+                .run()
+                .outputState
+
+        val basis = Qubit.Minus tensorProduct Qubit.Minus
+        return (outputState * basis).norm() > 0.5
     }
 
     private fun isBalanced2(f: (Bit) -> Bit): Boolean {
-        val amplitudes = QuantumAlgorithm()
+        return QuantumAlgorithm()
                 .inputs(Qubit.Zero, Qubit.One)
-                .gateLayers()
-                .layer(hadamar() tensorProduct hadamar())
-                .layer(controlled(f))
-                .layer(hadamar() tensorProduct hadamar())
-                .end()
-                .measure(Qubit.One.tensorProduct(Qubit.One))
-                .result()
-        return amplitudes[0].norm() > 0.5
+                .gatesLayer(hadamar() tensorProduct hadamar())
+                .gatesLayer(controlled(f))
+                .gatesLayer(hadamar() tensorProduct hadamar())
+                .run()
+                .measureStandardBasisBits() == "11".toBits()
     }
 }
