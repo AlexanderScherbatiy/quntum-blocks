@@ -4,7 +4,7 @@ import quantum.core.*
 
 class QuantumAlgorithm {
 
-    var inputs: Array<out Qubit>? = null
+    lateinit var inputs: Array<out Qubit>
     val layers: MutableList<Array<out QuantumGate>> = mutableListOf()
 
     fun inputs(vararg qubits: Qubit): GateLayer {
@@ -28,7 +28,7 @@ class QuantumAlgorithm {
         val outputState: QuantumState
 
         init {
-            var state = inputs!!.reduce { q1: QuantumState, q2: QuantumState ->
+            val state = inputs.reduce { q1: QuantumState, q2: QuantumState ->
                 q1 tensorProduct q2
             }
             outputState = layers.fold(state) { s, gates -> tensorProduct(*gates) * s }
