@@ -27,12 +27,12 @@ class ComplexMethodTest {
 
     @Test
     fun testToString() {
-        assertEquals("1.0", One.toString())
+        assertEquals("1.00", One.toString())
         assertEquals("i", I.toString())
-        assertEquals("2.7", complex(2.7).toString())
-        assertEquals("3.4i", complex(0.0, 3.4).toString())
-        assertEquals("1.2+3.4i", complex(1.2, 3.4).toString())
-        assertEquals("2.3-5.6i", complex(2.3, -5.6).toString())
+        assertEquals("2.70", complex(2.7).toString())
+        assertEquals("3.40i", complex(0.0, 3.4).toString())
+        assertEquals("1.20+3.40i", complex(1.2, 3.4).toString())
+        assertEquals("2.30-5.60i", complex(2.3, -5.6).toString())
     }
 
     @Test

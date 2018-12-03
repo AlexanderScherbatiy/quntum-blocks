@@ -1,8 +1,9 @@
 package quantum.core
 
 import quantum.core.Complex.Companion.complex
+import java.util.*
 
-data class Complex private constructor(val real: Double, val imaginary: Double = 0.0) {
+data class Complex private constructor(val real: Double, val imaginary: Double = 0.00) {
 
     companion object {
         val Zero = Complex(0.0)
@@ -44,7 +45,8 @@ data class Complex private constructor(val real: Double, val imaginary: Double =
 
     override fun toString() = buildString {
 
-        fun imageToString() = if (imaginary == 1.0) "i" else "${imaginary}i"
+        fun format(d: Double) = String.format(Locale.US, "%.2f", d);
+        fun imageToString() = if (imaginary == 1.0) "i" else "${format(imaginary)}i"
 
         if (real == 0.0) {
             if (imaginary == 0.0) {
@@ -53,7 +55,7 @@ data class Complex private constructor(val real: Double, val imaginary: Double =
                 append(imageToString())
             }
         } else {
-            append(real)
+            append(format(real))
             if (imaginary != 0.0) {
                 if (imaginary > 0.0) {
                     append('+')
