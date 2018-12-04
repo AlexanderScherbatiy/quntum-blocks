@@ -1,9 +1,7 @@
 package quantum.builder
 
 import quantum.core.*
-import java.util.logging.Level
-import java.util.logging.Logger
-import java.util.logging.ConsoleHandler
+import java.util.logging.*
 
 
 class QuantumAlgorithm {
@@ -31,18 +29,26 @@ class QuantumAlgorithm {
     private var layerCount = 0
 
     fun logLevel(level: String): QuantumAlgorithm {
-
         val logLevel = Level.parse(level.toUpperCase())
         val consoleHandler = ConsoleHandler()
         consoleHandler.level = logLevel
+        consoleHandler.formatter = LogFormatter
         LOG.addHandler(consoleHandler)
         LOG.level = logLevel
         return this
     }
 
+    private fun debug(msg: () -> String) {
+        LOG.fine(msg())
+    }
+
+    private fun trace(msg: () -> String) {
+        LOG.finer(msg())
+    }
+
     fun input(vararg qubits: Qubit): GateLayer {
         this.inputs = qubits
-        LOG.fine("input: ${qubits.contentToString()}")
+        debug { "input: ${qubits.contentToString()}" }
         return GateLayer()
     }
 
@@ -52,9 +58,18 @@ class QuantumAlgorithm {
 
         fun layer(vararg gates: QuantumGate): GateLayer {
             this.gates = gates
-            LOG.fine { "layer[$num]: ${gates.contentToString()}" }
+            debug { "layer[$num]: ${gates.contentToString()}" }
             this@QuantumAlgorithm.layers += this
             return GateLayer()
+        }
+
+
+        fun calculate(state: QuantumState): QuantumState {
+            val gate = tensorProduct(*gates)
+            trace { "layer[$num] gate : $gate" }
+            val result = gate * state
+            trace { "layer[$num] state: $state -> $result" }
+            return result
         }
 
         fun run(): Result {
@@ -71,22 +86,29 @@ class QuantumAlgorithm {
             val state = inputs.reduce { q1: QuantumState, q2: QuantumState ->
                 q1 tensorProduct q2
             }
-            LOG.finer { "run input state : $state" }
-            outputState = layers.fold(state) { s, layer ->
-                val gate = tensorProduct(*layer.gates)
-                LOG.finer { "run gate : $gate" }
-                LOG.finer { "run state: $s" }
-                val result = gate * s
-                LOG.finer { "run result: $result" }
-                result
-            }
-            LOG.fine { "output state: $outputState" }
+            trace { "input state : $state" }
+            outputState = layers.fold(state) { s, layer -> layer.calculate(s) }
+            debug { "output state: $outputState" }
         }
 
         fun measureStandardBasisBits(): List<Bit> {
             val bits = outputState.measureBasisIndex().toBits()
-            LOG.finer { "run measure standard basis bits: $bits" }
+            trace { "measure standard basis bits: $bits" }
             return bits
         }
+    }
+
+    object LogFormatter : Formatter() {
+
+        private fun levelToString(record: LogRecord) = when (record.level) {
+            Level.INFO -> "info"
+            Level.FINE -> "debug"
+            Level.FINER -> "trace"
+            else -> "unknown"
+        }
+
+        override fun format(record: LogRecord) =
+                "[quantum algorithm] ${levelToString(record)} ${formatMessage(record)}\n"
+
     }
 }
