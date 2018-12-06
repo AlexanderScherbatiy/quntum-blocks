@@ -20,12 +20,12 @@ class QuantumAlgorithm {
     (GateLayer, layer(gates))-> GateLayer
     (GateLayer, repeat(n))-> RepeatGateLayer
     (RepeatGateLayer, layer(gates))-> RepeatGateLayer
-    (RepeatGateLayer, end())-> GateLayer
+    (RepeatGateLayer, repeatEnd())-> GateLayer
     (GateLayer, run)-> Result
      */
 
     lateinit var inputs: Array<out Qubit>
-    val layers = mutableListOf<GateLayer>()
+    val layers = mutableListOf<AbstractGateLayerItem>()
     private var layerCount = 0
 
     fun logLevel(level: String): QuantumAlgorithm {
@@ -49,31 +49,79 @@ class QuantumAlgorithm {
     fun input(vararg qubits: Qubit): GateLayer {
         this.inputs = qubits
         debug { "input: ${qubits.contentToString()}" }
-        return GateLayer()
+        return GateLayer(layers)
     }
 
-    inner class GateLayer {
-        lateinit var gates: Array<out QuantumGate>
-        private val num = ++layerCount
+    abstract inner class AbstractGateLayerItem {
 
-        fun layer(vararg gates: QuantumGate): GateLayer {
-            this.gates = gates
+        abstract fun calculate(state: QuantumState): QuantumState
+    }
+
+    inner class GateLayerItem(
+            val num: Int, val gates: Array<out QuantumGate>
+    ) : AbstractGateLayerItem() {
+
+        init {
             debug { "layer[$num]: ${gates.contentToString()}" }
-            this@QuantumAlgorithm.layers += this
-            return GateLayer()
         }
 
-
-        fun calculate(state: QuantumState): QuantumState {
+        override fun calculate(state: QuantumState): QuantumState {
             val gate = tensorProduct(*gates)
             trace { "layer[$num] gate : $gate" }
             val result = gate * state
             trace { "layer[$num] state: $state -> $result" }
             return result
         }
+    }
+
+    inner class RepeatGateLayerItem(val times: Int) : AbstractGateLayerItem() {
+
+        val layers = mutableListOf<AbstractGateLayerItem>()
+
+        override fun calculate(state: QuantumState): QuantumState {
+            var result = state
+            for (i in 1..times) {
+                layers.forEach {
+                    trace { "repeat $i of $times" }
+                    result = it.calculate(result)
+                }
+            }
+            return result
+        }
+    }
+
+
+    inner class GateLayer(val layers: MutableList<AbstractGateLayerItem>) {
+
+        fun layer(vararg gates: QuantumGate): GateLayer {
+            layers += GateLayerItem(++layerCount, gates)
+            return GateLayer(layers)
+        }
+
+        fun repeat(times: Int): RepeatGateLayer {
+            val repeatLayerItem = RepeatGateLayerItem(times)
+            layers += repeatLayerItem
+
+            debug { "repeat layer: $times" }
+            return RepeatGateLayer(repeatLayerItem.layers, layers)
+        }
 
         fun run(): Result {
             return Result()
+        }
+    }
+
+    inner class RepeatGateLayer(val layers: MutableList<AbstractGateLayerItem>,
+                                val parentLayers: MutableList<AbstractGateLayerItem>) {
+
+        fun layer(vararg gates: QuantumGate): RepeatGateLayer {
+            layers += GateLayerItem(++layerCount, gates)
+            return RepeatGateLayer(layers, parentLayers)
+        }
+
+        fun repeatEnd(): GateLayer {
+            debug { "repeat end" }
+            return GateLayer(parentLayers)
         }
     }
 
@@ -109,6 +157,5 @@ class QuantumAlgorithm {
 
         override fun format(record: LogRecord) =
                 "[quantum algorithm] ${levelToString(record)} ${formatMessage(record)}\n"
-
     }
 }

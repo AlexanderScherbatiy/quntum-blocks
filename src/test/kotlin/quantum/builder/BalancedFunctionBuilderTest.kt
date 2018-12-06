@@ -65,7 +65,6 @@ class BalancedFunctionBuilderTest {
     // (   0   0  f1  !f1 )
     private fun isBalanced2(f: (Bit) -> Bit): Boolean {
         return QuantumAlgorithm()
-                .logLevel("info")
                 .input(Qubit.Zero, Qubit.One)
                 .layer(hadamar() tensorProduct hadamar())
                 .layer(controlled(f))

@@ -63,6 +63,8 @@ object CNotGate : QuantumGate {
         row < rows && column < columns -> Complex.Zero
         else -> throwDimensionException(row, column)
     }
+
+    override fun toString() = contentToString()
 }
 
 data class ProjectionGate(val state1: QuantumState, val state2: QuantumState) : MatrixQuantumGate(
