@@ -33,8 +33,7 @@ class ControlledFunGateTest {
 
         val cf00 = controlled { Bit.Zero }
 
-        assertEquals(4, cf00.rows)
-        assertEquals(4, cf00.columns)
+        assertEquals(4, cf00.size)
 
         assertComplexEquals(One, cf00[0, 0])
         assertComplexEquals(Zero, cf00[0, 1])
@@ -66,8 +65,7 @@ class ControlledFunGateTest {
 
         val cf01 = controlled { it }
 
-        assertEquals(4, cf01.rows)
-        assertEquals(4, cf01.columns)
+        assertEquals(4, cf01.size)
 
         assertComplexEquals(One, cf01[0, 0])
         assertComplexEquals(Zero, cf01[0, 1])

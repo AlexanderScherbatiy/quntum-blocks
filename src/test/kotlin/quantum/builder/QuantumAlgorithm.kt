@@ -75,10 +75,10 @@ class QuantumAlgorithm {
             return result
         }
 
-        fun checkGateSize(gate: QuantumGate, state: QuantumState) {
-            if (gate.rows != state.size || gate.columns != state.size) {
+        private fun checkGateSize(gate: QuantumGate, state: QuantumState) {
+            if (gate.size != state.size) {
                 throw IllegalArgumentException("layer[$num]" +
-                        " total gate size: ${gate.rows} does not not equal to" +
+                        " total gate size: ${gate.size} does not not equal to" +
                         " state size: ${state.size}")
             }
         }

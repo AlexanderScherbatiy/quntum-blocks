@@ -16,8 +16,8 @@ class HadamarGateTest {
 
         val hadamar = hadamar()
 
-        assertEquals(2, hadamar.rows)
-        assertEquals(2, hadamar.columns)
+        assertEquals(2, hadamar.size)
+
         assertComplexEquals(inverseSqrt2, hadamar[0, 0])
         assertComplexEquals(inverseSqrt2, hadamar[0, 1])
         assertComplexEquals(inverseSqrt2, hadamar[1, 0])

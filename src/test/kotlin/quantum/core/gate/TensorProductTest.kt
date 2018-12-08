@@ -22,8 +22,8 @@ class TensorProductTest {
 
         val result = identity() tensorProduct hadamar()
 
-        assertEquals(4, result.rows)
-        assertEquals(4, result.columns)
+        assertEquals(4, result.size)
+        assertEquals(4, result.size)
 
         assertComplexEquals(InverseSqrt2, result[0, 0])
         assertComplexEquals(InverseSqrt2, result[0, 1])
@@ -58,8 +58,8 @@ class TensorProductTest {
 
         val result = hadamar() tensorProduct identity()
 
-        assertEquals(4, result.rows)
-        assertEquals(4, result.columns)
+        assertEquals(4, result.size)
+        assertEquals(4, result.size)
 
         assertComplexEquals(InverseSqrt2, result[0, 0])
         assertComplexEquals(Zero, result[0, 1])
@@ -98,8 +98,8 @@ class TensorProductTest {
 
         val result = hadamar() tensorProduct hadamar()
 
-        assertEquals(4, result.rows)
-        assertEquals(4, result.columns)
+        assertEquals(4, result.size)
+        assertEquals(4, result.size)
 
         assertComplexEquals(OneHalf, result[0, 0])
         assertComplexEquals(OneHalf, result[0, 1])

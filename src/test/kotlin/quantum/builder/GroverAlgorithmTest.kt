@@ -24,9 +24,7 @@ class GroverAlgorithmTest {
         val groverDiffusion = hadamarN * diffusion(tensorProduct(n, Qubit.Zero)) * hadamarN
         val Us = groverDiffusion tensorProduct identity()
 
-
         val outputState = QuantumAlgorithm()
-//                .logLevel("finer")
                 .input(*Array(n) { Qubit.Zero }, Qubit.One)
                 .layer(hadamarN tensorProduct hadamar())
                 .repeat(times)

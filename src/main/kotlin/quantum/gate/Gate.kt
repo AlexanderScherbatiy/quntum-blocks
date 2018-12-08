@@ -5,9 +5,7 @@ import quantum.core.*
 
 fun identity(size: Int) = object : QuantumGate {
 
-    override val rows = size
-    override val columns = size
-
+    override val size = size
 
     override fun get(row: Int, column: Int): Complex {
         checkDimensions(row, column)
@@ -24,8 +22,7 @@ fun diffusion(state: QuantumState) = GroverDiffusionGate(state)
 
 object IdentityQuantumGate : QuantumGate {
 
-    override val rows = 2
-    override val columns = 2
+    override val size = 2
 
     override fun get(row: Int, column: Int) = when {
         row == 0 && column == 0 -> Complex.One
@@ -38,8 +35,7 @@ object IdentityQuantumGate : QuantumGate {
 
 object HadamarQuantumGate : QuantumGate {
 
-    override val rows = 2
-    override val columns = 2
+    override val size = 2
 
     override fun get(row: Int, column: Int) = when {
         row == 0 && column == 0 -> InverseSqrt2
@@ -52,15 +48,14 @@ object HadamarQuantumGate : QuantumGate {
 
 object CNotGate : QuantumGate {
 
-    override val rows = 4
-    override val columns = 4
+    override val size = 4
 
     override fun get(row: Int, column: Int) = when {
         row == 0 && column == 0 -> Complex.One
         row == 1 && column == 1 -> Complex.One
         row == 2 && column == 3 -> Complex.One
         row == 3 && column == 2 -> Complex.One
-        row < rows && column < columns -> Complex.Zero
+        row < this.size && column < this.size -> Complex.Zero
         else -> throwDimensionException(row, column)
     }
 
@@ -93,12 +88,11 @@ fun controlled(size: Int, f: (List<Bit>) -> Bit): QuantumGate {
             .toTypedArray()
 
     return object : QuantumGate {
-        override val rows get() = opSize
-        override val columns get() = opSize
+        override val size get() = opSize
 
         override fun get(row: Int, column: Int): Complex {
 
-            if (row >= rows || column >= columns)
+            if (row >= this.size || column >= this.size)
                 throwDimensionException(row, column)
 
             fun Bit.toComplex() = when (this) {

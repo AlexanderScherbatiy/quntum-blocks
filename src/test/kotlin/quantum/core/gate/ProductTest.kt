@@ -3,7 +3,6 @@ package quantum.core.gate
 import org.junit.Test
 import quantum.core.Complex.Companion.One
 import quantum.core.Complex.Companion.Zero
-import quantum.core.OneHalf
 import quantum.gate.hadamar
 import quantum.junit.assertComplexEquals
 import kotlin.test.assertEquals
@@ -23,8 +22,8 @@ class ProductTest {
     fun testHadamarHadamarProduct() {
         val result = hadamar() * hadamar()
 
-        assertEquals(2, result.rows)
-        assertEquals(2, result.columns)
+        assertEquals(2, result.size)
+        assertEquals(2, result.size)
 
         assertComplexEquals(One, result[0, 0])
         assertComplexEquals(Zero, result[0, 1])

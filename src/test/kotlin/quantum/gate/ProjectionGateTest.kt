@@ -23,8 +23,9 @@ class ProjectionGateTest {
     fun testProjectionGate1() {
         val state = quantumState(e, i)
         val projection = projection(state)
-        assertEquals(2, projection.rows)
-        assertEquals(2, projection.columns)
+
+        assertEquals(2, projection.size)
+
         assertComplexEquals(e / 2.0, projection[0, 0])
         assertComplexEquals(i / 2.0, projection[0, 1])
         assertComplexEquals(-i / 2.0, projection[1, 0])
@@ -44,8 +45,8 @@ class ProjectionGateTest {
         val state1 = quantumState(e, i)
         val state2 = quantumState(i, -e)
         val projection = projection(state1, state2)
-        assertEquals(2, projection.rows)
-        assertEquals(2, projection.columns)
+        assertEquals(2, projection.size)
+        assertEquals(2, projection.size)
         assertComplexEquals(i / 2.0, projection[0, 0])
         assertComplexEquals(-e / 2.0, projection[0, 1])
         assertComplexEquals(e / 2.0, projection[1, 0])

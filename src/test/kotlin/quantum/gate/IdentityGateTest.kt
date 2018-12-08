@@ -10,8 +10,8 @@ class IdentityGateTest {
     fun testElements() {
         val identity = identity()
 
-        assertEquals(2, identity.rows)
-        assertEquals(2, identity.columns)
+        assertEquals(2, identity.size)
+
         assertEquals(1.0.toComplex(), identity[0, 0])
         assertEquals(0.0.toComplex(), identity[0, 1])
         assertEquals(0.0.toComplex(), identity[1, 0])

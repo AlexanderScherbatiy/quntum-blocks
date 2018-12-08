@@ -2,8 +2,6 @@ package quantum.gate
 
 import org.junit.Test
 import quantum.core.Complex
-import quantum.core.InverseSqrt2
-import quantum.core.toComplex
 import quantum.junit.assertComplexEquals
 import kotlin.test.assertEquals
 
@@ -14,8 +12,7 @@ class CNotGateTest {
 
         val cnot = cnot()
 
-        assertEquals(4, cnot.rows)
-        assertEquals(4, cnot.columns)
+        assertEquals(4, cnot.size)
 
         assertComplexEquals(Complex.One, cnot[0, 0])
         assertComplexEquals(Complex.Zero, cnot[0, 1])
