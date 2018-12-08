@@ -45,7 +45,7 @@ class BalancedFunctionBuilderTest {
                 .outputState
 
         val basis = Qubit.Minus tensorProduct Qubit.Minus
-        return (outputState * basis).norm() > 0.5
+        return (outputState scalar basis).norm() > 0.5
     }
 
     // Hadamar x Hadamar

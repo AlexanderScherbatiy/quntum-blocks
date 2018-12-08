@@ -7,7 +7,7 @@ interface QuantumState {
     val size: Int
     operator fun get(index: Int): Complex
 
-    operator fun times(other: QuantumState): Complex {
+    infix fun scalar(other: QuantumState): Complex {
         var scalar = Complex.Zero
         for (i in 0 until size) {
             scalar += this[i].conjugate() * other[i]

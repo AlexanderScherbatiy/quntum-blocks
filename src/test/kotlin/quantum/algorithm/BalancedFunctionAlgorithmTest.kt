@@ -49,7 +49,7 @@ class BalancedFunctionAlgorithmTest {
         val u = controlled(f)
         val output = u * input
         val projection = Qubit.Minus.tensorProduct(Qubit.Minus)
-        val probability = (projection * output).norm()
+        val probability = (projection scalar output).norm()
         return probability > 0.5
     }
 }
