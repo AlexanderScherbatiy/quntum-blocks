@@ -43,10 +43,10 @@ interface QuantumGate {
         var baseRow = 0
         var baseColumn = 0
 
-        for (i1 in 0 until rows) {
-            for (j1 in 0 until columns) {
-                for (i2 in 0 until rows) {
-                    for (j2 in 0 until columns) {
+        for (i1 in 0 until this.rows) {
+            for (j1 in 0 until this.columns) {
+                for (i2 in 0 until other.rows) {
+                    for (j2 in 0 until other.columns) {
                         coefficients[baseRow + i2][baseColumn + j2] = this[i1, j1] * other[i2, j2]
                     }
                 }
@@ -67,7 +67,7 @@ fun tensorProduct(vararg gates: QuantumGate): QuantumGate = gates.reduce { gate1
 }
 
 fun QuantumGate.contentToString() = buildString {
-    append("QuantumGate{")
+    append("QuantumGate[${rows}x${columns}]{")
     for (i in 0 until rows) {
         append("{")
         for (j in 0 until columns) {

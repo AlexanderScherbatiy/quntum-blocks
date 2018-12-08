@@ -21,6 +21,11 @@ enum class Bit {
         Zero -> Zero
         One -> other
     }
+
+    override fun toString() = when (this) {
+        Zero -> "0"
+        One -> "1"
+    }
 }
 
 fun Boolean.toBit() = if (this) Bit.One else Bit.Zero

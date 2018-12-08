@@ -1,6 +1,7 @@
 package quantum.builder
 
 import quantum.core.*
+import java.lang.IllegalArgumentException
 import java.util.logging.*
 
 
@@ -68,9 +69,18 @@ class QuantumAlgorithm {
         override fun calculate(state: QuantumState): QuantumState {
             val gate = tensorProduct(*gates)
             trace { "layer[$num] gate : $gate" }
+            checkGateSize(gate, state)
             val result = gate * state
             trace { "layer[$num] state: $state -> $result" }
             return result
+        }
+
+        fun checkGateSize(gate: QuantumGate, state: QuantumState) {
+            if (gate.rows != state.size || gate.columns != state.size) {
+                throw IllegalArgumentException("layer[$num]" +
+                        " total gate size: ${gate.rows} does not not equal to" +
+                        " state size: ${state.size}")
+            }
         }
     }
 
@@ -102,7 +112,7 @@ class QuantumAlgorithm {
             val repeatLayerItem = RepeatGateLayerItem(times)
             layers += repeatLayerItem
 
-            debug { "repeat layer: $times" }
+            debug { "repeat start: $times" }
             return RepeatGateLayer(repeatLayerItem.layers, layers)
         }
 
