@@ -20,13 +20,13 @@ class GroverAlgorithmTest {
 
         val Uw = controlled(n + 1, f)
 
-        val hadamarN = tensorProduct(n, hadamar())
-        val groverDiffusion = hadamarN * diffusion(tensorProduct(n, Qubit.Zero)) * hadamarN
-        val Us = groverDiffusion tensorProduct identity()
+        val hadamarN = tensor(n, hadamar())
+        val groverDiffusion = hadamarN * diffusion(tensor(n, Qubit.Zero)) * hadamarN
+        val Us = groverDiffusion tensor identity()
 
         val outputState = QuantumAlgorithm()
                 .input(*Array(n) { Qubit.Zero }, Qubit.One)
-                .layer(hadamarN tensorProduct hadamar())
+                .layer(hadamarN tensor hadamar())
                 .repeat(times)
                 .layer(Uw)
                 .layer(Us)

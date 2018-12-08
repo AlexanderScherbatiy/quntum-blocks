@@ -20,7 +20,7 @@ class TensorProductTest {
     @Test
     fun testIdentityHadamarTensorProduct() {
 
-        val result = identity() tensorProduct hadamar()
+        val result = identity() tensor hadamar()
 
         assertEquals(4, result.size)
         assertEquals(4, result.size)
@@ -56,7 +56,7 @@ class TensorProductTest {
     fun testHadamarIdentityTensorProduct() {
 
 
-        val result = hadamar() tensorProduct identity()
+        val result = hadamar() tensor identity()
 
         assertEquals(4, result.size)
         assertEquals(4, result.size)
@@ -96,7 +96,7 @@ class TensorProductTest {
     @Test
     fun testHadamarHadamarTensorProduct() {
 
-        val result = hadamar() tensorProduct hadamar()
+        val result = hadamar() tensor hadamar()
 
         assertEquals(4, result.size)
         assertEquals(4, result.size)

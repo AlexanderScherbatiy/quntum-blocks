@@ -67,7 +67,7 @@ class QuantumAlgorithm {
         }
 
         override fun calculate(state: QuantumState): QuantumState {
-            val gate = tensorProduct(*gates)
+            val gate = tensor(*gates)
             trace { "layer[$num] gate : $gate" }
             checkGateSize(gate, state)
             val result = gate * state
@@ -142,7 +142,7 @@ class QuantumAlgorithm {
         init {
 
             val state = inputs.reduce { q1: QuantumState, q2: QuantumState ->
-                q1 tensorProduct q2
+                q1 tensor q2
             }
             trace { "input state : $state" }
             outputState = layers.fold(state) { s, layer -> layer.calculate(s) }

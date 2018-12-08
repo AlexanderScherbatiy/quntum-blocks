@@ -33,7 +33,7 @@ interface QuantumGate {
         return MatrixQuantumGate(coefficients)
     }
 
-    infix fun tensorProduct(other: QuantumGate): QuantumGate {
+    infix fun tensor(other: QuantumGate): QuantumGate {
 
         val newSize = this.size * other.size
         val coefficients = Array(newSize) {
@@ -60,10 +60,10 @@ interface QuantumGate {
     }
 }
 
-fun tensorProduct(n: Int, gate: QuantumGate): QuantumGate = tensorProduct(*Array(n) { gate })
+fun tensor(n: Int, gate: QuantumGate): QuantumGate = tensor(*Array(n) { gate })
 
-fun tensorProduct(vararg gates: QuantumGate): QuantumGate = gates.reduce { gate1, gate2 ->
-    gate1 tensorProduct gate2
+fun tensor(vararg gates: QuantumGate): QuantumGate = gates.reduce { gate1, gate2 ->
+    gate1 tensor gate2
 }
 
 fun QuantumGate.contentToString() = buildString {

@@ -17,7 +17,7 @@ class QuantumStateTensorProductTest {
     @Test
     fun testTensorProductZeroZero() {
 
-        val quantumState = Qubit.Zero.tensorProduct(Qubit.Zero)
+        val quantumState = Qubit.Zero tensor Qubit.Zero
 
         assertEquals(4, quantumState.size)
         assertComplexEquals(Complex.One, quantumState[0])
@@ -32,7 +32,7 @@ class QuantumStateTensorProductTest {
     @Test
     fun testTensorProductZeroOne() {
 
-        val quantumState = Qubit.Zero.tensorProduct(Qubit.One)
+        val quantumState = Qubit.Zero tensor Qubit.One
 
         assertEquals(4, quantumState.size)
         assertComplexEquals(Complex.Zero, quantumState[0])
@@ -47,7 +47,7 @@ class QuantumStateTensorProductTest {
     @Test
     fun testTensorProductOneOne() {
 
-        val quantumState = Qubit.One.tensorProduct(Qubit.One)
+        val quantumState = Qubit.One tensor Qubit.One
 
         assertEquals(4, quantumState.size)
         assertComplexEquals(Complex.Zero, quantumState[0])
@@ -62,7 +62,7 @@ class QuantumStateTensorProductTest {
      */
     @Test
     fun testTensorPlusMinus() {
-        val quantumState = Qubit.Plus.tensorProduct(Qubit.Minus)
+        val quantumState = Qubit.Plus tensor Qubit.Minus
 
         assertEquals(4, quantumState.size)
         assertComplexEquals(OneHalf, quantumState[0])

@@ -15,7 +15,7 @@ interface QuantumState {
         return scalar
     }
 
-    infix fun tensorProduct(other: QuantumState): QuantumState {
+    infix fun tensor(other: QuantumState): QuantumState {
 
         val coefficients = Array(size * other.size) { Complex.Zero }
         var base = 0
@@ -34,8 +34,8 @@ interface QuantumState {
 fun quantumState(vararg coefficients: Complex): QuantumState = QuantumStateImp(normalize(*coefficients))
 
 
-fun tensorProduct(n: Int, state: QuantumState): QuantumState =
-        Array(n) { state }.reduce { s1, s2 -> s1 tensorProduct s2 }
+fun tensor(n: Int, state: QuantumState): QuantumState =
+        Array(n) { state }.reduce { s1, s2 -> s1 tensor s2 }
 
 
 /**
@@ -60,7 +60,7 @@ fun QuantumState.measureBasisIndex(): Int {
     return size - 1
 }
 
-fun tensorProduct(states: Array<out QuantumState>): QuantumState {
+fun tensor(states: Array<out QuantumState>): QuantumState {
 
     val bounds = states.map { it.size }.toIntArray()
     val counter = IntArray(bounds.size)

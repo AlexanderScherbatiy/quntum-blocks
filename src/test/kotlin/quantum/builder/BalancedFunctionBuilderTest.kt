@@ -44,7 +44,7 @@ class BalancedFunctionBuilderTest {
                 .run()
                 .outputState
 
-        val basis = Qubit.Minus tensorProduct Qubit.Minus
+        val basis = Qubit.Minus tensor Qubit.Minus
         return (outputState scalar basis).norm() > 0.5
     }
 
@@ -66,9 +66,9 @@ class BalancedFunctionBuilderTest {
     private fun isBalanced2(f: (Bit) -> Bit): Boolean {
         return QuantumAlgorithm()
                 .input(Qubit.Zero, Qubit.One)
-                .layer(hadamar() tensorProduct hadamar())
+                .layer(hadamar() tensor hadamar())
                 .layer(controlled(f))
-                .layer(hadamar() tensorProduct hadamar())
+                .layer(hadamar() tensor hadamar())
                 .run()
                 .measureStandardBasisBits() == "11".toBits()
     }
