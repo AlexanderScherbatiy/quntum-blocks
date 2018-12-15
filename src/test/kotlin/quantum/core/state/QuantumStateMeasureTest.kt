@@ -1,10 +1,7 @@
 package quantum.core.state
 
 import org.junit.Test
-import quantum.core.Complex
-import quantum.core.Qubit
-import quantum.core.measureBasisIndex
-import quantum.core.quantumState
+import quantum.core.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -56,4 +53,58 @@ class QuantumStateMeasureTest {
             delta.toDouble() / n.toDouble() < threshold
         }
     }
+
+    @Test
+    fun testMeasureBits00() {
+        val state = Qubit.Zero tensor Qubit.Zero
+
+        val measurement0 = state.measureBits(0)
+        assertEquals(Bits(Bit.Zero), measurement0.bits)
+        assertEquals(state, measurement0.state)
+
+        val measurement1 = state.measureBits(1)
+        assertEquals(Bits(Bit.Zero), measurement1.bits)
+        assertEquals(state, measurement1.state)
+    }
+
+    @Test
+    fun testMeasureBits01() {
+        val state = Qubit.Zero tensor Qubit.One
+
+        val measurement0 = state.measureBits(0)
+        assertEquals(Bits(Bit.Zero), measurement0.bits)
+        assertEquals(state, measurement0.state)
+
+        val measurement1 = state.measureBits(1)
+        assertEquals(Bits(Bit.One), measurement1.bits)
+        assertEquals(state, measurement1.state)
+    }
+
+    @Test
+    fun testMeasureBits10() {
+        val state = Qubit.One tensor Qubit.Zero
+
+        val measurement0 = state.measureBits(0)
+        assertEquals(Bits(Bit.One), measurement0.bits)
+        assertEquals(state, measurement0.state)
+
+        val measurement1 = state.measureBits(1)
+        assertEquals(Bits(Bit.Zero), measurement1.bits)
+        assertEquals(state, measurement1.state)
+    }
+
+    @Test
+    fun testMeasureBits11() {
+        val state = Qubit.One tensor Qubit.One
+
+        val measurement0 = state.measureBits(0)
+        assertEquals(Bits(Bit.One), measurement0.bits)
+        assertEquals(state, measurement0.state)
+
+        val measurement1 = state.measureBits(1)
+        assertEquals(Bits(Bit.One), measurement1.bits)
+        assertEquals(state, measurement1.state)
+    }
+
+
 }

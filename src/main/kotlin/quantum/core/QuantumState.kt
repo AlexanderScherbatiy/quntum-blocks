@@ -1,7 +1,7 @@
 package quantum.core
 
 import quantum.core.Complex.Companion.One
-import kotlin.random.Random
+import quantum.core.Complex.Companion.Zero
 
 interface QuantumState {
     val size: Int
@@ -31,34 +31,12 @@ interface QuantumState {
     }
 }
 
-fun quantumState(vararg coefficients: Complex): QuantumState = QuantumStateImp(normalize(*coefficients))
+fun quantumState(vararg coefficients: Complex): QuantumState = ArrayQuantumState(normalize(*coefficients))
+fun quantumState(size: Int, coefficients: Map<Int, Complex>): QuantumState = MapQuantumState(size, normalize(coefficients))
 
 
 fun tensor(n: Int, state: QuantumState): QuantumState =
         Array(n) { state }.reduce { s1, s2 -> s1 tensor s2 }
-
-
-/**
- * Return index of the basis which has been measured
- */
-fun QuantumState.measureBasisIndex(): Int {
-
-    val array = Array(size) { this[it].sqr() }
-
-    for (i in (1 until size)) {
-        array[i] += array[i - 1]
-    }
-
-    val probability = Random.nextDouble(1.0)
-
-    for (i in 0 until size) {
-        if (probability < array[i]) {
-            return i
-        }
-    }
-
-    return size - 1
-}
 
 fun tensor(states: Array<out QuantumState>): QuantumState {
 
@@ -81,6 +59,8 @@ fun tensor(states: Array<out QuantumState>): QuantumState {
 
     return quantumState(*coefficients.toTypedArray())
 }
+
+fun QuantumState.toArray(): Array<out Complex> = Array(size) { this[it] }
 
 
 private fun increment(counter: IntArray, bounds: IntArray): Boolean {
@@ -108,6 +88,19 @@ private fun normalize(vararg coefficients: Complex): Array<out Complex> {
     return Array(coefficients.size) { coefficients[it] / r }
 }
 
+private fun normalize(coefficients: Map<Int, Complex>): Map<Int, Complex> {
+
+
+    val sqr = coefficients.values.map { it.sqr() }.sum()
+
+    if (sqr == 1.0) {
+        return coefficients
+    }
+
+    val r = kotlin.math.sqrt(sqr)
+    return coefficients.mapValues { it.value / r }
+}
+
 data class Qubit private constructor(val zero: Complex, val one: Complex) : QuantumState {
 
     override val size = 2
@@ -132,11 +125,44 @@ data class Qubit private constructor(val zero: Complex, val one: Complex) : Quan
     }
 }
 
-private class QuantumStateImp(val coefficients: Array<out Complex>) : QuantumState {
+private class ArrayQuantumState(val coefficients: Array<out Complex>) : QuantumState {
 
     override val size = coefficients.size
 
     override fun get(index: Int) = coefficients[index]
 
     override fun toString() = "QuantumState(${coefficients.joinToString()})"
+
+    fun toArray() = coefficients
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is QuantumState) return false
+        return coefficients.contentEquals(other.toArray())
+    }
+
+    override fun hashCode(): Int {
+        return coefficients.contentHashCode()
+    }
+}
+
+private class MapQuantumState(override val size: Int, val coefficients: Map<Int, Complex>) : QuantumState {
+
+    override fun get(index: Int) =
+            if (index < size)
+                coefficients.getOrDefault(index, Zero)
+            else
+                throw IndexOutOfBoundsException("index: $index, size: $size")
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is QuantumState) return false
+        return toArray().contentEquals(other.toArray())
+    }
+
+    override fun hashCode(): Int {
+        return toArray().contentHashCode()
+    }
+
+    override fun toString() = "QuantumState($size, $coefficients)"
 }
