@@ -20,10 +20,29 @@ interface IndexedValueIterable<V> {
     fun iterator(): IndexedValueIterator<V>
 
     infix fun zip(other: IndexedValueIterable<V>): IndexedPairIterator<V> =
-            quantum.datatype.zip(this, other)
+            quantum.datatype.zip(this.iterator(), other.iterator())
 
     infix fun zipNonZero(other: IndexedValueIterable<V>): IndexedPairIterator<V> =
-            quantum.datatype.zipNonZero(this, other)
+            quantum.datatype.zipNonZero(this.iterator(), other.iterator())
+}
+
+fun <V> equals(iter1: IndexedValueIterator<V>, iter2: IndexedValueIterator<V>): Boolean {
+
+    if (iter1.size != iter2.size) {
+        return false
+    }
+
+    val iter = zip(iter1, iter2)
+
+    var flag = true
+    while (iter.hasNext()) {
+        iter.next { _, value1, value2 ->
+            flag = value1 == value2
+        }
+        if (!flag) return false
+    }
+
+    return true
 }
 
 class IndexedArrayValueIterator<V>(override val zeroValue: V,
@@ -47,11 +66,8 @@ class IndexedArrayValueIterator<V>(override val zeroValue: V,
 private fun outOfBounds(index: Int): Nothing =
         throw NoSuchElementException("IndexedValueIterator out of bounds: $index")
 
-private abstract class AbstractIndexedPairIterator<V>(iterable1: IndexedValueIterable<V>,
-                                                      iterable2: IndexedValueIterable<V>) : IndexedPairIterator<V> {
-    val iter1 = iterable1.iterator()
-    val iter2 = iterable2.iterator()
-
+private abstract class AbstractIndexedPairIterator<V>(val iter1: IndexedValueIterator<V>,
+                                                      val iter2: IndexedValueIterator<V>) : IndexedPairIterator<V> {
     var index1 = -1
     var index2 = -1
 
@@ -90,9 +106,9 @@ private abstract class AbstractIndexedPairIterator<V>(iterable1: IndexedValueIte
     }
 }
 
-private fun <V> zip(iterable1: IndexedValueIterable<V>,
-                    iterable2: IndexedValueIterable<V>): IndexedPairIterator<V> =
-        object : AbstractIndexedPairIterator<V>(iterable1, iterable2) {
+private fun <V> zip(iter1: IndexedValueIterator<V>,
+                    iter2: IndexedValueIterator<V>): IndexedPairIterator<V> =
+        object : AbstractIndexedPairIterator<V>(iter1, iter2) {
 
             override fun hasNext() = index1 != -1 || index2 != -1
 
@@ -127,9 +143,9 @@ private fun <V> zip(iterable1: IndexedValueIterable<V>,
             }
         }
 
-private fun <V> zipNonZero(iterable1: IndexedValueIterable<V>,
-                           iterable2: IndexedValueIterable<V>): IndexedPairIterator<V> =
-        object : AbstractIndexedPairIterator<V>(iterable1, iterable2) {
+private fun <V> zipNonZero(iter1: IndexedValueIterator<V>,
+                           iter2: IndexedValueIterator<V>): IndexedPairIterator<V> =
+        object : AbstractIndexedPairIterator<V>(iter1, iter2) {
 
             init {
                 moveToTheSameIndices()
