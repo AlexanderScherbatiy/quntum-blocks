@@ -2,9 +2,6 @@ package quantum.datatype
 
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
-import kotlin.test.fail
 
 class IndexedValueIteratorTest {
 
@@ -35,31 +32,5 @@ class IndexedValueIteratorTest {
         checkValue(iter, 2, "2", "")
         checkValue(iter, 5, "5", "")
         checkEnd(iter)
-    }
-
-    private fun <V> checkValue(iter: IndexedValueIterator<V>, index: Int, value: V, zero: V) {
-
-        assertTrue(iter.hasNext())
-
-        var i = -1
-        var v = zero
-
-        iter.next { j, u ->
-            i = j
-            v = u
-        }
-
-        assertEquals(index, i)
-        assertEquals(value, v)
-    }
-
-    private fun <V> checkEnd(iter: IndexedValueIterator<V>) {
-
-        assertFalse(iter.hasNext())
-        try {
-            iter.next { _, _ -> fail("Iterator next() is called") }
-            fail("Exception is not thrown")
-        } catch (e: NoSuchElementException) {
-        }
     }
 }
