@@ -59,6 +59,31 @@ class IndexedArrayValueIterator<V>(override val zeroValue: V,
     }
 }
 
+class IndexedArraySkipZeroValueIterator<V>(override val zeroValue: V,
+                                           val values: Array<V>) : IndexedValueIterator<V> {
+
+    private var index = -1
+    override val size = values.count { it != zeroValue }
+
+    init {
+        skipZeros()
+    }
+
+    private fun skipZeros() {
+        while (++index < values.size && values[index] == zeroValue);
+    }
+
+    override fun hasNext() = index < values.size
+
+    override fun next(consumer: (Int, V) -> Unit) {
+        if (index >= values.size) {
+            outOfBounds(index)
+        }
+        consumer(index, values[index])
+        skipZeros()
+    }
+}
+
 private fun outOfBounds(index: Int): Nothing =
         throw NoSuchElementException("IndexedValueIterator out of bounds: $index")
 
