@@ -7,8 +7,8 @@ class IndexedValueIteratorZipTest {
     @Test
     fun testIteratorZip() {
 
-        val iterable1 = IndexedStringValueIterable(intArrayOf(), arrayOf())
-        val iterable2 = IndexedStringValueIterable(intArrayOf(), arrayOf())
+        val iterable1 = IndexedArrayValueIterator("",intArrayOf(), arrayOf())
+        val iterable2 = IndexedArrayValueIterator("",intArrayOf(), arrayOf())
 
         val iter = iterable1 zip iterable2
         checkEnd(iter)
@@ -17,8 +17,8 @@ class IndexedValueIteratorZipTest {
     @Test
     fun testIteratorZip_11() {
 
-        val iterable1 = IndexedStringValueIterable(intArrayOf(3), arrayOf("31"))
-        val iterable2 = IndexedStringValueIterable(intArrayOf(3), arrayOf("32"))
+        val iterable1 = IndexedArrayValueIterator("",intArrayOf(3), arrayOf("31"))
+        val iterable2 = IndexedArrayValueIterator("",intArrayOf(3), arrayOf("32"))
 
         val iter = iterable1 zip iterable2
 
@@ -29,8 +29,8 @@ class IndexedValueIteratorZipTest {
     @Test
     fun testIteratorZip_10() {
 
-        val iterable1 = IndexedStringValueIterable(intArrayOf(5), arrayOf("5"))
-        val iterable2 = IndexedStringValueIterable(intArrayOf(), arrayOf())
+        val iterable1 = IndexedArrayValueIterator("",intArrayOf(5), arrayOf("5"))
+        val iterable2 = IndexedArrayValueIterator("",intArrayOf(), arrayOf())
 
         val iter = iterable1 zip iterable2
 
@@ -41,8 +41,8 @@ class IndexedValueIteratorZipTest {
     @Test
     fun testIteratorZip_01() {
 
-        val iterable1 = IndexedStringValueIterable(intArrayOf(), arrayOf())
-        val iterable2 = IndexedStringValueIterable(intArrayOf(7), arrayOf("7"))
+        val iterable1 = IndexedArrayValueIterator("",intArrayOf(), arrayOf())
+        val iterable2 = IndexedArrayValueIterator("",intArrayOf(7), arrayOf("7"))
 
         val iter = iterable1 zip iterable2
 
@@ -53,8 +53,8 @@ class IndexedValueIteratorZipTest {
     @Test
     fun testIteratorZip_11_11() {
 
-        val iterable1 = IndexedStringValueIterable(intArrayOf(3, 5), arrayOf("31", "51"))
-        val iterable2 = IndexedStringValueIterable(intArrayOf(3, 5), arrayOf("32", "52"))
+        val iterable1 = IndexedArrayValueIterator("",intArrayOf(3, 5), arrayOf("31", "51"))
+        val iterable2 = IndexedArrayValueIterator("",intArrayOf(3, 5), arrayOf("32", "52"))
 
         val iter = iterable1 zip iterable2
 
@@ -66,8 +66,8 @@ class IndexedValueIteratorZipTest {
     @Test
     fun testIteratorZip_10_01() {
 
-        val iterable1 = IndexedStringValueIterable(intArrayOf(3), arrayOf("3"))
-        val iterable2 = IndexedStringValueIterable(intArrayOf(5), arrayOf("5"))
+        val iterable1 = IndexedArrayValueIterator("",intArrayOf(3), arrayOf("3"))
+        val iterable2 = IndexedArrayValueIterator("",intArrayOf(5), arrayOf("5"))
 
         val iter = iterable1 zip iterable2
 
@@ -79,8 +79,8 @@ class IndexedValueIteratorZipTest {
     @Test
     fun testIteratorZip_11_10() {
 
-        val iterable1 = IndexedStringValueIterable(intArrayOf(3, 5), arrayOf("31", "5"))
-        val iterable2 = IndexedStringValueIterable(intArrayOf(3), arrayOf("32"))
+        val iterable1 = IndexedArrayValueIterator("",intArrayOf(3, 5), arrayOf("31", "5"))
+        val iterable2 = IndexedArrayValueIterator("",intArrayOf(3), arrayOf("32"))
 
         val iter = iterable1 zip iterable2
 
@@ -92,8 +92,8 @@ class IndexedValueIteratorZipTest {
     @Test
     fun testIteratorZip_01_11() {
 
-        val iterable1 = IndexedStringValueIterable(intArrayOf(5), arrayOf("51"))
-        val iterable2 = IndexedStringValueIterable(intArrayOf(3, 5), arrayOf("3", "52"))
+        val iterable1 = IndexedArrayValueIterator("",intArrayOf(5), arrayOf("51"))
+        val iterable2 = IndexedArrayValueIterator("",intArrayOf(3, 5), arrayOf("3", "52"))
 
         val iter = iterable1 zip iterable2
 

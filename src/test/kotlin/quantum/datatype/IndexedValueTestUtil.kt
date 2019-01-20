@@ -5,12 +5,6 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class IndexedStringValueIterable(val indices: IntArray,
-                                 val values: Array<String>) : IndexedValueIterable<String> {
-    override fun iterator(): IndexedValueIterator<String>
-            = IndexedArrayValueIterator("", indices, values)
-}
-
 fun <V> checkValue(iter: IndexedValueIterator<V>, index: Int, value: V, zero: V) {
 
     assertTrue(iter.hasNext())

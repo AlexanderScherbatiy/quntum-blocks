@@ -8,22 +8,18 @@ interface IndexedValueIterator<V> {
     fun hasNext(): Boolean
 
     fun next(consumer: (index: Int, value: V) -> Unit)
+
+    infix fun zip(other: IndexedValueIterator<V>): IndexedPairIterator<V> =
+            quantum.datatype.zip(this, other)
+
+    infix fun zipNonZero(other: IndexedValueIterator<V>): IndexedPairIterator<V> =
+            quantum.datatype.zipNonZero(this, other)
+
 }
 
 interface IndexedPairIterator<V> {
     fun hasNext(): Boolean
     fun next(consumer: (index: Int, value1: V, value2: V) -> Unit)
-}
-
-interface IndexedValueIterable<V> {
-
-    fun iterator(): IndexedValueIterator<V>
-
-    infix fun zip(other: IndexedValueIterable<V>): IndexedPairIterator<V> =
-            quantum.datatype.zip(this.iterator(), other.iterator())
-
-    infix fun zipNonZero(other: IndexedValueIterable<V>): IndexedPairIterator<V> =
-            quantum.datatype.zipNonZero(this.iterator(), other.iterator())
 }
 
 fun <V> equals(iter1: IndexedValueIterator<V>, iter2: IndexedValueIterator<V>): Boolean {
