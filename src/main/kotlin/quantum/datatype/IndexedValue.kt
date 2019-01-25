@@ -1,6 +1,6 @@
 package quantum.datatype
 
-data class IndexedValue<V>(val index: Int, val value: V)
+import java.util.*
 
 interface IndexedValueIterator<V> {
     val size: Int
@@ -41,9 +41,19 @@ fun <V> equals(iter1: IndexedValueIterator<V>, iter2: IndexedValueIterator<V>): 
     return true
 }
 
+fun <V> hashCode(iter: IndexedValueIterator<V>): Int {
+    var result = 1
+    while (iter.hasNext()) {
+        iter.next { _, value ->
+            result = 31 * result + value.hashCode()
+        }
+    }
+    return result
+}
+
 class IndexedArrayValueIterator<V>(override val zeroValue: V,
                                    val indices: IntArray,
-                                   val values: Array<V>) : IndexedValueIterator<V> {
+                                   val values: Array<out V>) : IndexedValueIterator<V> {
 
     private var index = 0
     override val size = indices.size
@@ -60,7 +70,7 @@ class IndexedArrayValueIterator<V>(override val zeroValue: V,
 }
 
 class IndexedArraySkipZeroValueIterator<V>(override val zeroValue: V,
-                                           val values: Array<V>) : IndexedValueIterator<V> {
+                                           val values: Array<out V>) : IndexedValueIterator<V> {
 
     private var index = -1
     override val size = values.count { it != zeroValue }

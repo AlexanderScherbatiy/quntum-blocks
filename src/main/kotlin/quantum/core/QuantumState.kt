@@ -1,11 +1,16 @@
 package quantum.core
 
-import quantum.core.Complex.Companion.One
 import quantum.core.Complex.Companion.Zero
+import quantum.datatype.IndexedArraySkipZeroValueIterator
+import quantum.datatype.IndexedArrayValueIterator
+import quantum.datatype.IndexedValueIterator
+import quantum.datatype.equals
 
 interface QuantumState {
     val size: Int
     operator fun get(index: Int): Complex
+
+    fun indexedValueIterator(): IndexedValueIterator<Complex>
 
     infix fun scalar(other: QuantumState): Complex {
         var scalar = Complex.Zero
@@ -31,54 +36,35 @@ interface QuantumState {
     }
 }
 
-fun quantumState(vararg coefficients: Complex): QuantumState = ArrayQuantumState(normalize(*coefficients))
-fun quantumState(size: Int, coefficients: Map<Int, Complex>): QuantumState = MapQuantumState(size, normalize(coefficients))
+fun qubit(zero: Complex, one: Complex): Qubit = Qubit.from(zero, one)
 
+fun quantumState(vararg coefficients: Complex): QuantumState = ArrayQuantumState(normalize(*coefficients))
+
+fun quantumState(size: Int, coefficients: Map<Int, Complex>): QuantumState =
+        quantumState(size, coefficients
+                .toList()
+                .sortedBy { it.first }
+                .map { IndexedValue(it.first, it.second) })
+
+fun quantumState(size: Int, indices: IntArray, coefficients: Array<Complex>): QuantumState =
+        IndexedValueQuantumState(size, indices, normalize(*coefficients))
+
+fun quantumState(size: Int, indexedValues: List<IndexedValue<Complex>>): QuantumState {
+    val indices = indexedValues.map { it.index }.toIntArray()
+    val coefficients = indexedValues.map { it.value }.toTypedArray()
+    return quantumState(size, indices, coefficients)
+}
 
 fun tensor(n: Int, state: QuantumState): QuantumState =
         Array(n) { state }.reduce { s1, s2 -> s1 tensor s2 }
 
-fun tensor(states: Array<out QuantumState>): QuantumState {
-
-    val bounds = states.map { it.size }.toIntArray()
-    val counter = IntArray(bounds.size)
-    counter[0] = -1
-    val coefficients = arrayListOf<Complex>()
-    var hasNext = increment(counter, bounds)
-
-    while (hasNext) {
-
-        var c = One
-        for ((stateIndex, coefficientIndex) in counter.withIndex()) {
-            c *= states[stateIndex][coefficientIndex]
-        }
-
-        coefficients.add(c)
-        hasNext = increment(counter, bounds)
-    }
-
-    return quantumState(*coefficients.toTypedArray())
-}
 
 fun QuantumState.toArray(): Array<out Complex> = Array(size) { this[it] }
 
-
-private fun increment(counter: IntArray, bounds: IntArray): Boolean {
-
-    for (i in 0 until bounds.size) {
-        counter[i]++
-        if (counter[i] == bounds[i]) {
-            counter[i] = 0
-        } else {
-            return true
-        }
-    }
-
-    return false
-}
-
-private fun normalize(vararg coefficients: Complex): Array<out Complex> {
+fun normalize(vararg coefficients: Complex): Array<out Complex> {
     val sqr = coefficients.map { it.sqr() }.sum()
+
+    assert(sqr != 0.0)
 
     if (sqr == 1.0) {
         return coefficients
@@ -88,18 +74,10 @@ private fun normalize(vararg coefficients: Complex): Array<out Complex> {
     return Array(coefficients.size) { coefficients[it] / r }
 }
 
-private fun normalize(coefficients: Map<Int, Complex>): Map<Int, Complex> {
+private fun QuantumState.stateEquals(other: Any?): Boolean = (this === other) ||
+        ((other is QuantumState) && equals(this.indexedValueIterator(), other.indexedValueIterator()))
 
-
-    val sqr = coefficients.values.map { it.sqr() }.sum()
-
-    if (sqr == 1.0) {
-        return coefficients
-    }
-
-    val r = kotlin.math.sqrt(sqr)
-    return coefficients.mapValues { it.value / r }
-}
+private fun QuantumState.stateHashCode(): Int = quantum.datatype.hashCode(indexedValueIterator())
 
 data class Qubit private constructor(val zero: Complex, val one: Complex) : QuantumState {
 
@@ -110,6 +88,18 @@ data class Qubit private constructor(val zero: Complex, val one: Complex) : Quan
         1 -> one
         else -> throw IndexOutOfBoundsException("index $index, size: 2")
     }
+
+    override fun indexedValueIterator() =
+            if (zero == Complex.Zero)
+                IndexedArrayValueIterator(Complex.Zero, intArrayOf(1), arrayOf(one))
+            else if (one == Complex.Zero)
+                IndexedArrayValueIterator(Complex.Zero, intArrayOf(0), arrayOf(zero))
+            else
+                IndexedArrayValueIterator(Complex.Zero, intArrayOf(0, 1), arrayOf(zero, one))
+
+    override fun equals(other: Any?) = stateEquals(other)
+
+    override fun hashCode() = stateHashCode()
 
     companion object {
 
@@ -133,36 +123,31 @@ private class ArrayQuantumState(val coefficients: Array<out Complex>) : QuantumS
 
     override fun toString() = "QuantumState(${coefficients.joinToString()})"
 
-    fun toArray() = coefficients
+    override fun indexedValueIterator(): IndexedValueIterator<Complex> =
+            IndexedArraySkipZeroValueIterator(Complex.Zero, coefficients)
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is QuantumState) return false
-        return coefficients.contentEquals(other.toArray())
-    }
+    override fun equals(other: Any?) = stateEquals(other)
 
-    override fun hashCode(): Int {
-        return coefficients.contentHashCode()
-    }
+    override fun hashCode() = stateHashCode()
 }
 
-private class MapQuantumState(override val size: Int, val coefficients: Map<Int, Complex>) : QuantumState {
+private class IndexedValueQuantumState(size: Int,
+                                       val indices: IntArray,
+                                       val coefficients: Array<out Complex>) : QuantumState {
 
-    override fun get(index: Int) =
-            if (index < size)
-                coefficients.getOrDefault(index, Zero)
-            else
-                throw IndexOutOfBoundsException("index: $index, size: $size")
+    override val size = size
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is QuantumState) return false
-        return toArray().contentEquals(other.toArray())
+    override fun get(index: Int): Complex {
+        val i = indices.indexOf(index)
+        return if (i == -1) Zero else coefficients[i]
     }
 
-    override fun hashCode(): Int {
-        return toArray().contentHashCode()
-    }
+    override fun toString() = "QuantumState($size, ${indices.joinToString()}, ${coefficients.joinToString()})"
 
-    override fun toString() = "QuantumState($size, $coefficients)"
+    override fun indexedValueIterator(): IndexedValueIterator<Complex> =
+            IndexedArrayValueIterator(Zero, indices, coefficients)
+
+    override fun equals(other: Any?) = stateEquals(other)
+
+    override fun hashCode() = stateHashCode()
 }

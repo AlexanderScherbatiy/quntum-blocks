@@ -2,8 +2,8 @@ package quantum.core.gate
 
 import org.junit.Test
 import quantum.core.Complex.Companion.Zero
-import quantum.core.InverseSqrt2
-import quantum.core.OneHalf
+import quantum.junit.InverseSqrt2
+import quantum.junit.OneHalf
 import quantum.gate.hadamar
 import quantum.gate.identity
 import quantum.junit.assertComplexEquals

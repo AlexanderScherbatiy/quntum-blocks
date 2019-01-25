@@ -2,6 +2,7 @@ package quantum.gate
 
 import quantum.core.*
 
+private val InverseSqrt2 = (1.0 / kotlin.math.sqrt(2.0)).toComplex()
 
 fun identity(size: Int) = object : QuantumGate {
 
