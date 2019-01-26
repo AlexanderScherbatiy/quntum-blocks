@@ -2,8 +2,6 @@ package quantum.core.state
 
 import org.junit.Test
 import quantum.core.Complex
-import quantum.core.Complex.Companion.One
-import quantum.core.Complex.Companion.Zero
 import quantum.core.Complex.Companion.complex
 import quantum.core.Qubit
 import quantum.core.quantumState

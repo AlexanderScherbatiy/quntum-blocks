@@ -14,8 +14,11 @@ interface QuantumState {
 
     infix fun scalar(other: QuantumState): Complex {
         var scalar = Complex.Zero
-        for (i in 0 until size) {
-            scalar += this[i].conjugate() * other[i]
+        val iter = this.indexedValueIterator() zipNonZero other.indexedValueIterator()
+        while (iter.hasNext()) {
+            iter.next { index, value1, value2 ->
+                scalar += value1.conjugate() * value2
+            }
         }
         return scalar
     }
