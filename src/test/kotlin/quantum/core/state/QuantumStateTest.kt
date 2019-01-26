@@ -8,6 +8,8 @@ import quantum.core.Complex.Companion.complex
 import quantum.core.normalize
 import quantum.core.quantumState
 import quantum.junit.assertComplexEquals
+import quantum.junit.assertHashEquals
+import quantum.junit.assertHashNotEquals
 import quantum.junit.testQuantumStateHash
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -78,39 +80,38 @@ class QuantumStateTest {
     @Test
     fun testHashCode() {
 
-        assertEquals(testQuantumStateHash(I), quantumState(I).hashCode())
-        assertEquals(testQuantumStateHash(One), quantumState(One).hashCode())
-        assertNotEquals(testQuantumStateHash(I), quantumState(One).hashCode())
+        assertHashEquals(quantumState(I), I)
+        assertHashEquals(quantumState(One), One)
+        assertHashNotEquals(quantumState(I), One)
 
-        assertEquals(testQuantumStateHash(One), quantumState(Zero, One).hashCode())
-        assertEquals(testQuantumStateHash(One), quantumState(One, Zero).hashCode())
+        assertHashEquals(quantumState(Zero, I), I)
+        assertHashEquals(quantumState(Zero, One), One)
+        assertHashNotEquals(quantumState(Zero, One), Zero, One)
 
-        assertEquals(
-                testQuantumStateHash(complex(1.2, 3.4)),
-                quantumState(complex(1.2, 3.4)).hashCode()
+        assertHashEquals(quantumState(complex(1.2, 3.4)), complex(1.2, 3.4))
+
+        assertHashEquals(
+                quantumState(complex(1.2, 3.4), complex(5.6, 7.8)),
+                complex(1.2, 3.4), complex(5.6, 7.8)
         )
 
-        assertEquals(
-                testQuantumStateHash(complex(1.2, 3.4), complex(5.6, 7.8)),
-                quantumState(complex(1.2, 3.4), complex(5.6, 7.8)).hashCode()
+        assertHashEquals(
+                quantumState(complex(1.2, 3.4), complex(5.6, 7.8)),
+                complex(1.2, 3.4), complex(5.6, 7.8)
         )
 
-        assertEquals(
-                testQuantumStateHash(complex(5.6, 7.8)),
-                quantumState(Zero, complex(5.6, 7.8)).hashCode()
+        assertHashEquals(
+                quantumState(complex(1.2, 3.4), Zero),
+                complex(1.2, 3.4)
         )
 
-        assertEquals(
-                testQuantumStateHash(complex(1.2, 3.4)),
-                quantumState(complex(1.2, 3.4), Zero).hashCode()
+        assertHashEquals(
+                quantumState(Zero, complex(5.6, 7.8)),
+                complex(5.6, 7.8)
         )
-
 
         val coefficients = normalize(complex(1.2, 3.4), complex(5.6, 7.8))
-
-        assertEquals(
-                testQuantumStateHash(*coefficients),
-                quantumState(*coefficients).hashCode())
+        assertHashEquals(quantumState(*coefficients), *coefficients.copyOf())
     }
 
 }

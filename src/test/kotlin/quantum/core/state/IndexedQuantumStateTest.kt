@@ -4,14 +4,17 @@ import org.junit.Test
 import quantum.core.Complex
 import quantum.core.quantumState
 import quantum.junit.assertComplexEquals
+import quantum.junit.assertHashEquals
+import quantum.junit.assertHashNotEquals
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 class IndexedQuantumStateTest {
 
     val sqrt2 = Math.sqrt(2.0)
     val z = Complex.Zero
     val e = Complex.One
-        val i = Complex.I
+    val i = Complex.I
 
 
     @Test
@@ -45,5 +48,63 @@ class IndexedQuantumStateTest {
 
         assertComplexEquals(z, indexedQuantumState scalar quantumState(z, e, e, z))
         assertComplexEquals(z, quantumState(z, e, e, z) scalar indexedQuantumState)
+    }
+
+
+    @Test
+    fun testEquals() {
+        assertEquals(
+                quantumState(1, intArrayOf(0), arrayOf(e)),
+                quantumState(1, intArrayOf(0), arrayOf(e))
+        )
+
+        assertEquals(
+                quantumState(1, intArrayOf(1), arrayOf(e)),
+                quantumState(1, intArrayOf(1), arrayOf(e))
+        )
+
+        assertNotEquals(
+                quantumState(1, intArrayOf(0), arrayOf(e)),
+                quantumState(1, intArrayOf(1), arrayOf(e))
+        )
+
+        assertEquals(
+                quantumState(2, intArrayOf(0, 1), arrayOf(e, i)),
+                quantumState(2, intArrayOf(0, 1), arrayOf(e, i))
+        )
+
+        assertNotEquals(
+                quantumState(2, intArrayOf(0, 1), arrayOf(e, i)),
+                quantumState(2, intArrayOf(0, 1), arrayOf(i, e))
+        )
+
+        assertEquals(
+                quantumState(4, intArrayOf(0, 3), arrayOf(e, e)),
+                quantumState(4, intArrayOf(0, 3), arrayOf(e, e))
+        )
+
+        assertNotEquals(
+                quantumState(4, intArrayOf(0, 3), arrayOf(e, e)),
+                quantumState(4, intArrayOf(0, 2), arrayOf(e, e))
+        )
+    }
+
+    @Test
+    fun testHashCode() {
+
+        assertHashEquals(quantumState(1, intArrayOf(0), arrayOf(e)), e)
+        assertHashEquals(quantumState(1, intArrayOf(0), arrayOf(i)), i)
+        assertHashNotEquals(quantumState(1, intArrayOf(0), arrayOf(i)), e)
+
+        assertHashEquals(quantumState(2, intArrayOf(0), arrayOf(e)), e)
+        assertHashEquals(quantumState(2, intArrayOf(0), arrayOf(i)), i)
+        assertHashNotEquals(quantumState(2, intArrayOf(0), arrayOf(i)), e)
+
+        assertHashEquals(quantumState(2, intArrayOf(1), arrayOf(e)), e)
+        assertHashEquals(quantumState(2, intArrayOf(1), arrayOf(i)), i)
+        assertHashNotEquals(quantumState(2, intArrayOf(1), arrayOf(i)), e)
+
+        assertHashEquals(quantumState(2, intArrayOf(0, 1), arrayOf(e, i)), e, i)
+        assertHashNotEquals(quantumState(2, intArrayOf(0, 1), arrayOf(e, i)), i, e)
     }
 }

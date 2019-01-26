@@ -75,7 +75,8 @@ fun normalize(vararg coefficients: Complex): Array<out Complex> {
 }
 
 private fun QuantumState.stateEquals(other: Any?): Boolean = (this === other) ||
-        ((other is QuantumState) && equals(this.indexedValueIterator(), other.indexedValueIterator()))
+        ((other is QuantumState) && (this.size == other.size)
+                && equals(this.indexedValueIterator(), other.indexedValueIterator()))
 
 private fun QuantumState.stateHashCode(): Int = quantum.datatype.hashCode(indexedValueIterator())
 
