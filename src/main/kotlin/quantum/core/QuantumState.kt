@@ -16,7 +16,7 @@ interface QuantumState {
         var scalar = Complex.Zero
         val iter = this.indexedValueIterator() zipNonZero other.indexedValueIterator()
         while (iter.hasNext()) {
-            iter.next { index, value1, value2 ->
+            iter.next { _, value1, value2 ->
                 scalar += value1.conjugate() * value2
             }
         }
@@ -25,17 +25,37 @@ interface QuantumState {
 
     infix fun tensor(other: QuantumState): QuantumState {
 
-        val coefficients = Array(size * other.size) { Complex.Zero }
-        var base = 0
+        val iter1 = this.indexedValueIterator()
+        var iter2 = other.indexedValueIterator()
 
-        for (i in 0 until size) {
-            for (j in 0 until other.size) {
-                coefficients[base + j] = this[i] * other[j]
+        val indexedSize = iter1.size * iter2.size
+        val indices = IntArray(indexedSize) { 0 }
+        val coefficients = Array(indexedSize) { Complex.Zero }
+
+        var count = 0
+        var first = true
+
+        while (iter1.hasNext()) {
+
+            if (first) {
+                first = false
+            } else {
+                iter2 = other.indexedValueIterator()
             }
-            base += other.size
+
+            iter1.next { i1, v1 ->
+                var base = i1 * other.size
+                while (iter2.hasNext()) {
+                    iter2.next { i2, v2 ->
+                        indices[count] = base + i2
+                        coefficients[count] = v1 * v2
+                        count++
+                    }
+                }
+            }
         }
 
-        return quantumState(*coefficients)
+        return quantumState(this.size * other.size, indices, coefficients)
     }
 }
 
@@ -81,6 +101,24 @@ private fun QuantumState.stateEquals(other: Any?): Boolean = (this === other) ||
         ((other is QuantumState) && (this.size == other.size)
                 && equals(this.indexedValueIterator(), other.indexedValueIterator()))
 
+private fun QuantumState.stateToString() = buildString {
+    val iter = indexedValueIterator()
+    var first = true
+    while (iter.hasNext()) {
+        iter.next { index, value ->
+            if (first) {
+                first = false
+            } else {
+                append(if (value.real >= 0) "+" else "")
+            }
+            append(value)
+            append("|")
+            append(index)
+            append(">")
+        }
+    }
+}
+
 private fun QuantumState.stateHashCode(): Int = quantum.datatype.hashCode(indexedValueIterator())
 
 data class Qubit private constructor(val zero: Complex, val one: Complex) : QuantumState {
@@ -105,6 +143,8 @@ data class Qubit private constructor(val zero: Complex, val one: Complex) : Quan
 
     override fun hashCode() = stateHashCode()
 
+    override fun toString() = stateToString()
+
     companion object {
 
         val Zero = Qubit(Complex.One, Complex.Zero)
@@ -125,14 +165,14 @@ private class ArrayQuantumState(val coefficients: Array<out Complex>) : QuantumS
 
     override fun get(index: Int) = coefficients[index]
 
-    override fun toString() = "QuantumState(${coefficients.joinToString()})"
-
     override fun indexedValueIterator(): IndexedValueIterator<Complex> =
             IndexedArraySkipZeroValueIterator(Complex.Zero, coefficients)
 
     override fun equals(other: Any?) = stateEquals(other)
 
     override fun hashCode() = stateHashCode()
+
+    override fun toString() = stateToString()
 }
 
 private class IndexedValueQuantumState(size: Int,
@@ -146,12 +186,12 @@ private class IndexedValueQuantumState(size: Int,
         return if (i == -1) Zero else coefficients[i]
     }
 
-    override fun toString() = "QuantumState($size, ${indices.joinToString()}, ${coefficients.joinToString()})"
-
     override fun indexedValueIterator(): IndexedValueIterator<Complex> =
             IndexedArrayValueIterator(Zero, indices, coefficients)
 
     override fun equals(other: Any?) = stateEquals(other)
 
     override fun hashCode() = stateHashCode()
+
+    override fun toString() = stateToString()
 }
