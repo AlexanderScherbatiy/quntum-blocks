@@ -7,7 +7,7 @@ import quantum.gate.hadamar
 import quantum.util.assertComplexEquals
 import kotlin.test.assertEquals
 
-class ProductTest {
+class GateProductTest {
 
     /**
      *  hadamar x hadamar=
