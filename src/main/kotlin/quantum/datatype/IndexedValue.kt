@@ -1,5 +1,6 @@
 package quantum.datatype
 
+import quantum.core.Complex
 import java.util.*
 
 interface IndexedValueIterator<V> {

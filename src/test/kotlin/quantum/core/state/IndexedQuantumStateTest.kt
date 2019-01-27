@@ -3,9 +3,9 @@ package quantum.core.state
 import org.junit.Test
 import quantum.core.Complex
 import quantum.core.quantumState
-import quantum.junit.assertComplexEquals
-import quantum.junit.assertHashEquals
-import quantum.junit.assertHashNotEquals
+import quantum.util.assertComplexEquals
+import quantum.util.assertHashEquals
+import quantum.util.assertHashNotEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 

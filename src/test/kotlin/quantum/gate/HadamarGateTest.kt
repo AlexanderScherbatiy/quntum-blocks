@@ -2,7 +2,7 @@ package quantum.gate
 
 import org.junit.Test
 import quantum.core.Complex.Companion.complex
-import quantum.junit.assertComplexEquals
+import quantum.util.assertComplexEquals
 import kotlin.math.sqrt
 import kotlin.test.assertEquals
 

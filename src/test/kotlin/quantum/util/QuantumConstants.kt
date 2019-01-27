@@ -1,4 +1,4 @@
-package quantum.junit
+package quantum.util
 
 import quantum.core.toComplex
 

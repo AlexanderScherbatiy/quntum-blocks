@@ -57,6 +57,20 @@ interface QuantumState {
 
         return quantumState(this.size * other.size, indices, coefficients)
     }
+
+    fun toVectorString(): String = buildString {
+        append("( ")
+        val iter = indexedValueIterator()
+        while (iter.hasNext()) {
+            iter.next { index, value ->
+                append(index)
+                append(":")
+                append(value.toVectorString())
+                append(" ")
+            }
+        }
+        append(")")
+    }
 }
 
 fun qubit(zero: Complex, one: Complex): Qubit = Qubit.from(zero, one)

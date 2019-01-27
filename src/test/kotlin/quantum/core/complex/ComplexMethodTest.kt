@@ -5,7 +5,7 @@ import quantum.core.Complex.Companion.I
 import quantum.core.Complex.Companion.One
 import quantum.core.Complex.Companion.Zero
 import quantum.core.Complex.Companion.complex
-import quantum.junit.assertComplexEquals
+import quantum.util.assertComplexEquals
 import kotlin.test.assertEquals
 
 class ComplexMethodTest {

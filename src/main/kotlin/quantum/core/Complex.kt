@@ -64,6 +64,8 @@ data class Complex private constructor(val real: Double, val imaginary: Double =
             }
         }
     }
+
+    fun toVectorString(): String = "($real, $imaginary)"
 }
 
 fun Double.toComplex() = complex(this)

@@ -8,8 +8,8 @@ import quantum.core.Complex.Companion.complex
 import quantum.core.Qubit
 import quantum.core.normalize
 import quantum.core.qubit
-import quantum.junit.assertHashEquals
-import quantum.junit.testQuantumStateHash
+import quantum.util.assertHashEquals
+import quantum.util.testStateHash
 import kotlin.math.sqrt
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -84,8 +84,8 @@ class QubitTest {
     @Test
     fun testHashCode() {
 
-        assertEquals(testQuantumStateHash(Complex.One), Qubit.Zero.hashCode())
-        assertEquals(testQuantumStateHash(Complex.One), Qubit.One.hashCode())
+        assertEquals(testStateHash(Complex.One), Qubit.Zero.hashCode())
+        assertEquals(testStateHash(Complex.One), Qubit.One.hashCode())
 
         assertHashEquals(Qubit.Zero, Complex.One)
         assertHashEquals(Qubit.One, Complex.One)

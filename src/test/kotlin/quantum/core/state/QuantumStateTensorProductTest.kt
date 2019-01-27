@@ -4,7 +4,7 @@ import org.junit.Test
 import quantum.core.Complex
 import quantum.core.Complex.Companion.complex
 import quantum.core.Qubit
-import quantum.junit.assertComplexEquals
+import quantum.util.assertComplexEquals
 import kotlin.test.assertEquals
 
 class QuantumStateTensorProductTest {

@@ -10,11 +10,15 @@ interface QuantumGate {
 
     operator fun times(other: QuantumState): QuantumState {
 
-        val coefficients = Array(this.size) { i ->
-            (0 until this.size)
-                    .map { j -> this[i, j] * other[j] }
-                    .reduce { c1, c2 -> c1 + c2 }
+        val iter = other.indexedValueIterator()
+        val coefficients = Array(size) { Complex.Zero }
 
+        while (iter.hasNext()) {
+            iter.next { column, value ->
+                for (row in 0 until size) {
+                    coefficients[row] += this[row, column] * value
+                }
+            }
         }
 
         return quantumState(*coefficients)
