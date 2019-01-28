@@ -34,6 +34,7 @@ data class Complex private constructor(val real: Double, val imaginary: Double =
 
     operator fun unaryMinus() = complex(-real, -imaginary)
     operator fun plus(other: Complex): Complex = complex(real + other.real, imaginary + other.imaginary)
+    operator fun minus(other: Complex): Complex = complex(real - other.real, imaginary - other.imaginary)
     operator fun times(other: Complex): Complex = complex(
             real * other.real - imaginary * other.imaginary,
             real * other.imaginary + imaginary * other.real)

@@ -1,7 +1,11 @@
 package quantum.core.gate
 
 import org.junit.Test
+import quantum.core.Complex.Companion.complex
+import quantum.core.MatrixQuantumGate
 import quantum.core.Qubit
+import quantum.core.qubit
+import quantum.core.toComplex
 import quantum.gate.cnot
 import quantum.gate.hadamar
 import quantum.gate.identity
@@ -10,37 +14,20 @@ import quantum.util.assertStateEquals
 class GateStateProductTest {
 
     @Test
-    fun testIdentityProductState() {
+    fun testProductState() {
 
-        val identity = identity()
-        assertStateEquals(Qubit.Zero, identity * Qubit.Zero)
-        assertStateEquals(Qubit.One, identity * Qubit.One)
-        assertStateEquals(Qubit.Plus, identity * Qubit.Plus)
-        assertStateEquals(Qubit.Minus, identity * Qubit.Minus)
-    }
+        val angle = 28 * Math.PI / 180
+        val cos = Math.cos(angle).toComplex()
+        val sin = Math.sin(angle).toComplex()
 
-    @Test
-    fun testHadamarProductState() {
+        val gate = MatrixQuantumGate(arrayOf(
+                arrayOf(cos, -sin),
+                arrayOf(sin, cos)
+        ))
 
-        val hadamar = hadamar()
-        assertStateEquals(Qubit.Plus, hadamar * Qubit.Zero)
-        assertStateEquals(Qubit.Minus, hadamar * Qubit.One)
-        assertStateEquals(Qubit.Zero, hadamar * Qubit.Plus)
-        assertStateEquals(Qubit.One, hadamar * Qubit.Minus)
-    }
-
-    @Test
-    fun testCNotProductState() {
-
-        val cnot = cnot()
-        val e1 = (Qubit.Zero tensor Qubit.Zero)
-        val e2 = (Qubit.Zero tensor Qubit.One)
-        val e3 = (Qubit.One tensor Qubit.Zero)
-        val e4 = (Qubit.One tensor Qubit.One)
-
-        assertStateEquals(e1, cnot * e1)
-        assertStateEquals(e2, cnot * e2)
-        assertStateEquals(e4, cnot * e3)
-        assertStateEquals(e3, cnot * e4)
+        assertStateEquals(qubit(cos, sin), gate * Qubit.Zero)
+        assertStateEquals(qubit(-sin, cos), gate * Qubit.One)
+        assertStateEquals(qubit(cos - sin, sin + cos), gate * Qubit.Plus)
+        assertStateEquals(qubit(cos + sin, sin - cos), gate * Qubit.Minus)
     }
 }

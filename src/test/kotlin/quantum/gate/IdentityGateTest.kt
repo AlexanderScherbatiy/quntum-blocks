@@ -1,7 +1,9 @@
 package quantum.gate
 
 import org.junit.Test
+import quantum.core.Qubit
 import quantum.core.toComplex
+import quantum.util.assertStateEquals
 import kotlin.test.assertEquals
 
 class IdentityGateTest {
@@ -27,4 +29,15 @@ class IdentityGateTest {
     fun testColumnOutOfBounds() {
         identity()[0, 2]
     }
+
+    @Test
+    fun testProductState() {
+
+        val identity = identity()
+        assertStateEquals(Qubit.Zero, identity * Qubit.Zero)
+        assertStateEquals(Qubit.One, identity * Qubit.One)
+        assertStateEquals(Qubit.Plus, identity * Qubit.Plus)
+        assertStateEquals(Qubit.Minus, identity * Qubit.Minus)
+    }
+
 }

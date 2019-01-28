@@ -2,7 +2,9 @@ package quantum.gate
 
 import org.junit.Test
 import quantum.core.Complex.Companion.complex
+import quantum.core.Qubit
 import quantum.util.assertComplexEquals
+import quantum.util.assertStateEquals
 import kotlin.math.sqrt
 import kotlin.test.assertEquals
 
@@ -33,4 +35,15 @@ class HadamarGateTest {
     fun testColumnOutOfBounds() {
         hadamar()[0, 2]
     }
+
+    @Test
+    fun testProductState() {
+
+        val hadamar = hadamar()
+        assertStateEquals(Qubit.Plus, hadamar * Qubit.Zero)
+        assertStateEquals(Qubit.Minus, hadamar * Qubit.One)
+        assertStateEquals(Qubit.Zero, hadamar * Qubit.Plus)
+        assertStateEquals(Qubit.One, hadamar * Qubit.Minus)
+    }
+
 }

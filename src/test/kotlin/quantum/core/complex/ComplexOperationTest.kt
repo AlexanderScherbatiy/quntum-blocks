@@ -19,6 +19,12 @@ class ComplexOperationTest {
     }
 
     @Test
+    fun testMinusComplex() {
+        val substruct = complex(1.0, 2.0) - complex(3.0, 4.0)
+        assertEquals(complex(-2.0, -2.0), substruct)
+    }
+
+    @Test
     fun testMulComplex() {
         assertEquals(complex(6.0), complex(2.0) * complex(3.0))
         assertEquals(complex(-6.0), complex(0.0, 2.0) * complex(0.0, 3.0))

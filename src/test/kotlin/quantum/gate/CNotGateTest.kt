@@ -2,7 +2,9 @@ package quantum.gate
 
 import org.junit.Test
 import quantum.core.Complex
+import quantum.core.Qubit
 import quantum.util.assertComplexEquals
+import quantum.util.assertStateEquals
 import kotlin.test.assertEquals
 
 class CNotGateTest {
@@ -44,4 +46,20 @@ class CNotGateTest {
     fun testColumnOutOfBounds() {
         cnot()[2, 4]
     }
+
+    @Test
+    fun testProductState() {
+
+        val cnot = cnot()
+        val e1 = (Qubit.Zero tensor Qubit.Zero)
+        val e2 = (Qubit.Zero tensor Qubit.One)
+        val e3 = (Qubit.One tensor Qubit.Zero)
+        val e4 = (Qubit.One tensor Qubit.One)
+
+        assertStateEquals(e1, cnot * e1)
+        assertStateEquals(e2, cnot * e2)
+        assertStateEquals(e4, cnot * e3)
+        assertStateEquals(e3, cnot * e4)
+    }
+
 }
