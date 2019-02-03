@@ -6,6 +6,7 @@ import quantum.core.quantumState
 import quantum.util.assertComplexEquals
 import quantum.util.assertHashEquals
 import quantum.util.assertHashNotEquals
+import quantum.util.assertStateEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -29,8 +30,8 @@ class IndexedQuantumStateTest {
         assertComplexEquals(z, indexedQuantumState[2])
         assertComplexEquals(e / sqrt2, indexedQuantumState[3])
 
-        assertEquals(quantumState(e, z, z, e), indexedQuantumState)
-        assertEquals(indexedQuantumState, quantumState(e, z, z, e))
+        assertStateEquals(quantumState(e, z, z, e), indexedQuantumState)
+        assertStateEquals(indexedQuantumState, quantumState(e, z, z, e))
     }
 
     @Test

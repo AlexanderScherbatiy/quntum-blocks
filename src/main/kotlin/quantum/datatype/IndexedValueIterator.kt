@@ -1,6 +1,5 @@
 package quantum.datatype
 
-import quantum.core.Complex
 import java.util.*
 
 interface IndexedValueIterator<V> {
@@ -70,28 +69,45 @@ class IndexedArrayValueIterator<V>(override val zeroValue: V,
     }
 }
 
-class IndexedArraySkipZeroValueIterator<V>(override val zeroValue: V,
-                                           val values: Array<out V>) : IndexedValueIterator<V> {
+abstract class AbstractIndexedSkipZeroValueIterator<V> : IndexedValueIterator<V> {
+
+    abstract val valuesSize: Int
+    abstract operator fun get(index: Int): V
 
     private var index = -1
-    override val size = values.count { it != zeroValue }
-
-    init {
-        skipZeros()
-    }
 
     private fun skipZeros() {
-        while (++index < values.size && values[index] == zeroValue);
+        while (++index < valuesSize && this[index] == zeroValue);
     }
 
-    override fun hasNext() = index < values.size
+    protected fun getNonZeroSize() = (0 until valuesSize).count { this[it] != zeroValue }
+
+    protected fun initSkipZeroIterator() {
+        skipZeros()
+    }
+
+    override fun hasNext() = index < valuesSize
 
     override fun next(consumer: (Int, V) -> Unit) {
-        if (index >= values.size) {
+        if (!hasNext()) {
             outOfBounds(index)
         }
-        consumer(index, values[index])
+        consumer(index, this[index])
         skipZeros()
+    }
+}
+
+class IndexedArraySkipZeroValueIterator<V>(override val zeroValue: V,
+                                           private val values: Array<out V>)
+    : AbstractIndexedSkipZeroValueIterator<V>() {
+
+    override val valuesSize = values.size
+    override val size = getNonZeroSize()
+
+    override fun get(index: Int) = values[index]
+
+    init {
+        initSkipZeroIterator()
     }
 }
 
