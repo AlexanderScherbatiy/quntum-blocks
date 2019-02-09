@@ -1,12 +1,16 @@
 package quantum.core
 
 import quantum.core.Complex.Companion.Zero
+import quantum.datatype.AbstractIndexedSkipZeroValueIterator
+import quantum.datatype.IndexedValueIterator
 
 interface QuantumGate {
 
     val size: Int
 
     operator fun get(row: Int, column: Int): Complex
+
+    fun rowIndexedValueIterator(): IndexedValueIterator<IndexedValueIterator<Complex>>
 
     operator fun times(other: QuantumState): QuantumState {
 
@@ -102,5 +106,45 @@ open class MatrixQuantumGate(val elements: Array<Array<Complex>>) : QuantumGate 
 
     override fun get(row: Int, column: Int) = elements[row][column]
 
+    override fun rowIndexedValueIterator() = QuantumGateRowIndexedValueIterator(this)
+
     override fun toString() = contentToString()
+}
+
+object EmptyIndexedComplexValueIterator : IndexedValueIterator<Complex> {
+    override val size = 0
+    override val zeroValue = Zero
+    override fun hasNext() = false
+
+    override fun next(consumer: (index: Int, value: Complex) -> Unit) = throw IndexOutOfBoundsException("0")
+}
+
+class QuantumGateRowIndexedValueIterator(val gate: QuantumGate)
+    : IndexedValueIterator<IndexedValueIterator<Complex>> {
+
+    override val size = gate.size
+
+    override val zeroValue = EmptyIndexedComplexValueIterator
+
+    private var index = 0
+
+    override fun hasNext() = index < gate.size
+
+    override fun next(consumer: (index: Int, value: IndexedValueIterator<Complex>) -> Unit) {
+
+        val row = object : AbstractIndexedSkipZeroValueIterator<Complex>() {
+            override val zeroValue = Zero
+            override val valuesSize = gate.size
+            override val size = getNonZeroSize()
+
+            override fun get(i: Int) = gate[index, i]
+
+            init {
+                initSkipZeroIterator()
+            }
+        }
+
+        consumer(index, row)
+        index++
+    }
 }

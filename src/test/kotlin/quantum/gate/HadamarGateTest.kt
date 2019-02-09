@@ -1,9 +1,11 @@
 package quantum.gate
 
 import org.junit.Test
+import quantum.core.Complex
 import quantum.core.Complex.Companion.complex
 import quantum.core.Qubit
 import quantum.util.assertComplexEquals
+import quantum.util.assertMatrixIndexedValueIteratorEquals
 import quantum.util.assertStateEquals
 import kotlin.math.sqrt
 import kotlin.test.assertEquals
@@ -46,4 +48,18 @@ class HadamarGateTest {
         assertStateEquals(Qubit.One, hadamar * Qubit.Minus)
     }
 
+    @Test
+    fun rowIndexedValueIterator() {
+        assertMatrixIndexedValueIteratorEquals(
+                hadamar().rowIndexedValueIterator(),
+                arrayOf(
+                        intArrayOf(0, 1),
+                        intArrayOf(0, 1)
+                ),
+                arrayOf(
+                        arrayOf(inverseSqrt2, inverseSqrt2),
+                        arrayOf(inverseSqrt2, -inverseSqrt2)
+                )
+        )
+    }
 }

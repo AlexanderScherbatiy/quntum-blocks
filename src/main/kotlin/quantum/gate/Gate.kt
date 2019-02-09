@@ -4,7 +4,11 @@ import quantum.core.*
 
 private val InverseSqrt2 = (1.0 / kotlin.math.sqrt(2.0)).toComplex()
 
-fun identity(size: Int) = object : QuantumGate {
+abstract class AbstractConstantQuantumGate : QuantumGate {
+    override fun rowIndexedValueIterator() = QuantumGateRowIndexedValueIterator(this)
+}
+
+fun identity(size: Int) = object : AbstractConstantQuantumGate() {
 
     override val size = size
 
@@ -21,7 +25,7 @@ fun projection(state: QuantumState) = projection(state, state)
 fun projection(state1: QuantumState, state2: QuantumState) = ProjectionGate(state1, state2)
 fun diffusion(state: QuantumState) = GroverDiffusionGate(state)
 
-object IdentityQuantumGate : QuantumGate {
+object IdentityQuantumGate : AbstractConstantQuantumGate() {
 
     override val size = 2
 
@@ -34,7 +38,7 @@ object IdentityQuantumGate : QuantumGate {
     }
 }
 
-object HadamarQuantumGate : QuantumGate {
+object HadamarQuantumGate : AbstractConstantQuantumGate() {
 
     override val size = 2
 
@@ -47,7 +51,7 @@ object HadamarQuantumGate : QuantumGate {
     }
 }
 
-object CNotGate : QuantumGate {
+object CNotGate : AbstractConstantQuantumGate() {
 
     override val size = 4
 
@@ -88,7 +92,7 @@ fun controlled(size: Int, f: (List<Bit>) -> Bit): QuantumGate {
             .map { f(it.toBits()) }
             .toTypedArray()
 
-    return object : QuantumGate {
+    return object : AbstractConstantQuantumGate() {
         override val size get() = opSize
 
         override fun get(row: Int, column: Int): Complex {

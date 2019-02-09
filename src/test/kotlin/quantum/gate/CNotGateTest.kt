@@ -4,6 +4,7 @@ import org.junit.Test
 import quantum.core.Complex
 import quantum.core.Qubit
 import quantum.util.assertComplexEquals
+import quantum.util.assertMatrixIndexedValueIteratorEquals
 import quantum.util.assertStateEquals
 import kotlin.test.assertEquals
 
@@ -60,6 +61,25 @@ class CNotGateTest {
         assertStateEquals(e2, cnot * e2)
         assertStateEquals(e4, cnot * e3)
         assertStateEquals(e3, cnot * e4)
+    }
+
+    @Test
+    fun rowIndexedValueIterator() {
+        assertMatrixIndexedValueIteratorEquals(
+                cnot().rowIndexedValueIterator(),
+                arrayOf(
+                        intArrayOf(0),
+                        intArrayOf(1),
+                        intArrayOf(3),
+                        intArrayOf(2)
+                ),
+                arrayOf(
+                        arrayOf(Complex.One),
+                        arrayOf(Complex.One),
+                        arrayOf(Complex.One),
+                        arrayOf(Complex.One)
+                )
+        )
     }
 
 }
