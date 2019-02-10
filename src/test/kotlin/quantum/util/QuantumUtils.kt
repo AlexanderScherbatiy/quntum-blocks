@@ -44,7 +44,8 @@ fun assertComplexEquals(expected: Complex, actual: Complex) {
 
 fun <V> assertIndexedValueIteratorEquals(iter: IndexedValueIterator<V>,
                                          indices: IntArray,
-                                         values: Array<V>) {
+                                         values: Array<V>,
+                                         equals: (v1: V, v2: V) -> Boolean) {
 
     assertEquals(iter.size, indices.size)
 
@@ -52,10 +53,19 @@ fun <V> assertIndexedValueIteratorEquals(iter: IndexedValueIterator<V>,
         assertTrue(iter.hasNext())
         iter.next { index, value ->
             assertEquals(indices[i], index)
-            assertEquals(values[i], value)
+            assertTrue(equals(values[i], value))
         }
     }
     assertFalse(iter.hasNext())
+}
+
+fun assertComplexIndexedValueIteratorEquals(iter: IndexedValueIterator<Complex>,
+                                            indices: IntArray,
+                                            values: Array<Complex>) {
+    assertIndexedValueIteratorEquals(iter, indices, values) { c1, c2 ->
+        assertComplexEquals(c1, c2)
+        true
+    }
 }
 
 fun <V> assertMatrixIndexedValueIteratorEquals(iter: IndexedValueIterator<IndexedValueIterator<V>>,
@@ -68,7 +78,7 @@ fun <V> assertMatrixIndexedValueIteratorEquals(iter: IndexedValueIterator<Indexe
         assertTrue(iter.hasNext())
         iter.next { index, iterValue ->
             assertEquals(i, index)
-            assertIndexedValueIteratorEquals(iterValue, indices[i], values[i])
+            assertIndexedValueIteratorEquals(iterValue, indices[i], values[i]) { v1, v2 -> v1 == v2 }
         }
     }
     assertFalse(iter.hasNext())
