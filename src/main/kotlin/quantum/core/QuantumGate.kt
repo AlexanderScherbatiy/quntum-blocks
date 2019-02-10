@@ -12,15 +12,18 @@ interface QuantumGate {
 
     fun rowIndexedValueIterator(): IndexedValueIterator<IndexedValueIterator<Complex>>
 
-    operator fun times(other: QuantumState): QuantumState {
+    operator fun times(state: QuantumState): QuantumState {
 
-        val iter = other.indexedValueIterator()
+        val iter = rowIndexedValueIterator()
         val coefficients = Array(size) { Complex.Zero }
 
         while (iter.hasNext()) {
-            iter.next { column, value ->
-                for (row in 0 until size) {
-                    coefficients[row] += this[row, column] * value
+            iter.next { index, row ->
+                val zipIter = (row zipNonZero state.indexedValueIterator())
+                while (zipIter.hasNext()) {
+                    zipIter.next { _, value1, value2 ->
+                        coefficients[index] += value1 * value2
+                    }
                 }
             }
         }
