@@ -4,10 +4,6 @@ import quantum.core.*
 
 private val InverseSqrt2 = (1.0 / kotlin.math.sqrt(2.0)).toComplex()
 
-abstract class AbstractConstantQuantumGate : QuantumGate {
-    override fun rowIndexedValueIterator() = QuantumGateRowIndexedValueIterator(this)
-}
-
 fun identity(size: Int) = object : AbstractConstantQuantumGate() {
 
     override val size = size

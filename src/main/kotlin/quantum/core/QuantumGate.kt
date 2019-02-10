@@ -100,15 +100,17 @@ fun QuantumGate.throwDimensionException(row: Int, column: Int): Nothing =
         throw IndexOutOfBoundsException(
                 "indices ($row, $column), dimensions: (${this.size}, ${this.size})")
 
-open class MatrixQuantumGate(val elements: Array<Array<Complex>>) : QuantumGate {
+open class MatrixQuantumGate(val elements: Array<Array<Complex>>) : AbstractConstantQuantumGate() {
 
     override val size = elements.size
 
     override fun get(row: Int, column: Int) = elements[row][column]
 
-    override fun rowIndexedValueIterator() = QuantumGateRowIndexedValueIterator(this)
-
     override fun toString() = contentToString()
+}
+
+abstract class AbstractConstantQuantumGate : QuantumGate {
+    override fun rowIndexedValueIterator() = QuantumGateRowIndexedValueIterator(this)
 }
 
 object EmptyIndexedComplexValueIterator : IndexedValueIterator<Complex> {
