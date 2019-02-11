@@ -1,4 +1,4 @@
-package quantum.core.gate
+package quantum.gate
 
 import org.junit.Test
 import quantum.core.Complex.Companion.Zero
@@ -9,7 +9,7 @@ import quantum.gate.identity
 import quantum.util.assertComplexEquals
 import kotlin.test.assertEquals
 
-class TensorProductTest {
+class GateTensorProductTest {
 
     /**
      * Identity x Hadamar =
@@ -18,7 +18,7 @@ class TensorProductTest {
      * ( 0  1 )   ( 1 -1 )
      */
     @Test
-    fun testIdentityHadamarTensorProduct() {
+    fun testIdentityTensorProductHadamar() {
 
         val result = identity() tensor hadamar()
 
@@ -53,7 +53,7 @@ class TensorProductTest {
      * ( 1 -1 )   ( 0  1 )
      */
     @Test
-    fun testHadamarIdentityTensorProduct() {
+    fun testHadamarTensorProductIdentity() {
 
 
         val result = hadamar() tensor identity()
@@ -94,7 +94,7 @@ class TensorProductTest {
      * ( 1 -1 -1  1 )
      */
     @Test
-    fun testHadamarHadamarTensorProduct() {
+    fun testHadamarTensorHadamarProduct() {
 
         val result = hadamar() tensor hadamar()
 

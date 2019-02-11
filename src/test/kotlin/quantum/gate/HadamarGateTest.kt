@@ -48,6 +48,29 @@ class HadamarGateTest {
         assertStateEquals(Qubit.One, hadamar * Qubit.Minus)
     }
 
+
+    /**
+     *  hadamar x hadamar=
+     *  1 / 2 *
+     * ( 1  1 ) x ( 1  1 )
+     * ( 1 -1 )   ( 1 -1 )
+     *  =
+     * ( 1  0 )
+     * ( 0  1 )
+     */
+    @Test
+    fun testProductGate() {
+        val result = hadamar() * hadamar()
+
+        assertEquals(2, result.size)
+        assertEquals(2, result.size)
+
+        assertComplexEquals(Complex.One, result[0, 0])
+        assertComplexEquals(Complex.Zero, result[0, 1])
+        assertComplexEquals(Complex.Zero, result[1, 0])
+        assertComplexEquals(Complex.One, result[1, 1])
+    }
+
     @Test
     fun rowIndexedValueIterator() {
         assertMatrixIndexedValueIteratorEquals(

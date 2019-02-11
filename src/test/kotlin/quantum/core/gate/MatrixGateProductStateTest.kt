@@ -1,13 +1,12 @@
 package quantum.core.gate
 
 import org.junit.Test
-import quantum.core.Complex
-import quantum.core.MatrixQuantumGate
-import quantum.core.Qubit
+import quantum.core.*
 import quantum.util.InverseSqrt2
 import quantum.util.assertComplexIndexedValueIteratorEquals
+import quantum.util.assertStateEquals
 
-class MatrixGateScalarProductTest {
+class MatrixGateProductStateTest {
 
     @Test
     fun testScalarProductQubit() {
@@ -40,4 +39,23 @@ class MatrixGateScalarProductTest {
                 arrayOf(-elem, elem)
         )
     }
+
+    @Test
+    fun testProductState() {
+
+        val angle = 28 * Math.PI / 180
+        val cos = Math.cos(angle).toComplex()
+        val sin = Math.sin(angle).toComplex()
+
+        val gate = MatrixQuantumGate(arrayOf(
+                arrayOf(cos, -sin),
+                arrayOf(sin, cos)
+        ))
+
+        assertStateEquals(qubit(cos, sin), gate * Qubit.Zero)
+        assertStateEquals(qubit(-sin, cos), gate * Qubit.One)
+        assertStateEquals(qubit(cos - sin, sin + cos), gate * Qubit.Plus)
+        assertStateEquals(qubit(cos + sin, sin - cos), gate * Qubit.Minus)
+    }
+
 }
