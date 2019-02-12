@@ -28,7 +28,7 @@ class MatrixQuantumGateTest {
     }
 
     @Test
-    fun testIndexedValueIterator() {
+    fun testRowIndexedValueIterator() {
 
         assertMatrixIndexedValueIteratorEquals(
                 MatrixQuantumGate(
@@ -61,6 +61,44 @@ class MatrixQuantumGateTest {
                 arrayOf(
                         arrayOf(-Complex.I),
                         arrayOf(Complex.I)
+                )
+        )
+    }
+
+    @Test
+    fun testColumnIndexedValueIterator() {
+
+        assertMatrixIndexedValueIteratorEquals(
+                MatrixQuantumGate(
+                        arrayOf(
+                                arrayOf(Complex.One, Complex.Zero),
+                                arrayOf(Complex.Zero, -Complex.One)
+                        )
+                ).columnIndexedValueIterator(),
+                arrayOf(
+                        intArrayOf(0),
+                        intArrayOf(1)
+                ),
+                arrayOf(
+                        arrayOf(Complex.One),
+                        arrayOf(-Complex.One)
+                )
+        )
+
+        assertMatrixIndexedValueIteratorEquals(
+                MatrixQuantumGate(
+                        arrayOf(
+                                arrayOf(Complex.Zero, -Complex.I),
+                                arrayOf(Complex.I, Complex.Zero)
+                        )
+                ).columnIndexedValueIterator(),
+                arrayOf(
+                        intArrayOf(1),
+                        intArrayOf(0)
+                ),
+                arrayOf(
+                        arrayOf(Complex.I),
+                        arrayOf(-Complex.I)
                 )
         )
     }

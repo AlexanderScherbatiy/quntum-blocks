@@ -12,6 +12,8 @@ interface QuantumGate {
 
     fun rowIndexedValueIterator(): IndexedValueIterator<IndexedValueIterator<Complex>>
 
+    fun columnIndexedValueIterator(): IndexedValueIterator<IndexedValueIterator<Complex>>
+
     operator fun times(state: QuantumState): QuantumState {
 
         val iter = rowIndexedValueIterator()
@@ -114,6 +116,7 @@ open class MatrixQuantumGate(val elements: Array<Array<Complex>>) : AbstractCons
 
 abstract class AbstractConstantQuantumGate : QuantumGate {
     override fun rowIndexedValueIterator() = QuantumGateRowIndexedValueIterator(this)
+    override fun columnIndexedValueIterator() = QuantumGateColumnIndexedValueIterator(this)
 }
 
 object EmptyIndexedComplexValueIterator : IndexedValueIterator<Complex> {
@@ -124,25 +127,27 @@ object EmptyIndexedComplexValueIterator : IndexedValueIterator<Complex> {
     override fun next(consumer: (index: Int, value: Complex) -> Unit) = throw IndexOutOfBoundsException("0")
 }
 
-class QuantumGateRowIndexedValueIterator(val gate: QuantumGate)
+abstract class QuantumGateIndexedValueIterator(val gateSize: Int)
     : IndexedValueIterator<IndexedValueIterator<Complex>> {
 
-    override val size = gate.size
+    override val size = gateSize
 
     override val zeroValue = EmptyIndexedComplexValueIterator
 
     private var index = 0
 
-    override fun hasNext() = index < gate.size
+    override fun hasNext() = index < gateSize
+
+    abstract fun elem(i: Int, j: Int): Complex
 
     override fun next(consumer: (index: Int, value: IndexedValueIterator<Complex>) -> Unit) {
 
         val row = object : AbstractIndexedSkipZeroValueIterator<Complex>() {
             override val zeroValue = Zero
-            override val valuesSize = gate.size
+            override val valuesSize = gateSize
             override val size = getNonZeroSize()
 
-            override fun get(i: Int) = gate[index, i]
+            override fun get(i: Int) = elem(index, i)
 
             init {
                 initSkipZeroIterator()
@@ -152,4 +157,14 @@ class QuantumGateRowIndexedValueIterator(val gate: QuantumGate)
         consumer(index, row)
         index++
     }
+}
+
+class QuantumGateRowIndexedValueIterator(val gate: QuantumGate)
+    : QuantumGateIndexedValueIterator(gate.size) {
+    override fun elem(i: Int, j: Int) = gate[i, j]
+}
+
+class QuantumGateColumnIndexedValueIterator(val gate: QuantumGate)
+    : QuantumGateIndexedValueIterator(gate.size) {
+    override fun elem(i: Int, j: Int) = gate[j, i]
 }
