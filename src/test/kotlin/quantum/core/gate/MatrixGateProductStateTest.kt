@@ -9,7 +9,7 @@ import quantum.util.assertStateEquals
 class MatrixGateProductStateTest {
 
     @Test
-    fun testScalarProductQubit() {
+    fun testProductQubit() {
 
         val gate = MatrixQuantumGate(
                 arrayOf(
