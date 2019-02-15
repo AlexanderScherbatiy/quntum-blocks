@@ -36,7 +36,7 @@ class MatrixQuantumGateTest {
                                 arrayOf(Complex.One, Complex.Zero),
                                 arrayOf(Complex.Zero, -Complex.One)
                         )
-                ).rowIndexedValueIterator(),
+                ).rowsIndexedValueIterator(),
                 arrayOf(
                         intArrayOf(0),
                         intArrayOf(1)
@@ -53,7 +53,7 @@ class MatrixQuantumGateTest {
                                 arrayOf(Complex.Zero, -Complex.I),
                                 arrayOf(Complex.I, Complex.Zero)
                         )
-                ).rowIndexedValueIterator(),
+                ).rowsIndexedValueIterator(),
                 arrayOf(
                         intArrayOf(1),
                         intArrayOf(0)
@@ -74,7 +74,7 @@ class MatrixQuantumGateTest {
                                 arrayOf(Complex.One, Complex.Zero),
                                 arrayOf(Complex.Zero, -Complex.One)
                         )
-                ).columnIndexedValueIterator(),
+                ).columnsIndexedValueIterator(),
                 arrayOf(
                         intArrayOf(0),
                         intArrayOf(1)
@@ -91,7 +91,7 @@ class MatrixQuantumGateTest {
                                 arrayOf(Complex.Zero, -Complex.I),
                                 arrayOf(Complex.I, Complex.Zero)
                         )
-                ).columnIndexedValueIterator(),
+                ).columnsIndexedValueIterator(),
                 arrayOf(
                         intArrayOf(1),
                         intArrayOf(0)

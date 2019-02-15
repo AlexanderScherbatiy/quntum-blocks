@@ -66,7 +66,7 @@ class CNotGateTest {
     @Test
     fun rowIndexedValueIterator() {
         assertMatrixIndexedValueIteratorEquals(
-                cnot().rowIndexedValueIterator(),
+                cnot().rowsIndexedValueIterator(),
                 arrayOf(
                         intArrayOf(0),
                         intArrayOf(1),

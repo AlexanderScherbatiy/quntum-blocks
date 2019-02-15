@@ -2,6 +2,7 @@ package quantum.util
 
 import org.junit.Assert
 import quantum.core.Complex
+import quantum.core.QuantumGateMatrixIndexedValueIterator
 import quantum.core.QuantumState
 import quantum.core.normalize
 import quantum.datatype.IndexedValueIterator
@@ -68,23 +69,21 @@ fun assertComplexIndexedValueIteratorEquals(iter: IndexedValueIterator<Complex>,
     }
 }
 
-fun <V> assertMatrixIndexedValueIteratorEquals(iter: IndexedValueIterator<IndexedValueIterator<V>>,
-                                               indices: Array<IntArray>,
-                                               values: Array<Array<V>>) {
+fun assertMatrixIndexedValueIteratorEquals(iter: QuantumGateMatrixIndexedValueIterator,
+                                           indices: Array<IntArray>,
+                                           values: Array<Array<Complex>>) {
 
     assertEquals(iter.size, indices.size)
 
-    for (i in (0 until indices.size)) {
-        assertTrue(iter.hasNext())
-        iter.next { index, iterValue ->
-            assertEquals(i, index)
-            assertIndexedValueIteratorEquals(iterValue, indices[i], values[i]) { v1, v2 -> v1 == v2 }
+    for (i in (0 until iter.size)) {
+        assertIndexedValueIteratorEquals(iter.iterator(i), indices[i], values[i]) { v1, v2 ->
+            assertComplexEquals(v1, v2)
+            true
         }
     }
-    assertFalse(iter.hasNext())
 }
 
-fun <V> showIndexedValueIteratorEquals(iter: IndexedValueIterator<V>) {
+fun <V> showIndexedValueIterator(iter: IndexedValueIterator<V>) {
     println("size: ${iter.size}")
     while (iter.hasNext()) {
         iter.next { index, value ->

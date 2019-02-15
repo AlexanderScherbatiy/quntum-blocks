@@ -74,7 +74,7 @@ class HadamarGateTest {
     @Test
     fun rowIndexedValueIterator() {
         assertMatrixIndexedValueIteratorEquals(
-                hadamar().rowIndexedValueIterator(),
+                hadamar().rowsIndexedValueIterator(),
                 arrayOf(
                         intArrayOf(0, 1),
                         intArrayOf(0, 1)

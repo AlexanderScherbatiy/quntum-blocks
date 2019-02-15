@@ -4,13 +4,9 @@ import org.junit.Test
 import quantum.core.Complex
 import quantum.core.Qubit
 import quantum.core.toComplex
-import quantum.datatype.checkValue
-import quantum.util.assertIndexedValueIteratorEquals
 import quantum.util.assertMatrixIndexedValueIteratorEquals
 import quantum.util.assertStateEquals
-import quantum.util.showIndexedValueIteratorEquals
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class IdentityGateTest {
 
@@ -49,7 +45,7 @@ class IdentityGateTest {
     @Test
     fun rowIndexedValueIterator() {
         assertMatrixIndexedValueIteratorEquals(
-                identity().rowIndexedValueIterator(),
+                identity().rowsIndexedValueIterator(),
                 arrayOf(
                         intArrayOf(0),
                         intArrayOf(1)

@@ -30,7 +30,7 @@ class MatrixGateProductGateTest {
         )
 
         assertMatrixIndexedValueIteratorEquals(
-                (gate1 * gate2).rowIndexedValueIterator(),
+                (gate1 * gate2).rowsIndexedValueIterator(),
                 arrayOf(
                         intArrayOf(0),
                         intArrayOf(1)
@@ -70,7 +70,7 @@ class MatrixGateProductGateTest {
         )
 
         assertMatrixIndexedValueIteratorEquals(
-                (gate1 * gate2).rowIndexedValueIterator(),
+                (gate1 * gate2).rowsIndexedValueIterator(),
                 arrayOf(
                         intArrayOf(1),
                         intArrayOf(0),

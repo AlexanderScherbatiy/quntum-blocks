@@ -10,22 +10,20 @@ interface QuantumGate {
 
     operator fun get(row: Int, column: Int): Complex
 
-    fun rowIndexedValueIterator(): IndexedValueIterator<IndexedValueIterator<Complex>>
+    fun rowsIndexedValueIterator(): QuantumGateMatrixIndexedValueIterator
 
-    fun columnIndexedValueIterator(): IndexedValueIterator<IndexedValueIterator<Complex>>
+    fun columnsIndexedValueIterator(): QuantumGateMatrixIndexedValueIterator
 
     operator fun times(state: QuantumState): QuantumState {
 
-        val iter = rowIndexedValueIterator()
+        val rows = rowsIndexedValueIterator()
         val coefficients = Array(size) { Complex.Zero }
 
-        while (iter.hasNext()) {
-            iter.next { index, row ->
-                val zipIter = (row zipNonZero state.indexedValueIterator())
-                while (zipIter.hasNext()) {
-                    zipIter.next { _, value1, value2 ->
-                        coefficients[index] += value1 * value2
-                    }
+        for (index in (0 until size)) {
+            val zipIter = (rows.iterator(index) zipNonZero state.indexedValueIterator())
+            while (zipIter.hasNext()) {
+                zipIter.next { _, value1, value2 ->
+                    coefficients[index] += value1 * value2
                 }
             }
         }
@@ -34,6 +32,22 @@ interface QuantumGate {
     }
 
     operator fun times(other: QuantumGate): QuantumGate {
+
+        val rows = this.rowsIndexedValueIterator()
+        val columns = other.columnsIndexedValueIterator()
+
+        for (i in (0 until rows.size)) {
+            for (j in (0 until rows.size)) {
+                val zip = rows.iterator(i) zipNonZero columns.iterator(j)
+
+                var value = Complex.Zero
+                while (zip.hasNext()) {
+                    zip.next { _, value1, value2 ->
+                        value += value1 * value2
+                    }
+                }
+            }
+        }
 
         val coefficients = Array(this.size) { i ->
             Array(other.size) { j ->
@@ -115,8 +129,10 @@ open class MatrixQuantumGate(val elements: Array<Array<Complex>>) : AbstractCons
 }
 
 abstract class AbstractConstantQuantumGate : QuantumGate {
-    override fun rowIndexedValueIterator() = QuantumGateRowIndexedValueIterator(this)
-    override fun columnIndexedValueIterator() = QuantumGateColumnIndexedValueIterator(this)
+
+    override fun rowsIndexedValueIterator() = QuantumGateRowsIndexedValueIterator(this)
+
+    override fun columnsIndexedValueIterator() = QuantumGateColumnsIndexedValueIterator(this)
 }
 
 object EmptyIndexedComplexValueIterator : IndexedValueIterator<Complex> {
@@ -159,12 +175,36 @@ abstract class QuantumGateIndexedValueIterator(val gateSize: Int)
     }
 }
 
-class QuantumGateRowIndexedValueIterator(val gate: QuantumGate)
-    : QuantumGateIndexedValueIterator(gate.size) {
+interface QuantumGateMatrixIndexedValueIterator {
+    val size: Int
+    fun iterator(index: Int): IndexedValueIterator<Complex>
+}
+
+abstract class QuantumGateMatrixSkipZeroIndexedValueIterator(val matrixSize: Int) : QuantumGateMatrixIndexedValueIterator {
+
+    override val size = matrixSize
+
+    abstract fun elem(i: Int, j: Int): Complex
+
+    override fun iterator(index: Int) = object : AbstractIndexedSkipZeroValueIterator<Complex>() {
+        override val zeroValue = Complex.Zero
+        override val valuesSize = matrixSize
+        override val size = getNonZeroSize()
+
+        override fun get(i: Int) = elem(index, i)
+
+        init {
+            initSkipZeroIterator()
+        }
+    }
+}
+
+class QuantumGateRowsIndexedValueIterator(val gate: QuantumGate)
+    : QuantumGateMatrixSkipZeroIndexedValueIterator(gate.size) {
     override fun elem(i: Int, j: Int) = gate[i, j]
 }
 
-class QuantumGateColumnIndexedValueIterator(val gate: QuantumGate)
-    : QuantumGateIndexedValueIterator(gate.size) {
+class QuantumGateColumnsIndexedValueIterator(val gate: QuantumGate)
+    : QuantumGateMatrixSkipZeroIndexedValueIterator(gate.size) {
     override fun elem(i: Int, j: Int) = gate[j, i]
 }
