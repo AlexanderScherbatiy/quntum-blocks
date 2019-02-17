@@ -17,7 +17,6 @@ interface QuantumGate {
     operator fun times(state: QuantumState): QuantumState {
 
         val rows = rowsIndexedValueIterator()
-        val coefficients = Array(size) { Complex.Zero }
 
         val indices = mutableListOf<Int>()
         val values = mutableListOf<Complex>()
@@ -28,7 +27,6 @@ interface QuantumGate {
             while (zipIter.hasNext()) {
                 zipIter.next { _, value1, value2 ->
                     value += value1 * value2
-                    coefficients[index] += value
                 }
             }
 
