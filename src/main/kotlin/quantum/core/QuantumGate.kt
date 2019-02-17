@@ -19,16 +19,27 @@ interface QuantumGate {
         val rows = rowsIndexedValueIterator()
         val coefficients = Array(size) { Complex.Zero }
 
+        val indices = mutableListOf<Int>()
+        val values = mutableListOf<Complex>()
+
         for (index in (0 until size)) {
             val zipIter = (rows.iterator(index) zipNonZero state.indexedValueIterator())
+            var value = Complex.Zero
             while (zipIter.hasNext()) {
                 zipIter.next { _, value1, value2 ->
-                    coefficients[index] += value1 * value2
+                    value += value1 * value2
+                    coefficients[index] += value
                 }
             }
+
+            if (value != Complex.Zero) {
+                indices.add(index)
+                values.add(value)
+            }
+
         }
 
-        return quantumState(*coefficients)
+        return quantumState(size, indices.toIntArray(), values.toTypedArray())
     }
 
     operator fun times(other: QuantumGate): QuantumGate {
