@@ -22,6 +22,10 @@ interface IndexedPairIterator<V> {
     fun next(consumer: (index: Int, value1: V, value2: V) -> Unit)
 }
 
+interface RandomAccessIndexedValue<V> {
+    operator fun get(index: Int): V
+}
+
 fun <V> equals(iter1: IndexedValueIterator<V>, iter2: IndexedValueIterator<V>): Boolean {
 
     if (iter1.size != iter2.size) {
@@ -69,18 +73,17 @@ class IndexedArrayValueIterator<V>(override val zeroValue: V,
     }
 }
 
-abstract class AbstractIndexedSkipZeroValueIterator<V> : IndexedValueIterator<V> {
+abstract class AbstractIndexedSkipZeroValueIterator<V>(val f: (Int) -> V) : IndexedValueIterator<V> {
 
     abstract val valuesSize: Int
-    abstract operator fun get(index: Int): V
 
     private var index = -1
 
     private fun skipZeros() {
-        while (++index < valuesSize && this[index] == zeroValue);
+        while (++index < valuesSize && f(index) == zeroValue);
     }
 
-    protected fun getNonZeroSize() = (0 until valuesSize).count { this[it] != zeroValue }
+    protected fun getNonZeroSize() = (0 until valuesSize).count { f(it) != zeroValue }
 
     protected fun initSkipZeroIterator() {
         skipZeros()
@@ -92,19 +95,17 @@ abstract class AbstractIndexedSkipZeroValueIterator<V> : IndexedValueIterator<V>
         if (!hasNext()) {
             outOfBounds(index)
         }
-        consumer(index, this[index])
+        consumer(index, f(index))
         skipZeros()
     }
 }
 
 class IndexedArraySkipZeroValueIterator<V>(override val zeroValue: V,
                                            private val values: Array<out V>)
-    : AbstractIndexedSkipZeroValueIterator<V>() {
+    : AbstractIndexedSkipZeroValueIterator<V>({ values[it] }) {
 
     override val valuesSize = values.size
     override val size = getNonZeroSize()
-
-    override fun get(index: Int) = values[index]
 
     init {
         initSkipZeroIterator()
