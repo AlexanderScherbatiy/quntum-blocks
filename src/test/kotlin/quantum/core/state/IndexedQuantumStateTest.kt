@@ -3,10 +3,7 @@ package quantum.core.state
 import org.junit.Test
 import quantum.core.Complex
 import quantum.core.quantumState
-import quantum.util.assertComplexEquals
-import quantum.util.assertHashEquals
-import quantum.util.assertHashNotEquals
-import quantum.util.assertStateEquals
+import quantum.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -25,10 +22,11 @@ class IndexedQuantumStateTest {
         val indexedQuantumState = quantumState(4,
                 intArrayOf(0, 3), arrayOf(e, e))
 
-        assertComplexEquals(e / sqrt2, indexedQuantumState[0])
-        assertComplexEquals(z, indexedQuantumState[1])
-        assertComplexEquals(z, indexedQuantumState[2])
-        assertComplexEquals(e / sqrt2, indexedQuantumState[3])
+        assertComplexIndexedValueIteratorEquals(
+                indexedQuantumState.indexedValueIterator(),
+                intArrayOf(0, 3),
+                arrayOf(e / sqrt2, e / sqrt2)
+        )
 
         assertStateEquals(quantumState(e, z, z, e), indexedQuantumState)
         assertStateEquals(indexedQuantumState, quantumState(e, z, z, e))

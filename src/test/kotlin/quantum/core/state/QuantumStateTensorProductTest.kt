@@ -5,6 +5,7 @@ import quantum.core.Complex
 import quantum.core.Complex.Companion.complex
 import quantum.core.Qubit
 import quantum.util.assertComplexEquals
+import quantum.util.assertComplexIndexedValueIteratorEquals
 import kotlin.test.assertEquals
 
 class QuantumStateTensorProductTest {
@@ -20,10 +21,12 @@ class QuantumStateTensorProductTest {
         val quantumState = Qubit.Zero tensor Qubit.Zero
 
         assertEquals(4, quantumState.size)
-        assertComplexEquals(Complex.One, quantumState[0])
-        assertComplexEquals(Complex.Zero, quantumState[2])
-        assertComplexEquals(Complex.Zero, quantumState[3])
-        assertComplexEquals(Complex.Zero, quantumState[1])
+        assertComplexIndexedValueIteratorEquals(
+                quantumState.indexedValueIterator(),
+                intArrayOf(0),
+                arrayOf(Complex.One)
+        )
+
     }
 
     /**
@@ -35,10 +38,11 @@ class QuantumStateTensorProductTest {
         val quantumState = Qubit.Zero tensor Qubit.One
 
         assertEquals(4, quantumState.size)
-        assertComplexEquals(Complex.Zero, quantumState[0])
-        assertComplexEquals(Complex.One, quantumState[1])
-        assertComplexEquals(Complex.Zero, quantumState[2])
-        assertComplexEquals(Complex.Zero, quantumState[3])
+        assertComplexIndexedValueIteratorEquals(
+                quantumState.indexedValueIterator(),
+                intArrayOf(1),
+                arrayOf(Complex.One)
+        )
     }
 
     /**
@@ -50,10 +54,12 @@ class QuantumStateTensorProductTest {
         val quantumState = Qubit.One tensor Qubit.One
 
         assertEquals(4, quantumState.size)
-        assertComplexEquals(Complex.Zero, quantumState[0])
-        assertComplexEquals(Complex.Zero, quantumState[1])
-        assertComplexEquals(Complex.Zero, quantumState[2])
-        assertComplexEquals(Complex.One, quantumState[3])
+        assertComplexIndexedValueIteratorEquals(
+                quantumState.indexedValueIterator(),
+                intArrayOf(3),
+                arrayOf(Complex.One)
+        )
+
     }
 
     /**
@@ -65,9 +71,10 @@ class QuantumStateTensorProductTest {
         val quantumState = Qubit.Plus tensor Qubit.Minus
 
         assertEquals(4, quantumState.size)
-        assertComplexEquals(OneHalf, quantumState[0])
-        assertComplexEquals(-OneHalf, quantumState[1])
-        assertComplexEquals(OneHalf, quantumState[2])
-        assertComplexEquals(-OneHalf, quantumState[3])
+        assertComplexIndexedValueIteratorEquals(
+                quantumState.indexedValueIterator(),
+                intArrayOf(0, 1, 2, 3),
+                arrayOf(OneHalf, -OneHalf, OneHalf, -OneHalf)
+        )
     }
 }

@@ -17,9 +17,7 @@ fun identity(size: Int) = object : AbstractConstantQuantumGate() {
 fun identity() = IdentityQuantumGate
 fun hadamar() = HadamarQuantumGate
 fun cnot() = CNotGate
-fun projection(state: QuantumState) = projection(state, state)
-fun projection(state1: QuantumState, state2: QuantumState) = ProjectionGate(state1, state2)
-fun diffusion(state: QuantumState) = GroverDiffusionGate(state)
+fun diffusion(size: Int) = GroverDiffusionGate(size)
 
 object IdentityQuantumGate : AbstractConstantQuantumGate() {
 
@@ -63,20 +61,17 @@ object CNotGate : AbstractConstantQuantumGate() {
     override fun toString() = contentToString()
 }
 
-data class ProjectionGate(val state1: QuantumState, val state2: QuantumState) : MatrixQuantumGate(
-        Array(state1.size) { i ->
-            Array(state2.size) { j ->
-                state1[i] scalar state2[j]
-            }
-        })
+data class GroverDiffusionGate(override val size: Int) : AbstractConstantQuantumGate() {
 
-data class GroverDiffusionGate(val state: QuantumState) : MatrixQuantumGate(
-        Array(state.size) { i ->
-            Array(state.size) { j ->
-                fun diracDeltaFun() = if (i == j) 1.0 else 0.0
-                2.0 * (state[i] scalar state[j]) - diracDeltaFun()
-            }
-        })
+    override fun get(row: Int, column: Int): Complex {
+        if (row >= size || column >= size) {
+            throwDimensionException(row, column)
+        }
+
+        val elem = 1.0 / size
+        return (if (row == column) elem - 1 else elem).toComplex()
+    }
+}
 
 fun controlled(f: (Bit) -> Bit): QuantumGate = controlled(2) { f(it.first()) }
 

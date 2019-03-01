@@ -7,21 +7,33 @@ import kotlin.random.Random
  */
 fun QuantumState.measureBasisIndex(): Int {
 
-    val array = Array(size) { this[it].sqr() }
+    val iter = this.indexedValueIterator()
+    val N = iter.size
+    val array = DoubleArray(N)
+    val indices = IntArray(N)
 
-    for (i in (1 until size)) {
+    var i = 0
+    while (iter.hasNext()) {
+        iter.next { index, value ->
+            indices[i] = index
+            array[i] = value.sqr()
+            i++
+        }
+    }
+
+    for (i in (1 until N)) {
         array[i] += array[i - 1]
     }
 
     val probability = Random.nextDouble(1.0)
 
-    for (i in 0 until size) {
+    for (i in 0 until N) {
         if (probability < array[i]) {
-            return i
+            return indices[i]
         }
     }
 
-    return size - 1
+    return indices[N - 1]
 }
 
 data class Measurement(val bits: Bits, val state: QuantumState)
@@ -30,8 +42,15 @@ fun QuantumState.measureBits(vararg indices: Int): Measurement {
 
     val bitsSize = kotlin.math.log2(size.toDouble()).toInt()
 
-    val measuredBitsMap = (0 until size)
-            .map { it to this[it] }
+    val indexValuePairs = mutableListOf<Pair<Int, Complex>>()
+    val iter = indexedValueIterator()
+    while (iter.hasNext()) {
+        iter.next { index, value ->
+            indexValuePairs.add(Pair(index, value))
+        }
+    }
+
+    val measuredBitsMap = indexValuePairs
             .groupBy { it.first.toBitsArray(bitsSize).slice(*indices) }
 
     val measuredBitsAmplitudesArray = measuredBitsMap
